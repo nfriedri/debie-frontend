@@ -1,0 +1,9 @@
+Bias Evaluation:
+- Dropdown Liste zum Vector-DB aussuchen (Fasttext, SkipGram, CBOW)
+
+Word2Vec:
+- Download Button um Wörter als Vector-Datei runterzuladen
+==> evtl in Bias eval & Debias Möglichkeiten um Dateien mit T1, T2, A1, A2 hochzuladen
+==> dann auch API funktionalität POST
+==> eigene Site die JSON formats etc erklärt
+
