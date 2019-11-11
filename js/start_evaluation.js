@@ -13,9 +13,9 @@ function loadTestData(jsonFile, elementID) {
     fetch(jsonFile)
         .then(response => response.json())
         .then((data) => {
-            console.log(data);
+            //console.log(data);
             let output = "<a></a>";
-            output += `
+            output += `          
     <tbody>
     <tr>
       <th scope="row">T1</th>
@@ -39,12 +39,27 @@ function loadTestData(jsonFile, elementID) {
         })
 }
 
-document.getElementById('Set1_Evaluate').addEventListener('click', sendRequest);
+function startSpinner(object_id){
+  spinner = `
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      `
+  try{
+    document.getElementById(object_id).innerHTML = spinner;
+  }
+  catch (error) {
+    console.error();
+  }
+}
 
-function sendRequest() {
+function sendRequest(object_id) {
     //word = document.getElementById('word2Send').value;
     //console.log(word);
     //dataJSON = {data: word};
+    startSpinner(object_id)
     testSet1 = "aster clover hyacinth marigold poppy azalea crocus iris orchid rose blue-bell daffodil lilac pansy tulip buttercup daisy lily peony violet carnation gladiola magnolia petunia zinnia";
     testSet2 = "ant caterpillar flea locust spider bedbug centipede fly maggot tarantula bee cockroach gnat mosquito termite beetle cricket hornet moth wasp blackfly dragonfly horsefly roach weevil";
     argSet1 = "caress freedom health love peace cheer friend heaven loyal pleasure diamond gentle honest lucky rainbow diploma gift honor miracle sunrise family happy laughter paradise vacation";
@@ -80,9 +95,12 @@ function sendRequest() {
                 <a>WEAT p-value: ${data.weat_pvalue}</a>
             </ul>  
             `;
-                document.getElementById('card_words_response').innerHTML = output;
+              document.getElementById(object_id).innerHTML = output;
             })
     } catch (error) {
         console.error();
-    }
-}
+    }   
+  }
+
+document.getElementById('Set1_Evaluate').addEventListener("click", function(){sendRequest('card_words_response')});
+document.getElementById('Set2_Evaluate').addEventListener('click', function(){sendRequest('card_words_response2')});
