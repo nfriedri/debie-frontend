@@ -19,8 +19,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="10%" width="30%"></a>           <!-- Logo in Navigation oben links -->
-        <a class="na
-        vbar-brand-center" href="index.html"><img src="img/logo2.png" height="20%" width="20%"> </a>
+        <a class="navbar-brand-center" href="index.html"><img src="img/logo2.png" height="20%" width="20%"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,26 +42,49 @@
     </div>
 </nav>
 
-<div class = "container" id="container">
-  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-      <button type="button" class="btn btn-secondary">Fasttext</button>
-      <button type="button" class="btn btn-secondary">Skipgram</button>
-      <button type="button" class="btn btn-secondary">GloVe</button>
+<div class = "container sticky-top">
+  <!-- Radio Button Toolbar -->
+  <div class="row mt-3">
+    <div class="col">
+      <h6>Choose a word embedding model:</h6>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
+        <label class="btn btn-primary active" id="fasttextBtn">
+          <input type="radio" name="options" autocomplete="off" checked> Fasttext
+        </label>
+        <label class="btn btn-primary" id="skipgramBtn">
+          <input type="radio" name="options" autocomplete="off"> Skipgram
+        </label>
+        <label class="btn btn-primary"  id="gloveBtn">
+          <input type="radio" name="options" autocomplete="off"> GloVe
+        </label>
+      </div>
     </div>
-    <div class="btn-group mr-2" role="group" aria-label="Second group">
-      <button type="button" class="btn btn-secondary">All</button>
-      <button type="button" class="btn btn-secondary">ECT</button>
-      <button type="button" class="btn btn-secondary">BAT</button>
-      <button type="button" class="btn btn-secondary">WEAT</button>
-      <button type="button" class="btn btn-secondary">KMeans</button>
-    </div>
-    <div class="btn-group" role="group" aria-label="Third group">
-      <button type="button" class="btn btn-secondary">8</button>
-    </div>
-  </div>    
+    <div class="col">
+      <h6>Choose a bias evaluation method:</h6>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
+          <label class="btn btn-primary active"  id="allBtn">
+            <input type="radio" name="allBtn" autocomplete="off" checked> All
+          </label>
+          <label class="btn btn-primary"  id="ectBtn">
+              <input type="radio" name="ectBtn" autocomplete="off"> ECT
+          </label>
+          <label class="btn btn-primary"  id="batBtn">
+              <input type="radio" name="batBtn" autocomplete="off"> BAT
+          </label>
+          <label class="btn btn-primary"  id="weatBtn">
+              <input type="radio" name="weatBtn" autocomplete="off"> WEAT
+          </label>
+          <label class="btn btn-primary"  id="kmeansBtn">
+            <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+          </label>
+        </div>
+      </div>
+  </div>
+</div>
 
-  <h4 class="mt-5">Select one predefined test set</h4>
+<div class="container">  
+  <h4 class="mt-4">Select one predefined test set</h4>
+
   <!-- Table 1 -->    
   <table class="table table-borderless table-dark">
     <thead>

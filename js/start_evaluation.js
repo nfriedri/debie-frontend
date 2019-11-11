@@ -2,11 +2,14 @@ jsonFile_1 = '/res/test_set_1.json';
 jsonFile_2 = '/res/test_set_2.json';
 elementID_1 = 'table_1';
 elementID_2 = 'table_2';
+vectorTypeEnum = 'fasttext';
+evaluationMethodEnum = 'all';
 window.onload = doByStart;
 
 function doByStart() {
     loadTestData(jsonFile_1, elementID_1);
     loadTestData(jsonFile_2, elementID_2);
+    getSelectionValues();
 }
 
 function loadTestData(jsonFile, elementID) {
@@ -39,6 +42,14 @@ function loadTestData(jsonFile, elementID) {
         })
 }
 
+function getSelectionValues(){
+  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
+  let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+  vectorTypeEnum = activeVectorType.id;
+  evaluationMethodEnum = activeEvalMethod.id;
+  console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
+}
+
 function startSpinner(object_id){
   spinner = `
       <div class="d-flex justify-content-center">
@@ -59,6 +70,7 @@ function sendRequest(object_id) {
     //word = document.getElementById('word2Send').value;
     //console.log(word);
     //dataJSON = {data: word};
+    getSelectionValues();
     startSpinner(object_id)
     testSet1 = "aster clover hyacinth marigold poppy azalea crocus iris orchid rose blue-bell daffodil lilac pansy tulip buttercup daisy lily peony violet carnation gladiola magnolia petunia zinnia";
     testSet2 = "ant caterpillar flea locust spider bedbug centipede fly maggot tarantula bee cockroach gnat mosquito termite beetle cricket hornet moth wasp blackfly dragonfly horsefly roach weevil";
@@ -104,3 +116,6 @@ function sendRequest(object_id) {
 
 document.getElementById('Set1_Evaluate').addEventListener("click", function(){sendRequest('card_words_response')});
 document.getElementById('Set2_Evaluate').addEventListener('click', function(){sendRequest('card_words_response2')});
+//document.getElementById('fasttextBtn').addEventListener('click', function(){selectVectorType()});
+//document.getElementById('skipgramBtn').addEventListener('click', function(){selectVectorType()});
+//document.getElementById('gloveBtn').addEventListener('click', function(){selectVectorType()});
