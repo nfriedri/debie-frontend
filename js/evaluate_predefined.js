@@ -2,8 +2,8 @@ const jsonFile_1 = '/res/test_set_1.json'
 const jsonFile_2 = '/res/test_set_2.json'
 const elementID_1 = 'table_1'
 const elementID_2 = 'table_2'
-const vectorTypeEnum = 'fasttext'
-const evaluationMethodEnum = 'all'
+var vectorTypeEnum = 'fasttext'
+var evaluationMethodEnum = 'all'
 
 window.onload = doByStart()
 

@@ -1,14 +1,14 @@
 function getWordListVecRepresentation(objectID) {
   startSpinner(objectID)
   var targetSet1 = document.getElementById('target_set1').value
-  var targetSet2 = document.getElementById('target_set1').value
+  var targetSet2 = document.getElementById('target_set2').value
   var argSet1 = document.getElementById('argument_set1').value
-  var argSet2 = document.getElementById('argument_set1').value
+  var argSet2 = document.getElementById('argument_set2').value
   var url = 'http://127.0.0.1:5000/REST/bias_evaluation'
   getSelectionValues()
     //url += '?vecspace=' + vectorTypeEnum + '?method=' + evaluationMethodEnum;
 
-  var postDict1 = { "T1": targetSet1, "T2": targetSet2, "A1": argSet1, "A2": argSet2 }
+  var postDict1 = { T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
   var postJson = JSON.stringify(postDict1)
   try {
     const response = fetch(url, {
@@ -21,9 +21,9 @@ function getWordListVecRepresentation(objectID) {
       .then((res) => res.json())
       .then((data) => {
         console.log(postJson);
+        console.log(data)
         let output;
         output += `
-            <ul>
                 <a>ECT with argument set 1: ${data.ect_value1}</a>
                 <br>
                 <a>ECT p-value with argument set 1: ${data.p_value1}</a>
@@ -36,8 +36,7 @@ function getWordListVecRepresentation(objectID) {
                 <br>
                 <a>WEAT effect size: ${data.weat_effect_size}</a>
                 <br>
-                <a>WEAT p-value: ${data.weat_pvalue}</a>
-            </ul>  
+                <a>WEAT p-value: ${data.weat_pvalue}</a> 
             `;
         document.getElementById(objectID).innerHTML = output;
       })
