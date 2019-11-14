@@ -16,106 +16,122 @@
 <body>
     
 <!-- Navigation -->
-<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="10%" width="30%"></a>           <!-- Logo in Navigation oben links -->
-        <a class="navbar-brand-center" href="index.html"><img src="img/logo2.png" height="20%" width="20%"> </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                 <li class="nav-item active">
-                     <a class="nav-link" href="index.html">Home</a>
-                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="bias_evaluation.html">BiasEvaluation</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="debiasing.html">Debiasing</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class = "container sticky-top">
-  <!-- Radio Button Toolbar -->
-  <div class="row mt-3">
-    <div class="col">
-      <h6>Choose a word embedding model:</h6>
-      <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
-        <label class="btn btn-primary active" id="fasttextBtn">
-          <input type="radio" name="options" autocomplete="off" checked> Fasttext
-        </label>
-        <label class="btn btn-primary" id="skipgramBtn">
-          <input type="radio" name="options" autocomplete="off"> Skipgram
-        </label>
-        <label class="btn btn-primary"  id="gloveBtn">
-          <input type="radio" name="options" autocomplete="off"> GloVe
-        </label>
+  <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="10%" width="30%"></a>           <!-- Logo in Navigation oben links -->
+          <a class="navbar-brand-center" href="index.html"><img src="img/logo2.png" height="20%" width="20%"> </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                      <a class="nav-link" href="index.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="about.html">About</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="bias_evaluation.html">BiasEvaluation</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="debiasing.html">Debiasing</a>
+                  </li>
+              </ul>
+          </div>
       </div>
-    </div>
-    <div class="col">
-      <h6>Choose a bias evaluation method:</h6>
-      <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
-          <label class="btn btn-primary active"  id="allBtn">
-            <input type="radio" name="allBtn" autocomplete="off" checked> All
+  </nav>
+
+<!-- Radio Button Toolbar -->
+  <div class = "container sticky-top my-3">
+    <div class="row mt-3">
+      <div class="col">
+        <h6>Choose a word embedding model:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
+          <label class="btn btn-primary active" id="fasttextBtn">
+            <input type="radio" name="options" autocomplete="off" checked> Fasttext
           </label>
-          <label class="btn btn-primary"  id="ectBtn">
-              <input type="radio" name="ectBtn" autocomplete="off"> ECT
+          <label class="btn btn-primary" id="skipgramBtn">
+            <input type="radio" name="options" autocomplete="off"> Skipgram
           </label>
-          <label class="btn btn-primary"  id="batBtn">
-              <input type="radio" name="batBtn" autocomplete="off"> BAT
-          </label>
-          <label class="btn btn-primary"  id="weatBtn">
-              <input type="radio" name="weatBtn" autocomplete="off"> WEAT
-          </label>
-          <label class="btn btn-primary"  id="kmeansBtn">
-            <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+          <label class="btn btn-primary"  id="gloveBtn">
+            <input type="radio" name="options" autocomplete="off"> GloVe
           </label>
         </div>
       </div>
+      <div class="col">
+        <h6>Choose a bias evaluation method:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
+            <label class="btn btn-primary active"  id="allBtn">
+              <input type="radio" name="allBtn" autocomplete="off" checked> All
+            </label>
+            <label class="btn btn-primary"  id="ectBtn">
+                <input type="radio" name="ectBtn" autocomplete="off"> ECT
+            </label>
+            <label class="btn btn-primary"  id="batBtn">
+                <input type="radio" name="batBtn" autocomplete="off"> BAT
+            </label>
+            <label class="btn btn-primary"  id="weatBtn">
+                <input type="radio" name="weatBtn" autocomplete="off"> WEAT
+            </label>
+            <label class="btn btn-primary"  id="kmeansBtn">
+              <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+            </label>
+          </div>
+        </div>
+    </div>
   </div>
-</div>
 
-<div class="container">  
-  <h4 class="mt-4">Select one predefined test set</h4>
-
-  <!-- Table 1 -->    
-  <table class="table table-borderless table-dark">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Topic Test Set 1</th>
-      </tr>
-    </thead>
-    <tbody id="table_1">
-    </tbody>
-  </table>
-  <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set1_Evaluate" width="25%"> Evaluate </button> 
-  <div class="card" id="card_words_response">
-    <div class="card-body"></div>
+<!-- Direct word input -->
+  <div class="container">  
+    <div class="jumbotron bg-dark text-white px-md-5">
+      <h4 class="display-4">Enter your own test sets here</h4>
+      <p>Please enter the words seperated by whitespaces</p>
+      <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
+        <div class="input-group mt-4">       
+          <div class="input-group-prepend">
+              <span class="input-group-text">T1:</span>
+          </div>
+          <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
+        <div class="input-group mt-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">T2:</span>
+          </div>
+          <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <div class="input-group mt-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">A1:</span>
+          </div>
+          <textarea class="form-control" id="argument_set1" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <div class="input-group my-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">A2:</span>
+          </div>
+          <textarea class="form-control" id="argument_set2" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" id="Evaluate1">Evaluate Bias</button>
+        </p>
+    </div>
+  </div>
+  <div class="container mb-5">
+    <div class="card" id="response1">
+      <div class="card-body"></div>
+    </div>
   </div>
 
-  <!-- Table 2 -->
-  <table class="table table-borderless table-dark my-4">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Topic Test Set 2</th>
-      </tr>
-    </thead>
-    <tbody id="table_2">
-    </tbody>
-  </table>
-  <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set2_Evaluate" width="25%"> Evaluate </button>
-  <div class="card mb-2" id="card_words_response2">
-    <div class="card-body"></div>
+<!-- Upload a file -->
+  <div class="container">
+    <div class="jumbotron bg-dark text-white px-md-5">
+      <h4 class="display-4 mb-4">Upload a JSON file here</h4>
+      <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
+      <div class="custom-file mb-2">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+      </div>
+      <button class="btn btn-primary btn-lg" id='Evaluate2'>Evaluate Bias</button>
+    </div>
   </div>
-  <script src="js/start_evaluation.js"></script>
-
+<script src="js/evaluate_own.js"> </script>
 </body>
