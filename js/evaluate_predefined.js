@@ -1,23 +1,25 @@
-const jsonFile_1 = '/res/test_set_1.json'
-const jsonFile_2 = '/res/test_set_2.json'
-const elementID_1 = 'table_1'
-const elementID_2 = 'table_2'
-var vectorTypeEnum = 'fasttext'
-var evaluationMethodEnum = 'all'
+const jsonFile_1 = '/res/test_set_1.json';
+var jsonFileContent1 = {};
+const jsonFile_2 = '/res/test_set_2.json';
+var jsonFileContent2 = {};
+const elementID_1 = 'table_1';
+const elementID_2 = 'table_2';
+var vectorTypeEnum = 'fasttext';
+var evaluationMethodEnum = 'all';
+
 
 window.onload = doByStart()
 
 function doByStart() {
-  loadTestData(jsonFile_1, elementID_1);
-  loadTestData(jsonFile_2, elementID_2);
+  loadTestData(jsonFile_1, elementID_1, jsonFileContent1);
+  loadTestData(jsonFile_2, elementID_2, jsonFileContent2);
   getSelectionValues();
 }
 
-function loadTestData(jsonFile, elementID) {
+function loadTestData(jsonFile, elementID, target) {
   fetch(jsonFile)
     .then(response => response.json())
     .then((data) => {
-      //console.log(data);
       let output = "<a></a>";
       output += `          
     <tbody>
@@ -40,6 +42,10 @@ function loadTestData(jsonFile, elementID) {
     </tbody>
     `;
       document.getElementById(elementID).innerHTML = output;
+      target['T1'] = data.T1;
+      target['T2'] = data.T2;
+      target['A1'] = data.A1;
+      target['A2'] = data.A2;
     })
 }
 
@@ -66,56 +72,123 @@ function startSpinner(object_id) {
   }
 }
 
-function sendRequest(object_id) {
+
+
+function sendRequest(target_id, sourceFile) {
   //word = document.getElementById('word2Send').value;
   //console.log(word);
   //dataJSON = {data: word};
   getSelectionValues();
-  startSpinner(object_id)
-  testSet1 = "aster clover hyacinth marigold poppy azalea crocus iris orchid rose blue-bell daffodil lilac pansy tulip buttercup daisy lily peony violet carnation gladiola magnolia petunia zinnia";
-  testSet2 = "ant caterpillar flea locust spider bedbug centipede fly maggot tarantula bee cockroach gnat mosquito termite beetle cricket hornet moth wasp blackfly dragonfly horsefly roach weevil";
-  argSet1 = "caress freedom health love peace cheer friend heaven loyal pleasure diamond gentle honest lucky rainbow diploma gift honor miracle sunrise family happy laughter paradise vacation";
-  argSet2 = "abuse crash filth murder sickness accident death grief poison stink assault disaster hatred pollute tragedy divorce jail poverty ugly cancer kill rotten vomit agony prison";
+  startSpinner(target_id)
   const url = 'http://127.0.0.1:5000/REST/bias_evaluation';
-  dataJSON = { T1: testSet1, T2: testSet2, A1: argSet1, A2: argSet2 };
+  sourceFile['EmbeddingSpace'] = vectorTypeEnum;
+  sourceFile['Method'] = evaluationMethodEnum;
+  console.log(sourceFile);
 
   try {
     const response = fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(dataJSON),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify(sourceFile),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         let output;
-        output += `
-            <ul>
-                <a>ECT with argument set 1: ${data.ect_value1}</a>
-                <br>
-                <a>ECT p-value with argument set 1: ${data.p_value1}</a>
-                <br>
-                <a>ECT with argument set 2: ${data.ect_value2}</a>
-                <br>
-                <a>ECT p-value with argument set 2: ${data.p_value2}</a>
-                <br>
-                <a>BAT score: ${data.bat_result}</a>
-                <br>
-                <a>WEAT effect size: ${data.weat_effect_size}</a>
-                <br>
-                <a>WEAT p-value: ${data.weat_pvalue}</a>
-            </ul>  
+        switch (evaluationMethodEnum) {
+          case 'allBtn':
+            output += `
+              <h5 class="card-title mb-3">Evaluation results: </h5>
+              <a>ECT with argument set 1: ${data.ect_value1}</a>
+              <a>ECT p-value with argument set 1: ${data.p_value1}</a>
+              <br>
+              <a>ECT with argument set 2: ${data.ect_value2}</a>
+              <a>ECT p-value with argument set 2: ${data.p_value2}</a>
+              <br>
+              <a>BAT score: ${data.bat_result}</a>
+              <br>
+              <a>WEAT effect size: ${data.weat_effect_size}</a>
+              <a>WEAT p-value: ${data.weat_pvalue}</a>            
             `;
-        document.getElementById(object_id).innerHTML = output;
+            break;
+          case 'ectBtn':
+              output += `
+              <h5 class="card-title">ECT Results</h5>
+              <a>ECT with argument set 1: ${data.ect_value1}</a>
+              <a>ECT p-value with argument set 1: ${data.p_value1}</a>
+              <br>
+              <a>ECT with argument set 2: ${data.ect_value2}</a>
+              <a>ECT p-value with argument set 2: ${data.p_value2}</a>
+              <br>
+              `;
+            break;
+          case 'batBtn':
+              output += `
+              <h5 class="card-title">BAT Results</h5>
+              <a>BAT score: ${data.bat_result}</a>
+              <br>
+            `;
+            break;
+          case 'weatBtn':
+              output += `
+              <h5 class="card-title">WEAT Results</h5>
+              <a>WEAT effect size: ${data.weat_effect_size}</a>
+              <a>WEAT p-value: ${data.weat_pvalue}</a>
+              <br> 
+            `;
+            break;
+          case 'kmeansBtn':
+              output += `
+              <h5 class="card-title">KMeans Results</h5>
+              <a>K-Means result: ${data.k_means}</a>
+              <br>
+            `;
+            break;
+        }
+        output += `
+              <h6 class="card-subtitle mt-3 mb-2 text-muted">Download results as JSON: </h6>
+              <a style="button" id="downloadxxx">
+              <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="download" width="25%"> Evaluate </button> 
+              <image src="/img/download.png" height="10%" width="10%">
+                <script> 
+                  console.log('Script is working!')
+                  document.getElementById("download").addEventListener("click", function(){
+                  var text = 'FIRST TEST';
+                  var filename = 'test.json';
+                  download(text, filename);
+                }, false);
+                </script>
+              </a> 
+        `
+//        <a href="" id="download" download>
+//                <image src="/img/download.png" height="10%" width="10%">
+        document.getElementById(target_id).innerHTML = output;
       })
   } catch (error) {
     console.error();
   }
 }
 
-document.getElementById('Set1_Evaluate').addEventListener("click", function() { sendRequest('card_words_response') });
-document.getElementById('Set2_Evaluate').addEventListener('click', function() { sendRequest('card_words_response2') });
+function download(filename, content){
+  var element = document.createElement('a');
+  element.style.display = 'none';
+  element.setAttribute('href', 'data:text/plain;charset=utf-8' + encodeURIComponent(content));
+  element.setAttribute('download', filename);
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+/*
+document.getElementById("download").addEventListener("click", function(){
+  var text = 'FIRST TEST';
+  var filename = 'test.json';
+  download(text, filename);
+}, false);
+*/
+
+document.getElementById('Set1_Evaluate').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1) });
+document.getElementById('Set2_Evaluate').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2) });
 //document.getElementById('fasttextBtn').addEventListener('click', function(){selectVectorType()});
 //document.getElementById('skipgramBtn').addEventListener('click', function(){selectVectorType()});
 //document.getElementById('gloveBtn').addEventListener('click', function(){selectVectorType()});
