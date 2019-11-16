@@ -25,8 +25,6 @@ const elementID_6 = 'table_6';
 const elementID_7 = 'table_7';
 const elementID_8 = 'table_8';
 const elementID_9 = 'table_9';
-var vectorTypeEnum = 'fasttext';
-var evaluationMethodEnum = 'all';
 var result1 = {};
 var result2 = {};
 var result3 = {};
@@ -36,7 +34,8 @@ var result6 = {};
 var result7 = {};
 var result8 = {};
 var result9 = {};
-
+var vectorTypeEnum = 'fasttext';
+var evaluationMethodEnum = 'all';
 
 window.onload = doByStart()
 
@@ -244,9 +243,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
         }
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        `
-//        <a href="" id="download" download>
-//                <image src="/img/download.png" height="10%" width="10%">
+        `;
         document.getElementById(downloadButtonID).removeAttribute("hidden");
         document.getElementById(target_id).innerHTML = output;
         createDownloadJson(resultVar, sourceFile, data);
