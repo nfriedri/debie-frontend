@@ -168,6 +168,10 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
                   <th scope="row">WEAT p-value: </th>
                   <td>${data.weat_pvalue}</td>
                   </tr>
+                  <tr>
+                  <th scope="row">K-Means result: </th>
+                  <td>${data.k_means}</td>
+                  </tr>
                 </tbody>
               </table>       
             `;

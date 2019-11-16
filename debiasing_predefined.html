@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DEBIE - Webapp</title>
+ <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+  <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<!--<link href="style.css" rel="stylesheet">-->
+</head>
+<body>
+    
+<!-- Navigation -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="10%" width="30%"></a>           <!-- Logo in Navigation oben links -->
+          <a class="navbar-brand-center" href="index.html"><img src="img/logo2.png" height="20%" width="20%"> </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="index.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="about.html">About</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="bias_evaluation.html">BiasEvaluation</a>
+                  </li>
+                  <li class="nav-item active">
+                      <a class="nav-link" href="debiasing.html">Debiasing</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+  <div class = "container" >
+    <!-- Radio Button Toolbar -->
+    <div class="row mt-3 ">
+      <div class="col float-left">
+        <h6>Choose a word embedding model:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
+          <label class="btn btn-primary active" id="fasttextBtn">
+            <input type="radio" name="options" autocomplete="off" checked> Fasttext
+          </label>
+          <label class="btn btn-primary" id="skipgramBtn">
+            <input type="radio" name="options" autocomplete="off"> Skipgram
+          </label>
+          <label class="btn btn-primary"  id="gloveBtn">
+            <input type="radio" name="options" autocomplete="off"> GloVe
+          </label>
+        </div>
+      </div>
+      <div class="col float-right">
+        <h6>Choose a bias evaluation method:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
+            <label class="btn btn-primary active"  id="allBtn">
+              <input type="radio" name="allBtn" autocomplete="off" checked> All
+            </label>
+            <label class="btn btn-primary"  id="ectBtn">
+                <input type="radio" name="ectBtn" autocomplete="off"> ECT
+            </label>
+            <label class="btn btn-primary"  id="batBtn">
+                <input type="radio" name="batBtn" autocomplete="off"> BAT
+            </label>
+            <label class="btn btn-primary"  id="weatBtn">
+                <input type="radio" name="weatBtn" autocomplete="off"> WEAT
+            </label>
+            <label class="btn btn-primary"  id="kmeansBtn">
+              <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+            </label>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="container mt-5" style="position: relative;">  
+    <h4 class="mt-4">Select one predefined test set</h4>
+  
+    <!-- Table 1 -->    
+    <table class="table table-borderless table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 1</th>
+        </tr>
+      </thead>
+      <tbody id="table_1">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set1_Evaluate" width="25%"> Debias </button> 
+    <div class="card bg-dark text-white mb-2" id="card1" hidden>
+      <div class="card-body" id="card_words_response"> 
+      </div> 
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download1" hidden></input>
+    </div>
+  
+    <!-- Table 2 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 2</th>
+        </tr>
+      </thead>
+      <tbody id="table_2">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set2_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card2" hidden>
+      <div class="card-body" id="card_words_response2">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download2" hidden></input>
+    </div>
+  
+    <!-- Table 3 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 3</th>
+        </tr>
+      </thead>
+      <tbody id="table_3">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set3_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card3" hidden>
+      <div class="card-body" id="card_words_response3">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download3" hidden></input>
+    </div>
+  
+    <!-- Table 4 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 4</th>
+        </tr>
+      </thead>
+      <tbody id="table_4">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set4_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card4" hidden>
+      <div class="card-body" id="card_words_response4">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download4" hidden></input>
+    </div>
+  
+    <!-- Table 5 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 5</th>
+        </tr>
+      </thead>
+      <tbody id="table_5">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set5_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card5" hidden>
+      <div class="card-body" id="card_words_response5">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download5" hidden></input>
+    </div>
+  
+    <!-- Table 6 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 6</th>
+        </tr>
+      </thead>
+      <tbody id="table_6">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set6_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card6" hidden>
+      <div class="card-body" id="card_words_response6">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download6" hidden></input>
+    </div>
+  
+    <!-- Table 7 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 7</th>
+        </tr>
+      </thead>
+      <tbody id="table_7">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set7_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card7" hidden>
+      <div class="card-body" id="card_words_response7">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download7" hidden></input>
+    </div>
+  
+    <!-- Table 8 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 8</th>
+        </tr>
+      </thead>
+      <tbody id="table_8">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set8_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card8" hidden>
+      <div class="card-body" id="card_words_response8">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download8" hidden></input>
+    </div>
+  
+    <!-- Table 9 -->
+    <table class="table table-borderless table-dark my-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Topic Test Set 9</th>
+        </tr>
+      </thead>
+      <tbody id="table_9">
+      </tbody>
+    </table>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set9_Evaluate" width="25%"> Debias </button>
+    <div class="card bg-dark text-white mb-2" id = "card9" hidden>
+      <div class="card-body" id="card_words_response9">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download9" hidden></input>
+    </div>
+  
+    <script src="js/debias_predefined.js"></script>
+  
+  </body>

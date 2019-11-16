@@ -1,9 +1,92 @@
+const jsonFile_1 = '/res/test_set1.json';
+var jsonFileContent1 = {};
+const jsonFile_2 = '/res/test_set2.json';
+var jsonFileContent2 = {};
+const jsonFile_3 = '/res/test_set3.json';
+var jsonFileContent3 = {};
+const jsonFile_4 = '/res/test_set4.json';
+var jsonFileContent4 = {};
+const jsonFile_5 = '/res/test_set5.json';
+var jsonFileContent5 = {};
+const jsonFile_6 = '/res/test_set6.json';
+var jsonFileContent6 = {};
+const jsonFile_7 = '/res/test_set7.json';
+var jsonFileContent7 = {};
+const jsonFile_8 = '/res/test_set8.json';
+var jsonFileContent8 = {};
+const jsonFile_9 = '/res/test_set9.json';
+var jsonFileContent9 = {};
+const elementID_1 = 'table_1';
+const elementID_2 = 'table_2';
+const elementID_3 = 'table_3';
+const elementID_4 = 'table_4';
+const elementID_5 = 'table_5';
+const elementID_6 = 'table_6';
+const elementID_7 = 'table_7';
+const elementID_8 = 'table_8';
+const elementID_9 = 'table_9';
+var result1 = {};
+var result2 = {};
+var result3 = {};
+var result4 = {};
+var result5 = {};
+var result6 = {};
+var result7 = {};
+var result8 = {};
+var result9 = {};
 var vectorTypeEnum = 'fasttext';
 var evaluationMethodEnum = 'all';
-var resultData = {};
+
+window.onload = doByStart()
+
+function doByStart() {
+  loadTestData(jsonFile_1, elementID_1, jsonFileContent1);
+  loadTestData(jsonFile_2, elementID_2, jsonFileContent2);
+  loadTestData(jsonFile_3, elementID_3, jsonFileContent3);
+  loadTestData(jsonFile_4, elementID_4, jsonFileContent4);
+  loadTestData(jsonFile_5, elementID_5, jsonFileContent5);
+  loadTestData(jsonFile_6, elementID_6, jsonFileContent6);
+  loadTestData(jsonFile_7, elementID_7, jsonFileContent7);
+  loadTestData(jsonFile_8, elementID_8, jsonFileContent8);
+  loadTestData(jsonFile_9, elementID_9, jsonFileContent9);
+  getSelectionValues();
+}
+
+function loadTestData(jsonFile, elementID, target) {
+  fetch(jsonFile)
+    .then(response => response.json())
+    .then((data) => {
+      let output = "<a></a>";
+      output += `          
+    <tbody>
+    <tr>
+      <th scope="row">T1</th>
+      <td>${data.T1}</td>
+    </tr>
+    <tr>
+      <th scope="row">T2</th>
+      <td>${data.T2}</td>
+    </tr>
+    <tr>
+      <th scope="row">A1</th>
+      <td>${data.A1}</td> 
+    </tr>
+    <tr>
+      <th scope="row">A2</th>
+      <td>${data.A2}</td> 
+    </tr>
+    </tbody>
+    `;
+      document.getElementById(elementID).innerHTML = output;
+      target['T1'] = data.T1;
+      target['T2'] = data.T2;
+      target['A1'] = data.A1;
+      target['A2'] = data.A2;
+    })
+}
 
 function getSelectionValues() {
-  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
+  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
   evaluationMethodEnum = activeEvalMethod.id;
@@ -12,12 +95,12 @@ function getSelectionValues() {
 
 function startSpinner(object_id) {
   spinner = `
-        <div class="d-flex justify-content-center">
-          <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
-        `
+      </div>
+      `
   try {
     document.getElementById(object_id).innerHTML = spinner;
   } catch (error) {
@@ -25,32 +108,29 @@ function startSpinner(object_id) {
   }
 }
 
-function getWordListVecRepresentation() {
-  startSpinner('card')
-  getSelectionValues()
-  var targetSet1 = document.getElementById('target_set1').value
-  var targetSet2 = document.getElementById('target_set2').value
-  var argSet1 = document.getElementById('argument_set1').value
-  var argSet2 = document.getElementById('argument_set2').value
-  var url = 'http://127.0.0.1:5000/REST/bias_evaluation'
-  
-  var postDict1 = { EmbeddingSpace: vectorTypeEnum, Method: evaluationMethodEnum, T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
-  var postJson = JSON.stringify(postDict1)
-  console.log(postJson)
-  document.getElementById('card').removeAttribute("hidden");
+function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
+  //word = document.getElementById('word2Send').value;
+  //console.log(word);
+  //dataJSON = {data: word};
+  getSelectionValues();
+  startSpinner(target_id)
+  const url = 'http://127.0.0.1:5000/REST/bias_evaluation';
+  sourceFile['EmbeddingSpace'] = vectorTypeEnum;
+  sourceFile['Method'] = evaluationMethodEnum;
+  console.log(sourceFile);
+  document.getElementById(cardID).removeAttribute("hidden");
+  console.log("card1 visible");
 
   try {
     const response = fetch(url, {
-        method: 'POST',
-        body: postJson,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify(sourceFile),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
-        console.log(postJson);
-        console.log(data)
         let output;
         switch (evaluationMethodEnum) {
           case 'allBtn':
@@ -85,6 +165,10 @@ function getWordListVecRepresentation() {
                   <tr>
                   <th scope="row">WEAT p-value: </th>
                   <td>${data.weat_pvalue}</td>
+                  </tr>
+                  <tr>
+                  <th scope="row">K-Means result: </th>
+                  <td>${data.k_means}</td>
                   </tr>
                 </tbody>
               </table>       
@@ -162,9 +246,9 @@ function getWordListVecRepresentation() {
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
         `;
-        document.getElementById('card_response').innerHTML = output;
-        document.getElementById('download').removeAttribute("hidden");
-        createDownloadJson(resultData, postDict1, data)
+        document.getElementById(downloadButtonID).removeAttribute("hidden");
+        document.getElementById(target_id).innerHTML = output;
+        createDownloadJson(resultVar, sourceFile, data);
       })
   } catch (error) {
     console.error();
@@ -220,5 +304,22 @@ function download(filename, content){
   console.log('Downloaded')
 }
 
-document.getElementById('Evaluate1').addEventListener("click", function() { getWordListVecRepresentation() });
-document.getElementById('download').addEventListener("click", function() { download('Evaluation.json', resultData)})
+document.getElementById('Set1_Evaluate').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, result1, 'download1', 'card1') });
+document.getElementById('Set2_Evaluate').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2, result2, 'download2', 'card2') });
+document.getElementById('Set3_Evaluate').addEventListener('click', function () { sendRequest('card_words_response3', jsonFileContent3, result3, 'download3', 'card3') });
+document.getElementById('Set4_Evaluate').addEventListener('click', function () { sendRequest('card_words_response4', jsonFileContent4, result4, 'download4', 'card4') });
+document.getElementById('Set5_Evaluate').addEventListener('click', function () { sendRequest('card_words_response5', jsonFileContent5, result5, 'download5', 'card5') });
+document.getElementById('Set6_Evaluate').addEventListener('click', function () { sendRequest('card_words_response6', jsonFileContent6, result6, 'download6', 'card6') });
+document.getElementById('Set7_Evaluate').addEventListener('click', function () { sendRequest('card_words_response7', jsonFileContent7, result7, 'download7', 'card7') });
+document.getElementById('Set8_Evaluate').addEventListener('click', function () { sendRequest('card_words_response8', jsonFileContent8, result8, 'download8', 'card8') });
+document.getElementById('Set9_Evaluate').addEventListener('click', function () { sendRequest('card_words_response9', jsonFileContent9, result9, 'download9', 'card9') });
+
+document.getElementById('download1').addEventListener("click", function() { download('Set1_Evaluation.json', result1)})
+document.getElementById('download2').addEventListener("click", function() { download('Set2_Evaluation.json', result2)})
+document.getElementById('download3').addEventListener("click", function() { download('Set3_Evaluation.json', result3)})
+document.getElementById('download4').addEventListener("click", function() { download('Set4_Evaluation.json', result4)})
+document.getElementById('download5').addEventListener("click", function() { download('Set5_Evaluation.json', result5)})
+document.getElementById('download6').addEventListener("click", function() { download('Set6_Evaluation.json', result6)})
+document.getElementById('download7').addEventListener("click", function() { download('Set7_Evaluation.json', result7)})
+document.getElementById('download8').addEventListener("click", function() { download('Set8_Evaluation.json', result8)})
+document.getElementById('download9').addEventListener("click", function() { download('Set9_Evaluation.json', result9)})
