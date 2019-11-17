@@ -35,7 +35,7 @@ var result7 = {};
 var result8 = {};
 var result9 = {};
 var vectorTypeEnum = 'fasttext';
-var evaluationMethodEnum = 'all';
+var debiasMethodEnum = 'all';
 
 window.onload = doByStart()
 
@@ -89,8 +89,8 @@ function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
-  evaluationMethodEnum = activeEvalMethod.id;
-  console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
+  debiasMethodEnum = activeEvalMethod.id;
+  console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum);
 }
 
 function startSpinner(object_id) {
@@ -108,18 +108,54 @@ function startSpinner(object_id) {
   }
 }
 
+function createCharts(content) {
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart(content));
+
+  // Callback that creates and populates a data table
+  function drawChart(content) {
+    fetch('/res/resonse_test1.json')
+    .then(response => response.json())
+    .then((data) => {
+      dict = JSON.parse(data)
+      console.log(data)
+    });
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Topping');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+      ['Mushrooms', 3],
+      ['Onions', 1],
+      ['Olives', 1],
+      ['Zucchini', 1],
+      ['Pepperoni', 2]
+    ]);
+
+    // Set chart options
+    var options = {'title':'How Much Pizza I Ate Last Night',
+                   'width':400,
+                   'height':300};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+}
+
 function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
-  //word = document.getElementById('word2Send').value;
-  //console.log(word);
-  //dataJSON = {data: word};
   getSelectionValues();
   startSpinner(target_id)
-  const url = 'http://127.0.0.1:5000/REST/bias_evaluation';
+  const url = 'http://127.0.0.1:5000/REST/debias_virtualization';
   sourceFile['EmbeddingSpace'] = vectorTypeEnum;
-  sourceFile['Method'] = evaluationMethodEnum;
+  sourceFile['Method'] = debiasMethodEnum;
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");
-  console.log("card1 visible");
+  console.log("card visible");
 
   try {
     const response = fetch(url, {
@@ -132,114 +168,35 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
       .then((res) => res.json())
       .then((data) => {
         let output;
-        switch (evaluationMethodEnum) {
-          case 'allBtn':
+        switch (debiasMethodEnum) {
+          case 'gbdd':
             output += `
-              <h5 class="card-title mb-3">Evaluation results: </h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">BAT score: </th>
-                  <td>${data.bat_result}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">WEAT effect size: </th>
-                  <td>${data.weat_effect_size}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">WEAT p-value: </th>
-                  <td>${data.weat_pvalue}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">K-Means result: </th>
-                  <td>${data.k_means}</td>
-                  </tr>
-                </tbody>
-              </table>       
+              <h5 class="card-title mb-3">GBDD Debiasing Results: </h5>
+              <div id="gbdd_chart"></div>
             `;
             break;
-          case 'ectBtn':
+          case 'bam':
               output += `
-              <h5 class="card-title">ECT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h5 class="card-title">BAM Debiasing Results: </h5>
+              <div id="bam_chart"></div>
               `;
             break;
-          case 'batBtn':
+          case 'debiasNet':
               output += `
-              <h5 class="card-title">BAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">BAT score: </th>
-                    <td>${data.bat_result}</td>
-                  </tr>
-                </tbody>
-              </table>  
+              <h5 class="card-title">DebiasNet Debiasing Results: </h5>
+              <div id="debiasNet_chart"></div>
             `;
             break;
-          case 'weatBtn':
+          case 'bamxgbdd':
               output += `
-              <h5 class="card-title">WEAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                <tr>
-                <th scope="row">WEAT effect size: </th>
-                <td>${data.weat_effect_size}</td>
-                </tr>
-                <tr>
-                <th scope="row">WEAT p-value: </th>
-                <td>${data.weat_pvalue}</td>
-                </tr>
-                </tbody>
-              </table>  
+              <h5 class="card-title">BAM°GBDD Debiasing Results: </h5>
+              <div id="bamxgbdd_chart"></div>
             `;
             break;
-          case 'kmeansBtn':
+          case 'gbddxdebiasNet':
               output += `
-              <h5 class="card-title">KMeans Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">K-Means result: </th>
-                    <td>${data.k_means}</td>
-                  </tr>
-                </tbody>
-              </table> 
+              <h5 class="card-title">GBDD°DebiasNet Debiasing Results: </h5>
+              <div id="gbddxdebiasNet_chart"></div>
             `;
             break;
         }
@@ -257,40 +214,8 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
 
 function createDownloadJson(resultVar, sourceFile, evalResults){
   resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
-  resultVar['EvaluationMethods'] = sourceFile.Method;
-  switch(evaluationMethodEnum){
-    case 'allBtn':
-      resultVar['ECT-Value1'] = evalResults.ect_value1;
-      resultVar['ECT-P-Value1'] = evalResults.p_value1;
-      resultVar['ECT-Value2'] = evalResults.ect_value2;
-      resultVar['ECT-P-Value2'] = evalResults.p_value2;
-      resultVar['BAT-Value'] = evalResults.bat_result;
-      resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
-      resultVar['K-Means-value'] = evalResults.k_means;
-      break;
-    case 'ectBtn':
-      resultVar['ECT-Value1'] = evalResults.ect_value1;
-      resultVar['ECT-P-Value1'] = evalResults.p_value1;
-      resultVar['ECT-Value2'] = evalResults.ect_value2;
-      resultVar['ECT-P-Value2'] = evalResults.p_value2;
-      break;
-    case 'batBtn':
-      resultVar['BAT-Value'] = evalResults.bat_result;
-      break;
-    case 'weatBtn':
-      resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
-      break;
-    case 'kmeansBtn':
-      resultVar['K-Means-value'] = evalResults.k_means;
-      break;  
-  }
-  resultVar['T1'] = sourceFile.T1;
-  resultVar['T2'] = sourceFile.T2;
-  resultVar['A1'] = sourceFile.A1;
-  resultVar['A2'] = sourceFile.A2;
-  console.log(resultVar)
+  resultVar['DebiasingMethods'] = sourceFile.Method;
+  console.log(resultVar);
 }
 
 function download(filename, content){
@@ -304,22 +229,22 @@ function download(filename, content){
   console.log('Downloaded')
 }
 
-document.getElementById('Set1_Evaluate').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, result1, 'download1', 'card1') });
-document.getElementById('Set2_Evaluate').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2, result2, 'download2', 'card2') });
-document.getElementById('Set3_Evaluate').addEventListener('click', function () { sendRequest('card_words_response3', jsonFileContent3, result3, 'download3', 'card3') });
-document.getElementById('Set4_Evaluate').addEventListener('click', function () { sendRequest('card_words_response4', jsonFileContent4, result4, 'download4', 'card4') });
-document.getElementById('Set5_Evaluate').addEventListener('click', function () { sendRequest('card_words_response5', jsonFileContent5, result5, 'download5', 'card5') });
-document.getElementById('Set6_Evaluate').addEventListener('click', function () { sendRequest('card_words_response6', jsonFileContent6, result6, 'download6', 'card6') });
-document.getElementById('Set7_Evaluate').addEventListener('click', function () { sendRequest('card_words_response7', jsonFileContent7, result7, 'download7', 'card7') });
-document.getElementById('Set8_Evaluate').addEventListener('click', function () { sendRequest('card_words_response8', jsonFileContent8, result8, 'download8', 'card8') });
-document.getElementById('Set9_Evaluate').addEventListener('click', function () { sendRequest('card_words_response9', jsonFileContent9, result9, 'download9', 'card9') });
+document.getElementById('Set1_Debias').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, result1, 'download1', 'card1') });
+document.getElementById('Set2_Debias').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2, result2, 'download2', 'card2') });
+document.getElementById('Set3_Debias').addEventListener('click', function () { sendRequest('card_words_response3', jsonFileContent3, result3, 'download3', 'card3') });
+document.getElementById('Set4_Debias').addEventListener('click', function () { sendRequest('card_words_response4', jsonFileContent4, result4, 'download4', 'card4') });
+document.getElementById('Set5_Debias').addEventListener('click', function () { sendRequest('card_words_response5', jsonFileContent5, result5, 'download5', 'card5') });
+document.getElementById('Set6_Debias').addEventListener('click', function () { sendRequest('card_words_response6', jsonFileContent6, result6, 'download6', 'card6') });
+document.getElementById('Set7_Debias').addEventListener('click', function () { sendRequest('card_words_response7', jsonFileContent7, result7, 'download7', 'card7') });
+document.getElementById('Set8_Debias').addEventListener('click', function () { sendRequest('card_words_response8', jsonFileContent8, result8, 'download8', 'card8') });
+document.getElementById('Set9_Debias').addEventListener('click', function () { sendRequest('card_words_response9', jsonFileContent9, result9, 'download9', 'card9') });
 
-document.getElementById('download1').addEventListener("click", function() { download('Set1_Evaluation.json', result1)})
-document.getElementById('download2').addEventListener("click", function() { download('Set2_Evaluation.json', result2)})
-document.getElementById('download3').addEventListener("click", function() { download('Set3_Evaluation.json', result3)})
-document.getElementById('download4').addEventListener("click", function() { download('Set4_Evaluation.json', result4)})
-document.getElementById('download5').addEventListener("click", function() { download('Set5_Evaluation.json', result5)})
-document.getElementById('download6').addEventListener("click", function() { download('Set6_Evaluation.json', result6)})
-document.getElementById('download7').addEventListener("click", function() { download('Set7_Evaluation.json', result7)})
-document.getElementById('download8').addEventListener("click", function() { download('Set8_Evaluation.json', result8)})
-document.getElementById('download9').addEventListener("click", function() { download('Set9_Evaluation.json', result9)})
+document.getElementById('download1').addEventListener("click", function() { download('Set1_Debiasing.json', result1)})
+document.getElementById('download2').addEventListener("click", function() { download('Set2_Debiasing.json', result2)})
+document.getElementById('download3').addEventListener("click", function() { download('Set3_Debiasing.json', result3)})
+document.getElementById('download4').addEventListener("click", function() { download('Set4_Debiasing.json', result4)})
+document.getElementById('download5').addEventListener("click", function() { download('Set5_Debiasing.json', result5)})
+document.getElementById('download6').addEventListener("click", function() { download('Set6_Debiasing.json', result6)})
+document.getElementById('download7').addEventListener("click", function() { download('Set7_Debiasing.json', result7)})
+document.getElementById('download8').addEventListener("click", function() { download('Set8_Debiasing.json', result8)})
+document.getElementById('download9').addEventListener("click", function() { download('Set9_Debiasing.json', result9)})

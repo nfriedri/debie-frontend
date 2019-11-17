@@ -11,7 +11,57 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<!--<link href="style.css" rel="stylesheet">-->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['scatter']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Callback that creates and populates a data table
+  function drawChart() {
+    var words_list_biased = [];
+    var x_values_biased = [];
+    var y_values_biased = [];
+    var data = new google.visualization.DataTable();
+  //  data.addColumn('string', 'Word');
+    data.addColumn('number', 'X-Value');
+    data.addColumn('number', 'Y-Value');
+    data.addColumn('string', 'Word')
+    fetch('/res/response_test1.json')
+    .then(response => response.json())
+    .then((content) => {
+      for (key in content.biased){
+        var vecs = content.biased[key].replace('[', '').replace(',', '').replace(']', '').split(' ');
+        data.addRow([parseFloat(vecs[0]), parseFloat(vecs[1]), key]);
+      }
+    });
+    
+    console.log(data);
+    
+
+    // Set chart options
+    var options = {
+          width: 800,
+          height: 500,
+          chart: {
+            title: 'Debiasing Test 1',
+            subtitle: 'GBDD'
+          },
+          hAxis: {title: 'X-Value'},
+          vAxis: {title: 'Y-Value'},
+          legend: 'none'
+        };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.charts.Scatter(document.getElementById('chart_div'));
+    chart.draw(data, google.charts.Scatter.convertOptions(options));
+  }
+  
+  
+  </script>
+  <!--<link href="style.css" rel="stylesheet">-->
 </head>
 <body>
     
@@ -42,6 +92,8 @@
       </div>
   </nav>
 
+  <div id="chart_div"></div>
+
   <div class = "container" >
     <!-- Radio Button Toolbar -->
     <div class="row mt-3 ">
@@ -60,22 +112,25 @@
         </div>
       </div>
       <div class="col float-right">
-        <h6>Choose a bias evaluation method:</h6>
+        <h6>Choose a debiasing method:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
-            <label class="btn btn-primary active"  id="allBtn">
-              <input type="radio" name="allBtn" autocomplete="off" checked> All
+            <label class="btn btn-primary active"  id="gbdd">
+              <input type="radio" name="gbdd" autocomplete="off" checked> GBDD
             </label>
-            <label class="btn btn-primary"  id="ectBtn">
-                <input type="radio" name="ectBtn" autocomplete="off"> ECT
+            <label class="btn btn-primary"  id="debiasNet">
+                <input type="radio" name="debiasNet" autocomplete="off"> DebiasNet
             </label>
-            <label class="btn btn-primary"  id="batBtn">
-                <input type="radio" name="batBtn" autocomplete="off"> BAT
+            <label class="btn btn-primary"  id="bam">
+                <input type="radio" name="bam" autocomplete="off"> BAM
             </label>
-            <label class="btn btn-primary"  id="weatBtn">
-                <input type="radio" name="weatBtn" autocomplete="off"> WEAT
+            <label class="btn btn-primary"  id="gbddxbam">
+                <input type="radio" name="gbddxbam" autocomplete="off"> GBDD°BAM
             </label>
-            <label class="btn btn-primary"  id="kmeansBtn">
-              <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+            <label class="btn btn-primary"  id="bamxgbdd">
+              <input type="radio" name="bamxgbdd" autocomplete="off"> BAM°GBDD
+            </label>
+            <label class="btn btn-primary"  id="gbddxdn">
+              <input type="radio" name="gbddxdn" autocomplete="off"> GBDD°DebiasNet
             </label>
           </div>
         </div>
@@ -96,7 +151,7 @@
       <tbody id="table_1">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set1_Evaluate" width="25%"> Debias </button> 
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set1_Debias" width="25%"> Debias </button> 
     <div class="card bg-dark text-white mb-2" id="card1" hidden>
       <div class="card-body" id="card_words_response"> 
       </div> 
@@ -114,7 +169,7 @@
       <tbody id="table_2">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set2_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set2_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card2" hidden>
       <div class="card-body" id="card_words_response2">
       </div>
@@ -132,7 +187,7 @@
       <tbody id="table_3">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set3_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set3_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card3" hidden>
       <div class="card-body" id="card_words_response3">
       </div>
@@ -150,7 +205,7 @@
       <tbody id="table_4">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set4_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set4_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card4" hidden>
       <div class="card-body" id="card_words_response4">
       </div>
@@ -168,7 +223,7 @@
       <tbody id="table_5">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set5_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set5_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card5" hidden>
       <div class="card-body" id="card_words_response5">
       </div>
@@ -186,7 +241,7 @@
       <tbody id="table_6">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set6_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set6_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card6" hidden>
       <div class="card-body" id="card_words_response6">
       </div>
@@ -204,7 +259,7 @@
       <tbody id="table_7">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set7_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set7_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card7" hidden>
       <div class="card-body" id="card_words_response7">
       </div>
@@ -222,7 +277,7 @@
       <tbody id="table_8">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set8_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set8_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card8" hidden>
       <div class="card-body" id="card_words_response8">
       </div>
@@ -240,7 +295,7 @@
       <tbody id="table_9">
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set9_Evaluate" width="25%"> Debias </button>
+    <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set9_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card9" hidden>
       <div class="card-body" id="card_words_response9">
       </div>
