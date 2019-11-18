@@ -135,7 +135,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
       .then((data) => {
         let output;
         switch (evaluationMethodEnum) {
-          case 'allBtn':
+          case 'all':
             output += `
               <h5 class="card-title mb-3">Evaluation results: </h5>
               <table class="table table-borderless table-dark">
@@ -176,7 +176,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
               </table>       
             `;
             break;
-          case 'ectBtn':
+          case 'ect':
               output += `
               <h5 class="card-title">ECT Results</h5>
               <table class="table table-borderless table-dark">
@@ -201,7 +201,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
               </table>
               `;
             break;
-          case 'batBtn':
+          case 'bat':
               output += `
               <h5 class="card-title">BAT Results</h5>
               <table class="table table-borderless table-dark">
@@ -214,7 +214,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
               </table>  
             `;
             break;
-          case 'weatBtn':
+          case 'weat':
               output += `
               <h5 class="card-title">WEAT Results</h5>
               <table class="table table-borderless table-dark">
@@ -231,7 +231,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
               </table>  
             `;
             break;
-          case 'kmeansBtn':
+          case 'kmeans':
               output += `
               <h5 class="card-title">KMeans Results</h5>
               <table class="table table-borderless table-dark">

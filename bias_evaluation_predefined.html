@@ -49,33 +49,36 @@
     <div class="col float-left">
       <h6>Choose a word embedding model:</h6>
       <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
-        <label class="btn btn-primary active" id="fasttextBtn">
+        <label class="btn btn-primary active" id="fasttext">
           <input type="radio" name="options" autocomplete="off" checked> Fasttext
         </label>
-        <label class="btn btn-primary" id="skipgramBtn">
+        <label class="btn btn-primary" id="skipgram">
           <input type="radio" name="options" autocomplete="off"> Skipgram
         </label>
-        <label class="btn btn-primary"  id="gloveBtn">
+        <label class="btn btn-primary"  id="glove">
           <input type="radio" name="options" autocomplete="off"> GloVe
+        </label>
+        <label class="btn btn-primary"  id="cbow">
+          <input type="radio" name="options" autocomplete="off"> CBOW
         </label>
       </div>
     </div>
     <div class="col float-right">
       <h6>Choose a bias evaluation method:</h6>
       <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
-          <label class="btn btn-primary active"  id="allBtn">
+          <label class="btn btn-primary active"  id="all">
             <input type="radio" name="allBtn" autocomplete="off" checked> All
           </label>
-          <label class="btn btn-primary"  id="ectBtn">
+          <label class="btn btn-primary"  id="ect">
               <input type="radio" name="ectBtn" autocomplete="off"> ECT
           </label>
-          <label class="btn btn-primary"  id="batBtn">
+          <label class="btn btn-primary"  id="bat">
               <input type="radio" name="batBtn" autocomplete="off"> BAT
           </label>
-          <label class="btn btn-primary"  id="weatBtn">
+          <label class="btn btn-primary"  id="weat">
               <input type="radio" name="weatBtn" autocomplete="off"> WEAT
           </label>
-          <label class="btn btn-primary"  id="kmeansBtn">
+          <label class="btn btn-primary"  id="kmeans">
             <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
           </label>
         </div>
