@@ -242,12 +242,12 @@ document.getElementById('Set7_Debias').addEventListener('click', function () { s
 document.getElementById('Set8_Debias').addEventListener('click', function () { sendRequest('card_words_response8', jsonFileContent8, 'download8', 'card8') });
 document.getElementById('Set9_Debias').addEventListener('click', function () { sendRequest('card_words_response9', jsonFileContent9, 'download9', 'card9') });
 
-document.getElementById('download1').addEventListener("click", function() { download('Set1_Debiasing.json', currentResult)})
-document.getElementById('download2').addEventListener("click", function() { download('Set2_Debiasing.json', currentResult)})
-document.getElementById('download3').addEventListener("click", function() { download('Set3_Debiasing.json', currentResult)})
-document.getElementById('download4').addEventListener("click", function() { download('Set4_Debiasing.json', currentResult)})
-document.getElementById('download5').addEventListener("click", function() { download('Set5_Debiasing.json', currentResult)})
-document.getElementById('download6').addEventListener("click", function() { download('Set6_Debiasing.json', currentResult)})
-document.getElementById('download7').addEventListener("click", function() { download('Set7_Debiasing.json', currentResult)})
-document.getElementById('download8').addEventListener("click", function() { download('Set8_Debiasing.json', currentResult)})
-document.getElementById('download9').addEventListener("click", function() { download('Set9_Debiasing.json', currentResult)})
+document.getElementById('download1').addEventListener("click", function() { download('Set1_Debiasing.json', currentResult)});
+document.getElementById('download2').addEventListener("click", function() { download('Set2_Debiasing.json', currentResult)});
+document.getElementById('download3').addEventListener("click", function() { download('Set3_Debiasing.json', currentResult)});
+document.getElementById('download4').addEventListener("click", function() { download('Set4_Debiasing.json', currentResult)});
+document.getElementById('download5').addEventListener("click", function() { download('Set5_Debiasing.json', currentResult)});
+document.getElementById('download6').addEventListener("click", function() { download('Set6_Debiasing.json', currentResult)});
+document.getElementById('download7').addEventListener("click", function() { download('Set7_Debiasing.json', currentResult)});
+document.getElementById('download8').addEventListener("click", function() { download('Set8_Debiasing.json', currentResult)});
+document.getElementById('download9').addEventListener("click", function() { download('Set9_Debiasing.json', currentResult)});
