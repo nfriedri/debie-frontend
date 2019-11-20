@@ -42,7 +42,7 @@ function getSelectionValues() {
     try {
       const response = fetch(url, {
         method: 'POST',
-        body: JSON.stringify(postJson),
+        body: postJson,
         headers: {
           'Content-Type': 'application/json'
         }
@@ -113,7 +113,7 @@ function getSelectionValues() {
     console.log('Downloaded')
   }
   
-  document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_words_response', 'download', 'card') });
+  document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });
 
   document.getElementById('download').addEventListener("click", function() { download('Set1_Debiasing.json', currentResult)});
   
