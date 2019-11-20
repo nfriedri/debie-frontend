@@ -42,7 +42,7 @@
       </div>
   </nav>
   
-  <div class = "container" >
+  <div class = "container my-2" >
     <!-- Radio Button Toolbar -->
     <div class="row mt-3 ">
       <div class="col float-left">
@@ -88,4 +88,59 @@
     </div>
   </div>
 
-  </body>
+
+  <!-- Direct word input -->
+  <div class="container">  
+    <div class="jumbotron bg-dark text-white px-md-5">
+      <h4 class="display-4">Enter your own test sets here</h4>
+      <p>Please enter the words seperated by whitespaces</p>
+      <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
+        <div class="input-group mt-4">       
+          <div class="input-group-prepend">
+              <span class="input-group-text">T1:</span>
+          </div>
+          <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
+        <div class="input-group mt-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">T2:</span>
+          </div>
+          <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <div class="input-group mt-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">A1:</span>
+          </div>
+          <textarea class="form-control" id="argument_set1" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <div class="input-group my-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">A2:</span>
+          </div>
+          <textarea class="form-control" id="argument_set2" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" id="Evaluate1">Evaluate Bias</button>
+        </p>
+    </div>
+  </div>
+  <div class="container mb-5">
+    <div class="card bg-dark text-white mb-2" id = "card" hidden>
+      <div class="card-body" id="card_response">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download" hidden></input>
+    </div>
+  </div>
+
+<!-- Upload a file -->
+  <div class="container">
+    <div class="jumbotron bg-dark text-white px-md-5">
+      <h4 class="display-4 mb-4">Upload a JSON file here</h4>
+      <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
+      <div class="custom-file mb-2">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+      </div>
+      <button class="btn btn-primary btn-lg" id='Evaluate2'>Evaluate Bias</button>
+    </div>
+  </div>
+<script src="js/evaluate_own.js"> </script>
+</body>

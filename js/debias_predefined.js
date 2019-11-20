@@ -108,35 +108,45 @@ function createCharts(content) {
   google.charts.setOnLoadCallback(drawChart(content));
 
   // Callback that creates and populates a data table
-  function drawChart(content) {
-    fetch('/res/resonse_test1.json')
-    .then(response => response.json())
-    .then((data) => {
-      dict = JSON.parse(data)
-      console.log(data)
-    });
-
-    // Create the data table.
+  function drawChart() {
+    var words_list_biased = [];
+    var x_values_biased = [];
+    var y_values_biased = [];
     var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Topping');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-      ['Mushrooms', 3],
-      ['Onions', 1],
-      ['Olives', 1],
-      ['Zucchini', 1],
-      ['Pepperoni', 2]
-    ]);
+  //  data.addColumn('string', 'Word');
+    data.addColumn('number', 'X-Value');
+    data.addColumn('number', 'Y-Value');
+    data.addColumn('string', 'Word')
+    fetch('/res/response_test1.json')
+    .then(response => response.json())
+    .then((content) => {
+      for (key in content.biased){
+        var vecs = content.biased[key].replace('[', '').replace(',', '').replace(']', '').split(' ');
+        data.addRow([parseFloat(vecs[0]), parseFloat(vecs[1]), key]);
+      }
+    });
+    
+    console.log(data);
+    
 
     // Set chart options
-    var options = {'title':'How Much Pizza I Ate Last Night',
-                   'width':400,
-                   'height':300};
+    var options = {
+          width: 800,
+          height: 500,
+          chart: {
+            title: 'Debiasing Test 1',
+            subtitle: 'GBDD'
+          },
+          hAxis: {title: 'X-Value'},
+          vAxis: {title: 'Y-Value'},
+          legend: 'none'
+        };
 
     // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
+    var chart = new google.charts.Scatter(document.getElementById('chart_div'));
+    chart.draw(data, google.charts.Scatter.convertOptions(options));
   }
+  
 }
 
 function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
