@@ -100,53 +100,39 @@ function startSpinner(object_id) {
   }
 }
 
-function createCharts(content) {
-  // Load the Visualization API and the corechart package.
-  google.charts.load('current', {'packages':['corechart']});
+function createChart(target_id, sourceData){
+  var label= 'Biased'
+  var wordList = jsonFileContent1.T1 + ' ' + jsonFileContent1.T2 + ' ' + jsonFileContent1.A1 + ' ' + jsonFileContent1.A2;
+  wordList = wordList.split(' ');
+  console.log(wordList);
+  var dataContent = {}
 
-  // Set a callback to run when the Google Visualization API is loaded.
-  google.charts.setOnLoadCallback(drawChart(content));
-
-  // Callback that creates and populates a data table
-  function drawChart() {
-    var words_list_biased = [];
-    var x_values_biased = [];
-    var y_values_biased = [];
-    var data = new google.visualization.DataTable();
-  //  data.addColumn('string', 'Word');
-    data.addColumn('number', 'X-Value');
-    data.addColumn('number', 'Y-Value');
-    data.addColumn('string', 'Word')
-    fetch('/res/response_test1.json')
-    .then(response => response.json())
-    .then((content) => {
-      for (key in content.biased){
-        var vecs = content.biased[key].replace('[', '').replace(',', '').replace(']', '').split(' ');
-        data.addRow([parseFloat(vecs[0]), parseFloat(vecs[1]), key]);
+  var scatterChart = new Chart(ctx, {
+    type: 'scatter',
+      data:{
+        labels: wordList,
+        datasets: [{
+          label: label,
+          data: dataContent
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+          type: 'linear',
+          position: 'bottom'
+        }]
+      },
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+          }
+        }
       }
-    });
-    
-    console.log(data);
-    
-
-    // Set chart options
-    var options = {
-          width: 800,
-          height: 500,
-          chart: {
-            title: 'Debiasing Test 1',
-            subtitle: 'GBDD'
-          },
-          hAxis: {title: 'X-Value'},
-          vAxis: {title: 'Y-Value'},
-          legend: 'none'
-        };
-
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.charts.Scatter(document.getElementById('chart_div'));
-    chart.draw(data, google.charts.Scatter.convertOptions(options));
-  }
-  
+    }
+  });
 }
 
 function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {

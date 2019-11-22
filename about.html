@@ -11,7 +11,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<!--<link href="style.css" rel="stylesheet">-->
+    <!--<link href="style.css" rel="stylesheet">-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -52,6 +53,58 @@
             </p>
         </div>
 
+    </div>
+
+    <div class="container">
+        <div class="jumbotron bg-dark text-white px-md-5">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="file"/>
+                    <input type="submit" value="Upload File" name="submit" id="submit"/>
+                  </form>
+                <script src="js/fileUpload.js"></script>
+        </div>
+    </div>
+
+    <div class="container" width="50" height="50">
+            <canvas id="myChart" width="50" height="50"></canvas>
+            <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var scatterChart = new Chart(ctx, {
+            type: 'scatter',
+                data: {
+                    labels: ['Alpha', 'Bravo', 'Charlie'],
+                    datasets: [{
+                        label: 'Scatter Dataset',
+                        data: [{
+                            x: 0.123332,
+                            y: 0.855432
+                        }, {
+                            x: -0.138524,
+                            y: 0.32255
+                        }, {
+                            x: 0.65543,
+                            y: -0.23443
+                        }]
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom'
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+                            }
+                        }
+                    }
+                }
+            });
+            </script>
     </div>
 
 </body>

@@ -11,57 +11,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-  // Load the Visualization API and the corechart package.
-  google.charts.load('current', {'packages':['scatter']});
-
-  // Set a callback to run when the Google Visualization API is loaded.
-  google.charts.setOnLoadCallback(drawChart);
-
-  // Callback that creates and populates a data table
- 
-  function drawChart() {
-    var words_list_biased = [];
-    var x_values_biased = [];
-    var y_values_biased = [];
-    var data = new google.visualization.DataTable();
-  //  data.addColumn('string', 'Word');
-    data.addColumn('number', 'X-Value');
-    data.addColumn('number', 'Y-Value');
-    data.addColumn('string', 'Word')
-    fetch('/res/response_test1.json')
-    .then(response => response.json())
-    .then((content) => {
-      for (key in content.biased){
-        var vecs = content.biased[key].replace('[', '').replace(',', '').replace(']', '').split(' ');
-        data.addRow([parseFloat(vecs[0]), parseFloat(vecs[1]), key]);
-      }
-    });
-    
-    console.log(data);
-    
-
-    // Set chart options
-    var options = {
-          width: 800,
-          height: 500,
-          chart: {
-            title: 'Debiasing Test 1',
-            subtitle: 'GBDD'
-          },
-          hAxis: {title: 'X-Value'},
-          vAxis: {title: 'Y-Value'},
-          legend: 'none'
-        };
-
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.charts.Scatter(document.getElementById('chart_div'));
-    chart.draw(data, google.charts.Scatter.convertOptions(options));
-  }
-  
-  
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <!--<link href="style.css" rel="stylesheet">-->
 </head>
 <body>
@@ -92,8 +42,6 @@
           </div>
       </div>
   </nav>
-
-  <div id="chart_div"></div>
 
   <div class = "container" >
     <!-- Radio Button Toolbar -->
@@ -157,7 +105,9 @@
     </table>
     <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set1_Debias" width="25%"> Debias </button> 
     <div class="card bg-dark text-white mb-2" id="card1" hidden>
-      <div class="card-body" id="card_words_response"> 
+      <div class="card-body" id="card_words_response">
+          <canvas id="chart_div1_bias"></canvas>
+          <canvas id="chart_div1_debiased"></canvas> 
       </div> 
       <input type="image" src="img/download.png" height="10%" width="10%" id="download1" hidden></input>
     </div>
@@ -176,6 +126,8 @@
     <button type="button" class="btn btn-primary btn-lg sticky-right my-2" id="Set2_Debias" width="25%"> Debias </button>
     <div class="card bg-dark text-white mb-2" id = "card2" hidden>
       <div class="card-body" id="card_words_response2">
+          <div id="chart_div2_bias"></div>
+          <div id="chart_div2_debiased"></div> 
       </div>
       <input type="image" src="img/download.png" height="10%" width="10%" id="download2" hidden></input>
     </div>
