@@ -1,37 +1,20 @@
+
+const inputFile = document.getElementById('inputFile');
+const btnUpload = document.getElementById('btnUpload');
+
 function uploadEmbeddingSpace(){
-    const form = document.querySelector('form');
-    console.log(form);
-    const url = 'http://127.0.0.1:5000/REST/own-embedding-space';
-    var formData = new FormData();
-    form.addEventListener('submit', e => {
-        e.preventDefault()
-        var file = document.querySelector('[type=file]').files;
-        console.log(file);
-        
-        formData.append('file', file);
-        console.log(formData);
-    });
-
-    try{
-        fetch(url, {
-            method: 'PUT',
-            body: formData,
-            mode: 'cors',
-            headers: {
-             'Content-Type': 'multipart/form-data',
-             'Accept': '*/*',
-             'Access-Control-Allow-Origin': '*',
-            }
-            }).then(response => {
-            console.log(response)
-            })
+    const formData = new FormData();
+    console.log(inputFile.files);
+    const file = inputFile.files[0];
+    formData.append("uploadFile", file);
+    for (const [key, value] of formData){
+        console.log(`Key: ${key}`);
+        console.log(`Value: ${value}`);
     }
-    catch(error){
-        console.log(error)
-    }
+    fetch("http://127.0.0.1:5000/REST/own-embedding-space", {
+        method: "post",
+        body: formData
+    }).catch(console.error);
 }
-document.getElementById("submit").addEventListener("click", function() { uploadEmbeddingSpace()});
 
-function uploadWordsAsJson(){}
-
-function uploadVectorsAsJson(){}
+btnUpload.addEventListener("click", function() { uploadEmbeddingSpace() });
