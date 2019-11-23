@@ -43,7 +43,7 @@
 </nav>
 
 
-<div class = "container" >
+<div class = "container my-2" >
   <!-- Radio Button Toolbar -->
   <div class="row mt-3 ">
     <div class="col float-left">
@@ -61,7 +61,24 @@
         <label class="btn btn-primary"  id="cbow">
           <input type="radio" name="options" autocomplete="off"> CBOW
         </label>
+        <label class="btn btn-primary"  id="uploadSpace">
+            <input type="radio" name="options" autocomplete="off"> Upload Space    
+        </label>
       </div>
+      <script>
+      function hideUpload(){
+        document.getElementById("upload").setAttribute("hidden", true);
+      }
+      function showUpload(){
+        document.getElementById("upload").removeAttribute("hidden");
+      }
+      document.getElementById("uploadSpace").addEventListener("click", function() {showUpload()});
+      document.getElementById("fasttext").addEventListener("click", function() {hideUpload()});
+      document.getElementById("skipgram").addEventListener("click", function() {hideUpload()});
+      document.getElementById("glove").addEventListener("click", function() {hideUpload()});
+      document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
+      </script>
+      
     </div>
     <div class="col float-right">
       <h6>Choose a bias evaluation method:</h6>
@@ -80,9 +97,31 @@
           </label>
           <label class="btn btn-primary"  id="kmeans">
             <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
-          </label>
+          </label>         
         </div>
       </div>
+  </div>
+
+  <!-- Upload embeddingspace -->
+  <div class="card bg-dark text-white mb-2" id="upload" hidden>
+    <div class="card-body">
+    <h5 class="display-5 mb-4">Upload a embedding space here</h5>
+    <div class="custom-file mb-2">
+      <input type="file" class="custom-file-input" id="inputFile">
+      <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
+      <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
+      <script src="js/fileUpload.js"></script>
+      <p id="uploadState" hidden></p>
+      
+      <div class="input-group mb-3" id="inputFileView" hidden>
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Selected file:</span>
+        </div>
+        <input type="text" class="form-control" aria-describedby="basic-addon1" id="inputFileInput">
+      </div>
+    </div>
+    
+  
   </div>
 </div>
 

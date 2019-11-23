@@ -89,6 +89,16 @@ function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
+  if (vectorTypeEnum == "uploadSpace"){
+    fileInputName = document.getElementById("inputFileInput")
+    if (fileInputName.value != undefined){
+      vectorTypeEnum = fileInputName.value
+    }
+    else{
+      vectorTypeEnum = fileInputName.getAttribute("placeholder");
+    }
+  }
+  
   evaluationMethodEnum = activeEvalMethod.id;
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
