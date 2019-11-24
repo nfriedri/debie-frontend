@@ -30,7 +30,7 @@
                 <a class="nav-link" href="about.html">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="bias_evaluation_home.html">BiasEvaluation</a>
+                <a class="nav-link" href="bias_evaluation.html">BiasEvaluation</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="debiasing.html">Debiasing</a>
@@ -40,93 +40,90 @@
 </div>
 </nav>
 
-<div class="container">
-    <div class="jumbotron bg-dark text-white px-md-5">
-        <h1 class="display-4">Welcome to DEBIE</h1>
-        <p class="lead">This webapplication has been created in terms of my bachelor thesis. 
-            In this app you can get bias evaluations for word embeddings and you can even debias your word embeddings 
-            with different debiasing methods</p>
+<div class="jumbotron bg-dark text-white">
+    <div class="container">
+      <h1 class="display-3">Welcome to DEBIE</h1>
+      <p class="lead">This webapplication has been created in terms of my bachelor thesis. 
+        In this app you can get bias evaluations for word embeddings and you can even debias your word embeddings 
+        with different debiasing methods</p>
         <hr class="my-4">
         <p>For further details about word embeddings, implicit and explicit biases, different bias evaluation and debiasing methods, please click on 'About' in the navigation bar</p>
         <p class="lead">
-        <a class="btn btn-primary btn-lg" href="about.html" role="button">Start DEBIE</a>
-        </p>
+      <p><a class="btn btn-primary btn-lg" href="about.html" role="button">Start DEBIE &raquo;</a></p>
     </div>
-</div>
+  </div>
 
-<div class="container">
+<div class="container-fluid">
     <div class="card-deck">
-        <div class="card bg-dark text-white" style="width: 36rem;">
-            <div class="card-body">
-                <h5 class="card-title">Bias Evaluation</h5>
-                <p class="card-text">Click here to start evaluating your own test sets with common bias evaluation tests</p>
-                <a class="btn btn-primary btn-lg btn-block" href="bias_evaluation.html" role="button">Bias Evaluation</a>
-            </div>
-        </div>
-        <div class="card bg-dark text-white" style="width: 36rem;">
-            <div class="card-body">
-                <h5 class="card-title">Debiasing</h5>
-                <p class="card-text">Click here to start debiasing your own test sets with common debiasing methods</p>
-                <a class="btn btn-primary btn-lg btn-block" href="debiasing.html" role="button">Debiasing</a>
-            </div>
-        </div>
-    </div>    
-</div>
-
-<div class="container">
-    <div class="card-deck my-2 mb-4">
         <div class="card bg-dark text-white" style="width: 36rem;">
             <div class="card-body">
                 <h5 class="card-title">Word2Vec</h5>
                 <p class="card-text">Click here to retrieve the vectors to your words</p>
-                <a class="btn btn-primary btn-lg btn-block" href="word2vec.html" role="button">Word2Vector</a>
+                <a class="btn btn-primary btn-lg" href="word2vec.html" role="button">Word2Vector</a>
             </div>
         </div>
         <div class="card bg-dark text-white" style="width: 36rem;">
             <div class="card-body">
-                <h5 class="card-title">Empty</h5>
-                <p class="card-text">Hier könnte Ihre Werbung stehen</p>
-                <a class="btn btn-primary btn-lg btn-block" href="#" role="button">Ads...</a>
+                <h5 class="card-title">Bias Evaluation</h5>
+                <p class="card-text">Click here to start evaluating your own test sets with common bias evaluation tests</p>
+                <a class="btn btn-primary btn-lg" href="bias_evaluation.html" role="button">Bias Evaluation</a>
+            </div>
+        </div>
+        
+    </div>
+    <div class="card-deck my-4">
+        <div class="card bg-dark text-white" style="width: 36rem;">
+            <div class="card-body">
+                <h5 class="card-title">Debiasing</h5>
+                <p class="card-text">Click here to start debiasing your own test sets with common debiasing methods</p>
+                <a class="btn btn-primary btn-lg" href="debiasing.html" role="button">Debiasing</a>
+            </div>
+        </div>
+        <div class="card bg-dark text-white" style="width: 36rem;">
+            <div class="card-body">
+                <h5 class="card-title">Full Programm</h5>
+                <p class="card-text">Click here to start get a evaluation, afterwards debiasing and then again an evaluation</p>
+                <a class="btn btn-primary btn-lg" href="debiasing.html" role="button">Debiasing</a>
             </div>
         </div>
     </div>    
 </div>
 
-<!--- Image Slider -->
+<footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+        <img src="img/logo.png" width="128" height="64">
+        <img src="img/logo2.png" width="32" height="32"> 
+        <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
+    </div>
+    <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Random feature</a></li>
+            <li><a class="text-muted" href="#">Stuff for developers</a></li>
+            <li><a class="text-muted" href="#">Another one</a></li>
+            <li><a class="text-muted" href="#">Last time</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Related Work</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">General Framework</a></li>
+            <li><a class="text-muted" href="#">Paper #2</a></li>
+            <li><a class="text-muted" href="#">Paper #3</a></li>
+            <li><a class="text-muted" href="#">Vector sources</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Impressum</h5>
+        <ul class="list-unstyled text-small">
+            <p>Data and Web Science Group</p>
+            <p>University of Mannheim</p>
+        </ul>
+    </div>
+    </div>
+</footer>
 
-
-<!--- Jumbotron -->
-
-
-<!--- Welcome Section -->
-
-
-<!--- Three Column Section -->
-
-
-<!--- Two Column Section -->
-
-
-<!--- Fixed background -->
-
-
-<!--- Emoji Section -->
-
-  
-<!--- Meet the team -->
-
-
-<!--- Cards -->
-
-
-<!--- Two Column Section -->
-
-
-<!--- Connect -->
-
-
-<!--- Footer -->
-
-
+</body>
 
 

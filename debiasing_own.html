@@ -42,7 +42,7 @@
       </div>
   </nav>
   
-  <div class = "container my-2" >
+  <div class = "container mt-2" >
     <!-- Radio Button Toolbar -->
     <div class="row mt-3 ">
       <div class="col float-left">
@@ -60,7 +60,23 @@
           <label class="btn btn-primary"  id="cbow">
             <input type="radio" name="options" autocomplete="off"> CBOW
           </label>
+          <label class="btn btn-primary"  id="uploadSpace">
+            <input type="radio" name="options" autocomplete="off"> Upload Space    
+          </label>
         </div>
+        <script>
+        function hideUpload(){
+          document.getElementById("upload").setAttribute("hidden", true);
+        }
+        function showUpload(){
+          document.getElementById("upload").removeAttribute("hidden");
+        }
+        document.getElementById("uploadSpace").addEventListener("click", function() {showUpload()});
+        document.getElementById("fasttext").addEventListener("click", function() {hideUpload()});
+        document.getElementById("skipgram").addEventListener("click", function() {hideUpload()});
+        document.getElementById("glove").addEventListener("click", function() {hideUpload()});
+        document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
+        </script>
       </div>
       <div class="col float-right">
         <h6>Choose a debiasing method:</h6>
@@ -68,9 +84,11 @@
             <label class="btn btn-primary active"  id="gbdd">
               <input type="radio" name="gbdd" autocomplete="off" checked> GBDD
             </label>
+            <!--Remove when debiasNet is implemented:
             <label class="btn btn-primary"  id="debiasNet">
                 <input type="radio" name="debiasNet" autocomplete="off"> DebiasNet
             </label>
+            -->
             <label class="btn btn-primary"  id="bam">
                 <input type="radio" name="bam" autocomplete="off"> BAM
             </label>
@@ -80,17 +98,38 @@
             <label class="btn btn-primary"  id="bamxgbdd">
               <input type="radio" name="bamxgbdd" autocomplete="off"> BAM°GBDD
             </label>
+            <!--Remove when debiasNet is implemented:
             <label class="btn btn-primary"  id="gbddxdn">
               <input type="radio" name="gbddxdn" autocomplete="off"> GBDD°DebiasNet
             </label>
+            -->
           </div>
         </div>
+    </div>
+    <!-- Upload embeddingspace -->
+    <div class="card bg-dark text-white mb-2" id="upload" hidden>
+      <div class="card-body">
+      <h5 class="display-5 mb-4">Upload a embedding space here</h5>
+      <div class="custom-file mb-2">
+        <input type="file" class="custom-file-input" id="inputFile">
+        <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
+        <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
+        <script src="js/fileUpload.js"></script>
+        <p id="uploadState" hidden></p>
+        
+        <div class="input-group mb-3" id="inputFileView" hidden>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Selected file:</span>
+          </div>
+          <input type="text" class="form-control" aria-describedby="basic-addon1" id="inputFileInput">
+        </div>
+      </div>
     </div>
   </div>
 
 
   <!-- Direct word input -->
-  <div class="container">  
+  <div class="container mt-3">  
     <div class="jumbotron bg-dark text-white px-md-5">
       <h4 class="display-4">Enter your own test sets here</h4>
       <p>Please enter the words seperated by whitespaces</p>
@@ -143,4 +182,39 @@
     </div>
   </div>
 <script src="js/debias_own.js"> </script>
+
+<footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+        <img src="img/logo.png" width="128" height="64">
+        <img src="img/logo2.png" width="32" height="32"> 
+        <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
+    </div>
+    <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Random feature</a></li>
+            <li><a class="text-muted" href="#">Stuff for developers</a></li>
+            <li><a class="text-muted" href="#">Another one</a></li>
+            <li><a class="text-muted" href="#">Last time</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Related Work</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">General Framework</a></li>
+            <li><a class="text-muted" href="#">Paper #2</a></li>
+            <li><a class="text-muted" href="#">Paper #3</a></li>
+            <li><a class="text-muted" href="#">Vector sources</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Impressum</h5>
+        <ul class="list-unstyled text-small">
+            <p>Data and Web Science Group</p>
+            <p>University of Mannheim</p>
+        </ul>
+    </div>
+    </div>
+</footer>
 </body>
