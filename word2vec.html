@@ -40,20 +40,50 @@
     </div>
 </nav>
 
+<!-- Selection bars -->
+<div class = "container my-2" >
+    <!-- Radio Button Toolbar -->
+    <div class="row mt-3 ">
+      <div class="col float-left">
+        <h6>Choose a word embedding model:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
+          <label class="btn btn-primary active" id="fasttext">
+            <input type="radio" name="options" autocomplete="off" checked> Fasttext
+          </label>
+          <label class="btn btn-primary" id="skipgram">
+            <input type="radio" name="options" autocomplete="off"> Skipgram
+          </label>
+          <label class="btn btn-primary"  id="glove">
+            <input type="radio" name="options" autocomplete="off"> GloVe
+          </label>
+          <label class="btn btn-primary"  id="cbow">
+            <input type="radio" name="options" autocomplete="off"> CBOW
+          </label>
+          <label class="btn btn-primary"  id="uploadSpace">
+              <input type="radio" name="options" autocomplete="off"> Upload Space    
+          </label>
+        </div>
+        <script>
+        function hideUpload(){
+          document.getElementById("upload").setAttribute("hidden", true);
+        }
+        function showUpload(){
+          document.getElementById("upload").removeAttribute("hidden");
+        }
+        document.getElementById("uploadSpace").addEventListener("click", function() {showUpload()});
+        document.getElementById("fasttext").addEventListener("click", function() {hideUpload()});
+        document.getElementById("skipgram").addEventListener("click", function() {hideUpload()});
+        document.getElementById("glove").addEventListener("click", function() {hideUpload()});
+        document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
+        </script>
+        
+      </div>
+    </div>
+
 <!-- Send POST request to API -->
 
 <!-- Send one word to API and receive its vector representation -->
 <div class = "container my-4">
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Choose word embedding algorithm
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" type="button">FastText</button>
-            <button class="dropdown-item" type="button">SkipGram</button>
-            <button class="dropdown-item" type="button">CBOW</button>
-        </div>
-    </div>
     <h4>Enter here your word:</h4>
     <div class="input-group">       
         <div class="input-group-prepend">

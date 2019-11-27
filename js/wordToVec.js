@@ -1,19 +1,25 @@
 document.getElementById('SEND_word').addEventListener('click', getWordVecRepresentation);
-document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation);
+//document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation);
+
+var vectorTypeEnum = 'fasttext';
+
+function getSelectionValues() {
+  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
+  vectorTypeEnum = activeVectorType.id;
+  console.log("Current Values: " + vectorTypeEnum);
+}
 
 function getWordVecRepresentation() {
   word = document.getElementById('word2Send').value;
   console.log(word);
-  const url = 'http://127.0.0.1:5000/REST/POST_word';
-  dataJSON = { data: word };
+  getSelectionValues
+  var url = 'http://127.0.0.1:5000/REST/retrieve_single_vector2';
+  url += '?space=' + vectorTypeEnum + '&word=' + word;
+  console.log(url);
 
   try {
     const response = fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(dataJSON),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        method: 'GET',
       })
       .then((res) => res.json())
       .then((data) => {
@@ -71,3 +77,5 @@ function getWordListVecRepresentation() {
     console.error();
   }
 }
+
+
