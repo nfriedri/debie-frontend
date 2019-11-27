@@ -15,6 +15,7 @@ function startSpinner(object_id) {
       `
   try {
     document.getElementById(object_id).innerHTML = spinner;
+  } catch (error) {
     console.error();
   }
 }
