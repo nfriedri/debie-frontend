@@ -28,7 +28,7 @@ function uploadEmbeddingSpace(){
             document.getElementById("uploadState").removeAttribute('hidden');
             document.getElementById("uploadState").innerHTML = data['message'];
         })
-        document.getElementById("inputFileView").removeAttribute('hidden');
+        //document.getElementById("inputFileView").removeAttribute('hidden');
         document.getElementById("inputFileInput").setAttribute("placeholder", file.name);
     }
     catch(error){

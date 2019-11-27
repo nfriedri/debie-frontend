@@ -79,37 +79,97 @@
         
       </div>
     </div>
+  <!-- Upload embeddingspace -->
+    <div class="card bg-dark text-white mb-2" id="upload" hidden>
+      <div class="card-body">
+      <h5 class="display-5 mb-4">Upload a embedding space here</h5>
+      <div class="custom-file mb-2">
+        <input type="file" class="custom-file-input" id="inputFile">
+        <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
+        <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
+        <script src="js/fileUpload.js"></script>
+        <p id="uploadState" hidden></p>
+        
+        <div class="input-group mb-3" id="inputFileView">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Selected file:</span>
+          </div>
+          <input type="text" class="form-control" aria-describedby="basic-addon1" id="inputFileInput">
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+  
 
 <!-- Send POST request to API -->
 
 <!-- Send one word to API and receive its vector representation -->
-<div class = "container my-4">
+  <div class = "container my-5">
     <h4>Enter here your word:</h4>
     <div class="input-group">       
-        <div class="input-group-prepend">
-            <span class="input-group-text">Word:</span>
-        </div>
-        <textarea class="form-control" id="word2Send" aria-label="With textarea"></textarea>
+      <div class="input-group-prepend">
+        <span class="input-group-text">Word:</span>
+      </div>
+      <textarea class="form-control" id="word2Send" aria-label="With textarea"></textarea>
     </div>
     <button type="button" class="btn btn-primary btn-lg btn-block" id="SEND_word"> SEND </button>
-    <script src="js/wordToVec.js"></script>
-    <div class="card" id="card_word_response">
-            <div class="card-body"></div>
+    <div class="card bg-dark text-white my-2" id="card1" hidden>
     </div>
-</div>
+  </div>
 
 <!-- Send a list of word seperated by commas (,) and receive their vector representation-->
-<div class = "container my-4">
-    <h4>Enter here your words as comma seperated values:</h4>
-    <div class="input-group">       
-        <div class="input-group-prepend">
-            <span class="input-group-text">Words:</span>
-        </div>
-        <textarea class="form-control" id="words2Send" aria-label="With textarea"></textarea>
+  <div class = "container my-5">
+      <h4>Enter here your words as comma seperated values:</h4>
+      <div class="input-group">       
+          <div class="input-group-prepend">
+              <span class="input-group-text">Words:</span>
+          </div>
+          <textarea class="form-control" id="words2Send" aria-label="With textarea"></textarea>
+      </div>
+      <button type="button" class="btn btn-primary btn-lg btn-block" id="SEND_words"> SEND </button>
+      
+      <div class="card bg-dark text-white my-2" id="card2" hidden>
+      </div>
+  </div>
+
+  <footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+        <img src="img/logo.png" width="128" height="64">
+        <img src="img/logo2.png" width="32" height="32"> 
+        <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
     </div>
-    <button type="button" class="btn btn-primary btn-lg btn-block" id="SEND_words"> SEND </button>
-    <script src="js/wordToVec.js"></script>
-    <div class="card" id="card_words_response">
-            <div class="card-body"></div>
+    <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Random feature</a></li>
+            <li><a class="text-muted" href="#">Stuff for developers</a></li>
+            <li><a class="text-muted" href="#">Another one</a></li>
+            <li><a class="text-muted" href="#">Last time</a></li>
+        </ul>
     </div>
-</div>
+    <div class="col-6 col-md">
+        <h5>Related Work</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">General Framework</a></li>
+            <li><a class="text-muted" href="#">Paper #2</a></li>
+            <li><a class="text-muted" href="#">Paper #3</a></li>
+            <li><a class="text-muted" href="#">Vector sources</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Impressum</h5>
+        <ul class="list-unstyled text-small">
+            <p>Data and Web Science Group</p>
+            <p>University of Mannheim</p>
+        </ul>
+    </div>
+    </div>
+  </footer>
+
+  <script src="js/wordToVec.js"></script>
+
+</body>

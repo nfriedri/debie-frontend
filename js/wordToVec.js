@@ -1,7 +1,23 @@
 document.getElementById('SEND_word').addEventListener('click', getWordVecRepresentation);
 //document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation);
 
+console.log(document.getElementById('response'));
+
 var vectorTypeEnum = 'fasttext';
+
+function startSpinner(object_id) {
+  spinner = `
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      `
+  try {
+    document.getElementById(object_id).innerHTML = spinner;
+    console.error();
+  }
+}
 
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
@@ -13,9 +29,11 @@ function getWordVecRepresentation() {
   word = document.getElementById('word2Send').value;
   console.log(word);
   getSelectionValues
-  var url = 'http://127.0.0.1:5000/REST/retrieve_single_vector2';
+  var url = 'http://127.0.0.1:5000/REST/retrieve_single_vector';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
+  document.getElementById('card1').removeAttribute('hidden');
+  startSpinner('card1');
 
   try {
     const response = fetch(url, {
@@ -23,17 +41,16 @@ function getWordVecRepresentation() {
       })
       .then((res) => res.json())
       .then((data) => {
-        let output = '<h2>Test Result</h2>';
+        let output = '';
         output += `
-            <ul>
-                <a>Word: ${data.word}</a>
-                <br>
-                <a>Vector:</a>
-                <br>
-                <a>${data.vector}</a>
-            </ul>  
+          <div class="card-body" id="response"></div>
+            <h5 class="card-title px-2">Result:</h5>
+            <p class="card-text px-2">Word: ${data.word}</p>
+            <p class="card-text px-2 pb-2">Vector:<br>${data.vector}</p>
+          </div>  
             `;
-        document.getElementById('card_word_response').innerHTML = output;
+        console.log(output);
+        document.getElementById('card1').innerHTML = output;
       })
   } catch (error) {
     console.error();
@@ -45,6 +62,8 @@ function getWordListVecRepresentation() {
   console.log(words);
   const url = 'http://127.0.0.1:5000/REST/POST_words';
   dataJSON = { data: words };
+  document.getElementById('card2').removeAttribute('hidden');
+  startSpinner('card2');
 
   try {
     const response = fetch(url, {
@@ -57,21 +76,20 @@ function getWordListVecRepresentation() {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
-        let output = '<h2>Test Result</h2>';
+        let output = `<div class="card-body" id="response2"></div>
+                      <h5 class="card-title px-2">Result:</h5>`;
         words = data.word;
         vectors = data.vector;
         // console.log(typeof data)
         // console.log(typeof data.vectors)
         for (var i = 0; i < words.length; i++) {
           output += `
-             <ul>
-             <a>Word: ${words[i]}</a>
-              <br>
-              <a>Vector: ${vectors[i]}</a>
-            </ul> 
+          <p class="card-text px-2">Word: ${words[i]}</p>
+          <p class="card-text px-2 pb-2">Vector:<br>${vectors[i]}</p>
+          <br>
           `;
         }
-        document.getElementById('card_words_response').innerHTML = output;
+        document.getElementById('card2').innerHTML = output;
       })
   } catch (error) {
     console.error();
