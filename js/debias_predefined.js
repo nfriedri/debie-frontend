@@ -155,7 +155,12 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
     })
       .then((res) => res.json())
       .then((data) => {
-        let output;
+        let output = '';
+        if (data['message'] != undefined){
+          output = data['message'];
+          document.getElementById(target_id).innerHTML = output;
+        }
+        else{
         switch (debiasMethodEnum) {
           case 'gbdd':
             output += `
@@ -195,6 +200,7 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
         document.getElementById(target_id).innerHTML = output;
         //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
+      }
       })
   } catch (error) {
     console.error();

@@ -143,7 +143,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
     })
       .then((res) => res.json())
       .then((data) => {
-        let output;
+        let output = '';
         switch (evaluationMethodEnum) {
           case 'all':
             output += `

@@ -51,7 +51,7 @@ function getWordListVecRepresentation() {
       .then((data) => {
         console.log(postJson);
         console.log(data)
-        let output;
+        let output = '';
         switch (evaluationMethodEnum) {
           case 'allBtn':
             output += `

@@ -50,7 +50,7 @@ function getSelectionValues() {
         .then((res) => res.json())
         .then((data) => {
         console.log(postJson);
-          let output;
+          let output = '';
           switch (debiasMethodEnum) {
             case 'gbdd':
               output += `
