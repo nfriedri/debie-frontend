@@ -47,11 +47,22 @@ function getWordListVecRepresentation() {
           'Content-Type': 'application/json'
         }
       })
-      .then((res) => res.json())
+      //.then((res) => res.json())
+      .then((res) => {
+        console.log(res.status);
+        if (res.status == 400){
+          console.log('Inside Loop');
+          console.log((res.json));
+          output = JSON.stringify(res.json);
+          document.getElementById('card_response').innerHTML = output;
+          document.getElementById('download').removeAttribute("hidden");
+        }
+      })
       .then((data) => {
         console.log(postJson);
-        console.log(data)
+        console.log(data);
         let output = '';
+        //else{
         switch (evaluationMethodEnum) {
           case 'allBtn':
             output += `
@@ -159,6 +170,7 @@ function getWordListVecRepresentation() {
             `;
             break;
         }
+        //}
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
         `;

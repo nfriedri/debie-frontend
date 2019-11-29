@@ -42,7 +42,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="jumbotron bg-dark text-white px-md-5">
             <h1 class="display-4">DEBIE</h1>
             <p class="lead">With the help of this webapplication it is possible to evalute bias in word embeddings and to remove the bias from them (debias). 
@@ -52,18 +52,81 @@
             <p class="lead">
             </p>
         </div>
+    </div>
+    <div class="container-fluid">
+            <div class="jumbotron">
+                <h1 class="display-4">Embedding spaces</h1>
+                <hr class="my-4">
+                <p class="lead">Usage</p> 
+                <p>In the web application DEBIE you can choose between 4 different embedding spaces or simply upload your own embedding space. Fastened to the application
+                    are 4 databases containing vectors retrieved through using fasttext, skipgram, glove and cbow on an word corpus of wikipedia. All vectors have a dimension of 300.
+                    By uploading your own embedding space, please pay attention that all vectors have the same dimensionality. If you want to start multiple requests with your own
+                    embedding space please do not upload your embedding space multiple times instead just copy the name of the database and insert it into the field on top "Selected File".
+                    Alternatively you can access the RESTful API of this application via a tool like postman. You can find a short "how-to" for the API under <a id="goToAPI">"RESTful API"</a> on this site.
+                </p>
+          </div>
+        </div>
 
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">Bias Evaluation</h1>
+            <hr class="my-4">
+            <p class="lead">Usage</p> 
+            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
+            <p class="lead">Predefined test and attribute sets</p>
+            <p>By retrieving bias evaluations from the predefined sets simply choose the wanted evaluation methods and the embedding space you want in the selection bar on top of 
+                the site and click on 'Evaluate'. You can choose between the embedding coherence test (ect), the bias analogy test (bat), the word embedding association test (weat) 
+                for explicit bias measuring and the kmeans clustering algorithm for measuring the implicit bias. Alternatively you can simply let the app calculate all named measurements, 
+                but please be aware that this can take a certain amount of time.
+            </p>
+            <p class="lead">Own defined test and attribute sets</p>
+            <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
+                whitespaces into the corresponding fields. Field T1 is for the first target set, field T2 for the second target set, field A1 for the first attribute set and
+                field A2 is for the second attribute set. Choose the wanted evaluations and embedding spaces in the selection bar on top and you are ready to go for 
+                evaluating your self defined test.
+            </p>
+      </div>
     </div>
 
-    <div class="container">
-        <div class="jumbotron bg-dark text-white px-md-5">
-                <h4> Upload files with FETCH API</h4>
-                <input type="file" id="inputFile">
-                <button id="btnUpload"> Upload Files </button>
+    <div class="container-fluid">
+            <div class="jumbotron">
+                <h1 class="display-4">Debias</h1>
+                <hr class="my-4">
+                <p class="lead">Usage</p> 
+                <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
+                <p class="lead">Predefined test and attribute sets</p>
+                <p>By retrieving bias evaluations from the predefined sets simply choose the wanted evaluation methods and the embedding space you want in the selection bar on top of 
+                    the site and click on 'Evaluate'. You can choose between the embedding coherence test (ect), the bias analogy test (bat), the word embedding association test (weat) 
+                    for explicit bias measuring and the kmeans clustering algorithm for measuring the implicit bias. Alternatively you can simply let the app calculate all named measurements, 
+                    but please be aware that this can take a certain amount of time.
+                </p>
+                <p class="lead">Own defined test and attribute sets</p>
+                <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
+                    whitespaces into the corresponding fields. Field T1 is for the first target set, field T2 for the second target set, field A1 for the first attribute set and
+                    field A2 is for the second attribute set. Choose the wanted evaluations and embedding spaces in the selection bar on top and you are ready to go for 
+                    evaluating your self defined test.
+                </p>
+          </div>
+        </div>
 
-                <script src="js/fileUpload.js"></script>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">JSON Formats</h1>
+            <hr class="my-4">
+            <p class="lead">Usage</p> 
+            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">RESTful API</h1>
+            <hr class="my-4">
+            <p class="lead">Usage</p> 
+            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
         </div>
     </div>
+
 
     <div class="container" width="50" height="50">
             <canvas id="myChart" width="50" height="50"></canvas>
