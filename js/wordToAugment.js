@@ -1,5 +1,5 @@
-document.getElementById('SEND_word').addEventListener('click', getWordVecRepresentation());
-document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation());
+document.getElementById('SEND_word').addEventListener('click', getWordAugments());
+document.getElementById('SEND_words').addEventListener('click', getWordAugments10k());
 
 var vectorTypeEnum = 'fasttext';
 
@@ -24,11 +24,11 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum);
 }
 
-function getWordVecRepresentation() {
-  word = document.getElementById('word2Send').value;
+function getWordAugments() {
+  word = document.getElementById('augmentSend').value;
   console.log(word);
   getSelectionValues
-  var url = 'http://127.0.0.1:5000/REST/vectors/single';
+  var url = 'http://127.0.0.1:5000/REST/augmentation/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
@@ -55,8 +55,8 @@ function getWordVecRepresentation() {
   }
 }
 
-function getWordListVecRepresentation() {
-  var words = document.getElementById('words2Send').value;var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
+function getWordAugments10k() {
+  var words = document.getElementById('augmentSend10k').value;var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
   url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
