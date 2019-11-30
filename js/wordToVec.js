@@ -1,7 +1,5 @@
 document.getElementById('SEND_word').addEventListener('click', getWordVecRepresentation);
-//document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation);
-
-console.log(document.getElementById('response'));
+document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation);
 
 var vectorTypeEnum = 'fasttext';
 
@@ -30,12 +28,11 @@ function getWordVecRepresentation() {
   word = document.getElementById('word2Send').value;
   console.log(word);
   getSelectionValues
-  var url = 'http://127.0.0.1:5000/REST/retrieve_single_vector';
+  var url = 'http://127.0.0.1:5000/REST/vectors/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
   startSpinner('card1');
-
   try {
     const response = fetch(url, {
         method: 'GET',
@@ -61,7 +58,8 @@ function getWordVecRepresentation() {
 function getWordListVecRepresentation() {
   var words = document.getElementById('words2Send').value;
   console.log(words);
-  const url = 'http://127.0.0.1:5000/REST/POST_words';
+  var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
+  url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
   startSpinner('card2');
@@ -78,7 +76,7 @@ function getWordListVecRepresentation() {
       .then((data) => {
         // console.log(data);
         let output = `<div class="card-body" id="response2"></div>
-                      <h5 class="card-title px-2">Result:</h5>`;
+                      <h5 class="card-title px-2">Result:</h5><br>`;
         words = data.word;
         vectors = data.vector;
         // console.log(typeof data)

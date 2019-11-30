@@ -126,9 +126,10 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
   //dataJSON = {data: word};
   getSelectionValues();
   startSpinner(target_id)
-  const url = 'http://127.0.0.1:5000/REST/bias_evaluation';
-  sourceFile['EmbeddingSpace'] = vectorTypeEnum;
-  sourceFile['Method'] = evaluationMethodEnum;
+  var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
+  url += '/' + evaluationMethodEnum;
+  url += '?space=' + vectorTypeEnum;
+  console.log(url);
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");
   console.log("card1 visible");
