@@ -31,21 +31,21 @@
                   <li class="nav-item">
                       <a class="nav-link" href="about.html">About</a>
                   </li>
-                  <li class="nav-item active">
-                      <a class="nav-link" href="bias_evaluation.html">BiasEvaluation</a>
-                  </li>
                   <li class="nav-item">
+                      <a class="nav-link" href="bias-evaluation.html">BiasEvaluation</a>
+                  </li>
+                  <li class="nav-item active">
                       <a class="nav-link" href="debiasing.html">Debiasing</a>
                   </li>
               </ul>
           </div>
       </div>
   </nav>
-
-<!-- Radio Button Toolbar -->
-  <div class = "container sticky-top my-3">
-    <div class="row mt-3">
-      <div class="col">
+  
+  <div class = "container mt-2" >
+    <!-- Radio Button Toolbar -->
+    <div class="row mt-3 ">
+      <div class="col float-left">
         <h6>Choose a word embedding model:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
           <label class="btn btn-primary active" id="fasttext">
@@ -62,8 +62,8 @@
           </label>
           <label class="btn btn-primary"  id="uploadSpace">
             <input type="radio" name="options" autocomplete="off"> Upload Space    
-        </label>
-      </div>
+          </label>
+        </div>
         <script>
         function hideUpload(){
           document.getElementById("upload").setAttribute("hidden", true);
@@ -76,30 +76,37 @@
         document.getElementById("skipgram").addEventListener("click", function() {hideUpload()});
         document.getElementById("glove").addEventListener("click", function() {hideUpload()});
         document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
-        </script>  
+        </script>
       </div>
-      <div class="col">
-        <h6>Choose a bias evaluation method:</h6>
+      <div class="col float-right">
+        <h6>Choose a debiasing method:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
-            <label class="btn btn-primary active"  id="all">
-              <input type="radio" name="all" autocomplete="off" checked> All
+            <label class="btn btn-primary active"  id="gbdd">
+              <input type="radio" name="gbdd" autocomplete="off" checked> GBDD
             </label>
-            <label class="btn btn-primary"  id="ect">
-                <input type="radio" name="ect" autocomplete="off"> ECT
+            <!--Remove when debiasNet is implemented:
+            <label class="btn btn-primary"  id="debiasNet">
+                <input type="radio" name="debiasNet" autocomplete="off"> DebiasNet
             </label>
-            <label class="btn btn-primary"  id="bat">
-                <input type="radio" name="bat" autocomplete="off"> BAT
+            -->
+            <label class="btn btn-primary"  id="bam">
+                <input type="radio" name="bam" autocomplete="off"> BAM
             </label>
-            <label class="btn btn-primary"  id="weat">
-                <input type="radio" name="weat" autocomplete="off"> WEAT
+            <label class="btn btn-primary"  id="gbddxbam">
+                <input type="radio" name="gbddxbam" autocomplete="off"> GBDD°BAM
             </label>
-            <label class="btn btn-primary"  id="kmeans">
-              <input type="radio" name="kmeans" autocomplete="off"> KMeans
+            <label class="btn btn-primary"  id="bamxgbdd">
+              <input type="radio" name="bamxgbdd" autocomplete="off"> BAM°GBDD
             </label>
+            <!--Remove when debiasNet is implemented:
+            <label class="btn btn-primary"  id="gbddxdn">
+              <input type="radio" name="gbddxdn" autocomplete="off"> GBDD°DebiasNet
+            </label>
+            -->
           </div>
         </div>
     </div>
-     <!-- Upload embeddingspace -->
+    <!-- Upload embeddingspace -->
     <div class="card bg-dark text-white mb-2" id="upload" hidden>
       <div class="card-body">
       <h5 class="display-5 mb-4">Upload a embedding space here</h5>
@@ -120,36 +127,37 @@
     </div>
   </div>
 
-<!-- Direct word input -->
-  <div class="container">  
+
+  <!-- Direct word input -->
+  <div class="container mt-3">  
     <div class="jumbotron bg-dark text-white px-md-5">
       <h4 class="display-4">Enter your own test sets here</h4>
       <p>Please enter the words seperated by whitespaces</p>
       <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
         <div class="input-group mt-4">       
           <div class="input-group-prepend">
-              <span class="input-group-text">T1:</span>
+              <span class="input-group-text">Test Set 1   :  </span>
           </div>
           <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
         <div class="input-group mt-2"> 
           <div class="input-group-prepend">
-              <span class="input-group-text">T2:</span>
+              <span class="input-group-text">Test Set 2   :  </span>
           </div>
           <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
         <div class="input-group mt-2"> 
           <div class="input-group-prepend">
-              <span class="input-group-text">A1:</span>
+              <span class="input-group-text">Target Set1:</span>
           </div>
           <textarea class="form-control" id="argument_set1" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
         <div class="input-group my-2"> 
           <div class="input-group-prepend">
-              <span class="input-group-text">A2:</span>
+              <span class="input-group-text">Target Set2:</span>
           </div>
           <textarea class="form-control" id="argument_set2" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
-        <button class="btn btn-primary btn-lg" id="Evaluate1">Evaluate Bias</button>
+        <button class="btn btn-primary btn-lg" id="Debias1">Debias</button>
         </p>
     </div>
   </div>
@@ -170,8 +178,43 @@
         <input type="file" class="custom-file-input" id="customFile">
         <label class="custom-file-label" for="customFile">Choose file</label>
       </div>
-      <button class="btn btn-primary btn-lg" id='Evaluate2'>Evaluate Bias</button>
+      <button class="btn btn-primary btn-lg" id='Evaluate2'>Debias</button>
     </div>
   </div>
-<script src="js/evaluate_own.js"> </script>
+<script src="js/debias_own.js"> </script>
+
+<footer class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md">
+        <img src="img/logo.png" width="128" height="64">
+        <img src="img/logo2.png" width="32" height="32"> 
+        <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
+    </div>
+    <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Random feature</a></li>
+            <li><a class="text-muted" href="#">Stuff for developers</a></li>
+            <li><a class="text-muted" href="#">Another one</a></li>
+            <li><a class="text-muted" href="#">Last time</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Related Work</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">General Framework</a></li>
+            <li><a class="text-muted" href="#">Paper #2</a></li>
+            <li><a class="text-muted" href="#">Paper #3</a></li>
+            <li><a class="text-muted" href="#">Vector sources</a></li>
+        </ul>
+    </div>
+    <div class="col-6 col-md">
+        <h5>Impressum</h5>
+        <ul class="list-unstyled text-small">
+            <p>Data and Web Science Group</p>
+            <p>University of Mannheim</p>
+        </ul>
+    </div>
+    </div>
+</footer>
 </body>
