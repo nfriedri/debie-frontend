@@ -19,8 +19,8 @@ function uploadEmbeddingSpace(){
                 </div>
             </div>`;
     try{
-        fetch("http://127.0.0.1:5000/REST/own-embedding-space", {
-            method: "post",
+        fetch("http://127.0.0.1:5000/REST/uploads/embedding-spaces", {
+            method: "put",
             body: formData
         }).then((res) => res.json())
         .then((data) => {
