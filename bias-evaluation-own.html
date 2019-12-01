@@ -42,10 +42,10 @@
       </div>
   </nav>
 
-<!-- Radio Button Toolbar -->
-  <div class = "container sticky-top my-3">
-    <div class="row mt-3">
-      <div class="col">
+  <div class = "container my-2" >
+    <!-- Radio Button Toolbar -->
+    <div class="row mt-3 ">
+      <div class="col float-left">
         <h6>Choose a word embedding model:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
           <label class="btn btn-primary active" id="fasttext">
@@ -61,9 +61,9 @@
             <input type="radio" name="options" autocomplete="off"> CBOW
           </label>
           <label class="btn btn-primary"  id="uploadSpace">
-            <input type="radio" name="options" autocomplete="off"> Upload Space    
-        </label>
-      </div>
+              <input type="radio" name="options" autocomplete="off"> Upload Space    
+          </label>
+        </div>
         <script>
         function hideUpload(){
           document.getElementById("upload").setAttribute("hidden", true);
@@ -76,29 +76,31 @@
         document.getElementById("skipgram").addEventListener("click", function() {hideUpload()});
         document.getElementById("glove").addEventListener("click", function() {hideUpload()});
         document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
-        </script>  
+        </script>
+        
       </div>
-      <div class="col">
+      <div class="col float-right">
         <h6>Choose a bias evaluation method:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
             <label class="btn btn-primary active"  id="all">
-              <input type="radio" name="all" autocomplete="off" checked> All
+              <input type="radio" name="allBtn" autocomplete="off" checked> All
             </label>
             <label class="btn btn-primary"  id="ect">
-                <input type="radio" name="ect" autocomplete="off"> ECT
+                <input type="radio" name="ectBtn" autocomplete="off"> ECT
             </label>
             <label class="btn btn-primary"  id="bat">
-                <input type="radio" name="bat" autocomplete="off"> BAT
+                <input type="radio" name="batBtn" autocomplete="off"> BAT
             </label>
             <label class="btn btn-primary"  id="weat">
-                <input type="radio" name="weat" autocomplete="off"> WEAT
+                <input type="radio" name="weatBtn" autocomplete="off"> WEAT
             </label>
             <label class="btn btn-primary"  id="kmeans">
-              <input type="radio" name="kmeans" autocomplete="off"> KMeans
-            </label>
+              <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+            </label>         
           </div>
         </div>
     </div>
+
      <!-- Upload embeddingspace -->
     <div class="card bg-dark text-white mb-2" id="upload" hidden>
       <div class="card-body">
@@ -121,7 +123,7 @@
   </div>
 
 <!-- Direct word input -->
-  <div class="container">  
+  <div class="container mt-3">  
     <div class="jumbotron bg-dark text-white px-md-5">
       <h4 class="display-4">Enter your own test sets here</h4>
       <p>Please enter the words seperated by whitespaces</p>
@@ -173,5 +175,5 @@
       <button class="btn btn-primary btn-lg" id='Evaluate2'>Evaluate Bias</button>
     </div>
   </div>
-<script src="js/evaluate_own.js"> </script>
+<script src="js/evaluateOwn.js"> </script>
 </body>

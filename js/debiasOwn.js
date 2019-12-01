@@ -38,6 +38,7 @@ function getSelectionValues() {
     console.log(postJson);
     document.getElementById(cardID).removeAttribute("hidden");
     console.log("card visible");
+    var statusFlag = 200;
   
     try {
       const response = fetch(url, {
@@ -47,10 +48,22 @@ function getSelectionValues() {
           'Content-Type': 'application/json'
         }
       })
-        .then((res) => res.json())
-        .then((data) => {
-        console.log(postJson);
-          let output = '';
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        let output = '';
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
           switch (debiasMethodEnum) {
             case 'gbdd':
               output += `
@@ -87,9 +100,10 @@ function getSelectionValues() {
                 <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
           `;
           document.getElementById(downloadButtonID).removeAttribute("hidden");
-          document.getElementById(target_id).innerHTML = output;
+        }
+        document.getElementById(target_id).innerHTML = output;
           //createDownloadJson(resultVar, sourceFile, data);
-          currentResult = data;
+        currentResult = data;
         })
     } catch (error) {
       console.error();

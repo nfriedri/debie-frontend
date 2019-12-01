@@ -26,18 +26,20 @@ function startSpinner(object_id) {
 }
 
 function getWordListVecRepresentation() {
-  startSpinner('card')
+  startSpinner('card_response')
   getSelectionValues()
   var targetSet1 = document.getElementById('target_set1').value
   var targetSet2 = document.getElementById('target_set2').value
   var argSet1 = document.getElementById('argument_set1').value
   var argSet2 = document.getElementById('argument_set2').value
-  var url = 'http://127.0.0.1:5000/REST/bias_evaluation'
-  
-  var postDict1 = { EmbeddingSpace: vectorTypeEnum, Method: evaluationMethodEnum, T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
+  var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
+  url += '/' + evaluationMethodEnum;
+  url += '?space=' + vectorTypeEnum;
+  var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
   var postJson = JSON.stringify(postDict1)
   console.log(postJson)
   document.getElementById('card').removeAttribute("hidden");
+  var statusFlag = 200;
 
   try {
     const response = fetch(url, {
@@ -47,48 +49,105 @@ function getWordListVecRepresentation() {
           'Content-Type': 'application/json'
         }
       })
-      //.then((res) => res.json())
       .then((res) => {
-        console.log(res.status);
-        if (res.status == 400){
-          console.log('Inside Loop');
-          console.log((res.json));
-          output = JSON.stringify(res.json);
-          document.getElementById('card_response').innerHTML = output;
-          document.getElementById('download').removeAttribute("hidden");
+        if (!res.ok){
+          statusFlag = res.status;
         }
+        return res.json();
       })
       .then((data) => {
-        console.log(postJson);
+        console.log(statusFlag);
         console.log(data);
         let output = '';
-        //else{
-        switch (evaluationMethodEnum) {
-          case 'allBtn':
-            output += `
-              <h5 class="card-title mb-3">Evaluation results: </h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">BAT score: </th>
-                  <td>${data.bat_result}</td>
-                  </tr>
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
+          switch (evaluationMethodEnum) {
+            case 'all':
+              output += `
+                <h5 class="card-title mb-3">Evaluation results: </h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.ect_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.p_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 2: </th>
+                    <td>${data.ect_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 2: </th>
+                    <td>${data.p_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">BAT score: </th>
+                    <td>${data.bat_result}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">WEAT effect size: </th>
+                    <td>${data.weat_effect_size}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">WEAT p-value: </th>
+                    <td>${data.weat_pvalue}</td>
+                    </tr>
+                  </tbody>
+                </table>       
+              `;
+              break;
+            case 'ect':
+                output += `
+                <h5 class="card-title">ECT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.ect_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.p_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 2: </th>
+                    <td>${data.ect_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 2: </th>
+                    <td>${data.p_value2}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                `;
+              break;
+            case 'bat':
+                output += `
+                <h5 class="card-title">BAT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                      <th scope="row">BAT score: </th>
+                      <td>${data.bat_result}</td>
+                    </tr>
+                  </tbody>
+                </table>  
+              `;
+              break;
+            case 'weat':
+                output += `
+                <h5 class="card-title">WEAT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
                   <tr>
                   <th scope="row">WEAT effect size: </th>
                   <td>${data.weat_effect_size}</td>
@@ -97,86 +156,31 @@ function getWordListVecRepresentation() {
                   <th scope="row">WEAT p-value: </th>
                   <td>${data.weat_pvalue}</td>
                   </tr>
-                </tbody>
-              </table>       
-            `;
-            break;
-          case 'ectBtn':
-              output += `
-              <h5 class="card-title">ECT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>  
               `;
-            break;
-          case 'batBtn':
-              output += `
-              <h5 class="card-title">BAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">BAT score: </th>
-                    <td>${data.bat_result}</td>
-                  </tr>
-                </tbody>
-              </table>  
-            `;
-            break;
-          case 'weatBtn':
-              output += `
-              <h5 class="card-title">WEAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                <tr>
-                <th scope="row">WEAT effect size: </th>
-                <td>${data.weat_effect_size}</td>
-                </tr>
-                <tr>
-                <th scope="row">WEAT p-value: </th>
-                <td>${data.weat_pvalue}</td>
-                </tr>
-                </tbody>
-              </table>  
-            `;
-            break;
-          case 'kmeansBtn':
-              output += `
-              <h5 class="card-title">KMeans Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">K-Means result: </th>
-                    <td>${data.k_means}</td>
-                  </tr>
-                </tbody>
-              </table> 
-            `;
-            break;
+              break;
+            case 'kmeans':
+                output += `
+                <h5 class="card-title">KMeans Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                      <th scope="row">K-Means result: </th>
+                      <td>${data.k_means}</td>
+                    </tr>
+                  </tbody>
+                </table> 
+              `;
+              break;
+          }
+          output += `
+                <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
+         `;
+          document.getElementById('download').removeAttribute("hidden");
+          createDownloadJson(resultData, postDict1, data)
         }
-        //}
-        output += `
-              <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        `;
         document.getElementById('card_response').innerHTML = output;
-        document.getElementById('download').removeAttribute("hidden");
-        createDownloadJson(resultData, postDict1, data)
       })
   } catch (error) {
     console.error();

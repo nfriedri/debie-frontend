@@ -121,9 +121,6 @@ function startSpinner(object_id) {
 
 
 function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
-  //word = document.getElementById('word2Send').value;
-  //console.log(word);
-  //dataJSON = {data: word};
   getSelectionValues();
   startSpinner(target_id)
   var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
@@ -133,6 +130,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");
   console.log("card1 visible");
+  var statusFlag = 200;
 
   try {
     const response = fetch(url, {
@@ -142,35 +140,107 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
         'Content-Type': 'application/json'
       }
     })
-      .then((res) => res.json())
+      .then((res) => {
+          if (!res.ok){
+            statusFlag = res.status;
+          }
+          return res.json();
+      })
       .then((data) => {
         let output = '';
-        switch (evaluationMethodEnum) {
-          case 'all':
-            output += `
-              <h5 class="card-title mb-3">Evaluation results: </h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">BAT score: </th>
-                  <td>${data.bat_result}</td>
-                  </tr>
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
+          switch (evaluationMethodEnum) {
+            case 'all':
+              output += `
+                <h5 class="card-title mb-3">Evaluation results: </h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.ect_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.p_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 2: </th>
+                    <td>${data.ect_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 2: </th>
+                    <td>${data.p_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">BAT score: </th>
+                    <td>${data.bat_result}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">WEAT effect size: </th>
+                    <td>${data.weat_effect_size}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">WEAT p-value: </th>
+                    <td>${data.weat_pvalue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">K-Means result: </th>
+                    <td>${data.k_means}</td>
+                    </tr>
+                  </tbody>
+                </table>       
+              `;
+              break;
+            case 'ect':
+                output += `
+                <h5 class="card-title">ECT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.ect_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.p_value1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 2: </th>
+                    <td>${data.ect_value2}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 2: </th>
+                    <td>${data.p_value2}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                `;
+              break;
+            case 'bat':
+                output += `
+                <h5 class="card-title">BAT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                      <th scope="row">BAT score: </th>
+                      <td>${data.bat_result}</td>
+                    </tr>
+                  </tbody>
+                </table>  
+              `;
+              break;
+            case 'weat':
+                output += `
+                <h5 class="card-title">WEAT Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
                   <tr>
                   <th scope="row">WEAT effect size: </th>
                   <td>${data.weat_effect_size}</td>
@@ -179,89 +249,31 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
                   <th scope="row">WEAT p-value: </th>
                   <td>${data.weat_pvalue}</td>
                   </tr>
-                  <tr>
-                  <th scope="row">K-Means result: </th>
-                  <td>${data.k_means}</td>
-                  </tr>
-                </tbody>
-              </table>       
-            `;
-            break;
-          case 'ect':
-              output += `
-              <h5 class="card-title">ECT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                  <th scope="row">ECT with argument set 1: </th>
-                  <td>${data.ect_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 1: </th>
-                  <td>${data.p_value1}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT with argument set 2: </th>
-                  <td>${data.ect_value2}</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">ECT p-value with argument set 2: </th>
-                  <td>${data.p_value2}</td>
-                  </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>  
               `;
-            break;
-          case 'bat':
-              output += `
-              <h5 class="card-title">BAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">BAT score: </th>
-                    <td>${data.bat_result}</td>
-                  </tr>
-                </tbody>
-              </table>  
-            `;
-            break;
-          case 'weat':
-              output += `
-              <h5 class="card-title">WEAT Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                <tr>
-                <th scope="row">WEAT effect size: </th>
-                <td>${data.weat_effect_size}</td>
-                </tr>
-                <tr>
-                <th scope="row">WEAT p-value: </th>
-                <td>${data.weat_pvalue}</td>
-                </tr>
-                </tbody>
-              </table>  
-            `;
-            break;
-          case 'kmeans':
-              output += `
-              <h5 class="card-title">KMeans Results</h5>
-              <table class="table table-borderless table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row">K-Means result: </th>
-                    <td>${data.k_means}</td>
-                  </tr>
-                </tbody>
-              </table> 
-            `;
-            break;
+              break;
+            case 'kmeans':
+                output += `
+                <h5 class="card-title">KMeans Results</h5>
+                <table class="table table-borderless table-dark">
+                  <tbody>
+                    <tr>
+                      <th scope="row">K-Means result: </th>
+                      <td>${data.k_means}</td>
+                    </tr>
+                  </tbody>
+                </table> 
+              `;
+              break;
+          }
+          output += `
+                <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
+          `;
+          document.getElementById(downloadButtonID).removeAttribute("hidden");
+          createDownloadJson(resultVar, sourceFile, data);
         }
-        output += `
-              <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        `;
-        document.getElementById(downloadButtonID).removeAttribute("hidden");
         document.getElementById(target_id).innerHTML = output;
-        createDownloadJson(resultVar, sourceFile, data);
       })
   } catch (error) {
     console.error();
@@ -272,7 +284,7 @@ function createDownloadJson(resultVar, sourceFile, evalResults){
   resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
   resultVar['EvaluationMethods'] = sourceFile.Method;
   switch(evaluationMethodEnum){
-    case 'allBtn':
+    case 'all':
       resultVar['ECT-Value1'] = evalResults.ect_value1;
       resultVar['ECT-P-Value1'] = evalResults.p_value1;
       resultVar['ECT-Value2'] = evalResults.ect_value2;
@@ -282,20 +294,20 @@ function createDownloadJson(resultVar, sourceFile, evalResults){
       resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
       resultVar['K-Means-value'] = evalResults.k_means;
       break;
-    case 'ectBtn':
+    case 'ect':
       resultVar['ECT-Value1'] = evalResults.ect_value1;
       resultVar['ECT-P-Value1'] = evalResults.p_value1;
       resultVar['ECT-Value2'] = evalResults.ect_value2;
       resultVar['ECT-P-Value2'] = evalResults.p_value2;
       break;
-    case 'batBtn':
+    case 'bat':
       resultVar['BAT-Value'] = evalResults.bat_result;
       break;
-    case 'weatBtn':
+    case 'weat':
       resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
       resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
       break;
-    case 'kmeansBtn':
+    case 'kmeans':
       resultVar['K-Means-value'] = evalResults.k_means;
       break;  
   }

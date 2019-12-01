@@ -144,6 +144,7 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");
   console.log("card visible");
+  var statusFlag = 200;
 
   try {
     const response = fetch(url, {
@@ -153,12 +154,20 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
         'Content-Type': 'application/json'
       }
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
       .then((data) => {
         let output = '';
-        if (data['message'] != undefined){
-          output = data['message'];
-          document.getElementById(target_id).innerHTML = output;
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
         }
         else{
         switch (debiasMethodEnum) {
@@ -196,11 +205,11 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
         `;
-        document.getElementById(downloadButtonID).removeAttribute("hidden");
-        document.getElementById(target_id).innerHTML = output;
+        document.getElementById(downloadButtonID).removeAttribute("hidden");  
         //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
       }
+      document.getElementById(target_id).innerHTML = output;
       })
   } catch (error) {
     console.error();
