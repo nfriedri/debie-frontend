@@ -134,28 +134,51 @@
       <h4 class="display-4">Enter your own test sets here</h4>
       <p>Please enter the words seperated by whitespaces</p>
       <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
-        <div class="input-group mt-4">       
+      <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="augmentSwitch">
+          <label class="custom-control-label" for="augmentSwitch">Retrieve augmentations from database (takes up to 30s per word)</label>
+          <script>
+          document.getElementById('augmentSwitch').addEventListener("click", function() {
+            switcher = document.getElementById('augmentSwitch');
+            //console.log(switcher.checked);
+            if (switcher.checked == false){
+              document.getElementById('partOne').removeAttribute('hidden');
+            }
+            else if (switcher.checked == true){
+              document.getElementById('partOne').setAttribute('hidden', true);
+            }
+          });
+          
+          
+          </script>
+      </div>
+        
+      
+      <div id="partOne">
+          <div class="input-group mt-4">     
           <div class="input-group-prepend">
-              <span class="input-group-text">Test Set 1   :  </span>
+              <span class="input-group-text">Augmentations 1:</span>
           </div>
-          <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
-        <div class="input-group mt-2"> 
-          <div class="input-group-prepend">
-              <span class="input-group-text">Test Set 2   :  </span>
-          </div>
-          <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
+          <textarea class="form-control" id="augments1" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
+          <div class="input-group mt-2"> 
+          <div class="input-group-prepend">
+              <span class="input-group-text">Augmentations 2:</span>
+          </div>
+          <textarea class="form-control" id="augments2" aria-label="With textarea" style="height: 110px"></textarea>
+        </div>
+      </div>  
         <div class="input-group mt-2"> 
           <div class="input-group-prepend">
               <span class="input-group-text">Target Set1:</span>
           </div>
-          <textarea class="form-control" id="argument_set1" aria-label="With textarea" style="height: 110px"></textarea>
+          <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
         <div class="input-group my-2"> 
           <div class="input-group-prepend">
               <span class="input-group-text">Target Set2:</span>
           </div>
-          <textarea class="form-control" id="argument_set2" aria-label="With textarea" style="height: 110px"></textarea>
+          <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
         <button class="btn btn-primary btn-lg" id="Debias1">Debias</button>
         </p>
@@ -181,7 +204,7 @@
       <button class="btn btn-primary btn-lg" id='Evaluate2'>Debias</button>
     </div>
   </div>
-<script src="js/debias_own.js"> </script>
+<script src="js/debiasOwn.js"> </script>
 
 <footer class="container py-5">
     <div class="row">
