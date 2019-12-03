@@ -28,6 +28,17 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
 
+function getToggleSelection(){
+  switcher = document.getElementById('vectorsEnabled');
+  console.log(switcher.checked);
+  if (switcher.checked == false){
+    return 'false';
+  }
+  if (switcher.checked == true){
+    return 'true';
+  }
+}
+
 function startSpinner(object_id) {
   spinner = `
         <div class="d-flex justify-content-center">
@@ -211,6 +222,7 @@ function sendRequestJSON(){
   var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
+  url += '&vectors='+ getToggleSelection()
   console.log(fileContent);
   document.getElementById('card2').removeAttribute("hidden");
   var statusFlag = 200;
