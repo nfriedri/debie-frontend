@@ -41,9 +41,9 @@
           </div>
       </div>
   </nav>
-  
+
+  <!-- Radio Button Toolbar -->
   <div class = "container mt-2" >
-    <!-- Radio Button Toolbar -->
     <div class="row mt-3 ">
       <div class="col float-left">
         <h6>Choose a word embedding model:</h6>
@@ -104,29 +104,29 @@
             </label>
             -->
           </div>
-        </div>
+      </div>
     </div>
     <!-- Upload embeddingspace -->
     <div class="card bg-dark text-white mb-2" id="upload" hidden>
       <div class="card-body">
-      <h5 class="display-5 mb-4">Upload a embedding space here</h5>
-      <div class="custom-file mb-2">
-        <input type="file" class="custom-file-input" id="inputFile">
-        <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
-        <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
-        <script src="js/fileUpload.js"></script>
-        <p id="uploadState" hidden></p>
+        <h5 class="display-5 mb-4">Upload a embedding space here</h5>
+        <div class="custom-file mb-2">
+          <input type="file" class="custom-file-input" id="inputFile">
+          <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
+          <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
+          <script src="js/fileUpload.js"></script>
+          <p id="uploadState" hidden></p>
         
-        <div class="input-group mb-3" id="inputFileView" hidden>
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Selected file:</span>
+          <div class="input-group mb-3" id="inputFileView" hidden>
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Selected file:</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" id="inputFileInput">
           </div>
-          <input type="text" class="form-control" aria-describedby="basic-addon1" id="inputFileInput">
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- Direct word input -->
   <div class="container mt-3">  
@@ -153,7 +153,7 @@
           </script>
       </div>
         
-      
+      <!--Input Augmentations-->
       <div id="partOne">
           <div class="input-group mt-4">     
           <div class="input-group-prepend">
@@ -167,23 +167,26 @@
           </div>
           <textarea class="form-control" id="augments2" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
-      </div>  
-        <div class="input-group mt-2"> 
-          <div class="input-group-prepend">
-              <span class="input-group-text">Target Set1:</span>
-          </div>
-          <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
+      </div>
+      <!--Input Sets-->  
+      <div class="input-group mt-2"> 
+        <div class="input-group-prepend">
+          <span class="input-group-text">Target Set1:</span>
         </div>
-        <div class="input-group my-2"> 
-          <div class="input-group-prepend">
-              <span class="input-group-text">Target Set2:</span>
-          </div>
-          <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
+        <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
+      </div>
+      <div class="input-group my-2"> 
+        <div class="input-group-prepend">
+            <span class="input-group-text">Target Set2:</span>
         </div>
-        <button class="btn btn-primary btn-lg" id="Debias1">Debias</button>
-        </p>
+        <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg" id="Debias1">Debias</button>
+      </p>
     </div>
   </div>
+
+  <!-- Response -->
   <div class="container mb-5">
     <div class="card bg-dark text-white mb-2" id = "card" hidden>
       <div class="card-body" id="card_response">
@@ -203,9 +206,20 @@
       </div>
       <button class="btn btn-primary btn-lg" id='Evaluate2'>Debias</button>
     </div>
+    <script src="js/uploadJSON.js"></script>
   </div>
+
+  <div class="container mb-5">
+    <div class="card bg-dark text-white mb-2" id = "card2" hidden>
+      <div class="card-body" id="card_response2">
+      </div>
+      <input type="image" src="img/download.png" height="10%" width="10%" id="download2" hidden></input>
+    </div>
+  </div>
+
 <script src="js/debiasOwn.js"> </script>
 
+<!-- Footer -->
 <footer class="container py-5">
     <div class="row">
         <div class="col-12 col-md">

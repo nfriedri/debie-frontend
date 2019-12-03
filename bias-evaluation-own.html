@@ -109,7 +109,7 @@
         <input type="file" class="custom-file-input" id="inputFile">
         <label class="custom-file-label" for="customFile" id="inputLabel">Choose file</label>
         <button class="btn btn-primary my-2" id='btnUpload'>Upload space</button>
-        <script src="js/fileUpload.js"></script>
+        <!--<script src="js/fileUpload.js"></script>-->
         <p id="uploadState" hidden></p>
         
         <div class="input-group mb-3" id="inputFileView" hidden>
@@ -164,16 +164,25 @@
   </div>
 
 <!-- Upload a file -->
-  <div class="container">
-    <div class="jumbotron bg-dark text-white px-md-5">
-      <h4 class="display-4 mb-4">Upload a JSON file here</h4>
-      <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
-      <div class="custom-file mb-2">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Choose file</label>
-      </div>
-      <button class="btn btn-primary btn-lg" id='Evaluate2'>Evaluate Bias</button>
+<div class="container">
+  <div class="jumbotron bg-dark text-white px-md-5">
+    <h4 class="display-4 mb-4">Upload a JSON file here</h4>
+    <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
+    <div class="custom-file mb-2">
+      <input type="file" class="custom-file-input" id="customFile">
+      <label class="custom-file-label" for="customFile" id="inputLabel2">Choose file</label>
     </div>
+    <button class="btn btn-primary btn-lg" id='Evaluate2'>Debias</button>
+    <p id="filedetails"></p>
+  </div> 
+</div>
+
+<div class="container mb-5">
+  <div class="card bg-dark text-white mb-2" id="card2" hidden>
+    <div class="card-body" id="card_response2">
+    </div>
+    <input type="image" src="img/download.png" height="10%" width="10%" id="download2" hidden></input>
   </div>
+</div>
 <script src="js/evaluateOwn.js"> </script>
 </body>

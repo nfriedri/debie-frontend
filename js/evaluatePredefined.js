@@ -82,7 +82,7 @@ function loadTestData(jsonFile, elementID, target) {
       target['T2'] = data.T2;
       target['A1'] = data.A1;
       target['A2'] = data.A2;
-    })
+    });
 }
 
 function getSelectionValues() {
@@ -281,8 +281,8 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
 }
 
 function createDownloadJson(resultVar, sourceFile, evalResults){
-  resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
-  resultVar['EvaluationMethods'] = sourceFile.Method;
+  resultVar['EmbeddingSpace'] = vectorTypeEnum;
+  resultVar['EvaluationMethods'] = evaluationMethodEnum;
   switch(evaluationMethodEnum){
     case 'all':
       resultVar['ECT-Value1'] = evalResults.ect_value1;
