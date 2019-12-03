@@ -126,6 +126,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
   var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
+  url += '&vectors=false'
   console.log(url);
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");

@@ -64,6 +64,7 @@ function sendRequest() {
   var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
+  url += '&vectors=false'
   var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
   var postJson = JSON.stringify(postDict1)
   console.log(postJson)

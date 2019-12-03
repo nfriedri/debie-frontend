@@ -1,6 +1,3 @@
-document.getElementById('SEND_word').addEventListener('click', getWordVecRepresentation());
-document.getElementById('SEND_words').addEventListener('click', getWordListVecRepresentation());
-
 var vectorTypeEnum = 'fasttext';
 
 function startSpinner(object_id) {
@@ -40,14 +37,16 @@ function getWordVecRepresentation() {
       .then((res) => res.json())
       .then((data) => {
         let output = '';
+        let vec = data.vector.toString().replace(/,/g, ' ');
         output += `
           <div class="card-body" id="response"></div>
             <h5 class="card-title px-2">Result:</h5>
-            <p class="card-text px-2">Word: ${data.word}</p>
-            <p class="card-text px-2 pb-2">Vector:<br>${data.vector}</p>
+            <p class="card-text px-2" id="word">Word: ${data.word}</p>
+            <p class="card-text px-2 pb-2" id="vec">Vector:<br>${vec}</p>
           </div>  
             `;
         console.log(output);
+        currentVec = data.vector;
         document.getElementById('card1').innerHTML = output;
       })
   } catch (error) {
@@ -74,12 +73,13 @@ function getWordListVecRepresentation() {
         console.log(data);
         let output = `<div class="card-body" id="response2"></div>
                       <h5 class="card-title px-2">Result:</h5><br>`;
-        words = data.word;
-        vectors = data.vector;
+        var words = data.word;
+        var vectors = data.vector;
         for (var i = 0; i < words.length; i++) {
+          let vec = vectors[i].toString().replace(/,/g, ' ');
           output += `
           <p class="card-text px-2">Word: ${words[i]}</p>
-          <p class="card-text px-2 pb-2">Vector:<br>${vectors[i]}</p>
+          <p class="card-text px-2 pb-2">Vector:<br>${vec}</p>
           <br>
           `;
         }
@@ -91,3 +91,5 @@ function getWordListVecRepresentation() {
 }
 
 
+document.getElementById('SEND_word').addEventListener('click', function() {getWordVecRepresentation()});
+document.getElementById('SEND_words').addEventListener('click', function() {getWordListVecRepresentation()});
