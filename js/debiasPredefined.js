@@ -28,6 +28,7 @@ const elementID_9 = 'table_9';
 var currentResult = {}
 var vectorTypeEnum = 'fasttext';
 var debiasMethodEnum = 'all';
+var enablePCA = "full";
 
 window.onload = doByStart()
 
@@ -80,9 +81,16 @@ function loadTestData(jsonFile, elementID, target) {
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+  let switcher = document.getElementById('pcaSwitch');
+  if (switcher.checked == false){
+    enablePCA = "full";
+  }
+  else if (switcher.checked == true){
+    enablePCA = "pca";
+  }
   vectorTypeEnum = activeVectorType.id;
   debiasMethodEnum = activeEvalMethod.id;
-  console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum);
+  console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + enablePCA);
 }
 
 function startSpinner(object_id) {
@@ -138,10 +146,13 @@ function createChart(target_id, sourceData){
 function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   getSelectionValues();
   startSpinner(target_id)
-  const url = 'http://127.0.0.1:5000/REST/debiasing_visualization';
+  var url = 'http://127.0.0.1:5000/REST/debiasing';
   sourceFile['EmbeddingSpace'] = vectorTypeEnum;
   sourceFile['Method'] = debiasMethodEnum;
+  sourceFile['PCA'] = enablePCA
   console.log(sourceFile);
+  url += '/' + enablePCA + '/' + debiasMethodEnum;
+  url += '?space=' + vectorTypeEnum + '&augments=database';
   document.getElementById(cardID).removeAttribute("hidden");
   console.log("card visible");
   var statusFlag = 200;

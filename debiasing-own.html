@@ -131,7 +131,7 @@
   <!-- Direct word input -->
   <div class="container mt-3">  
     <div class="jumbotron bg-dark text-white px-md-5">
-      <h4 class="display-4">Enter your own test sets here</h4>
+      <h4 class="display-4">Debias your own test sets here</h4>
       <p>Please enter the words seperated by whitespaces</p>
       <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
       <div class="custom-control custom-switch">
@@ -200,6 +200,10 @@
     <div class="jumbotron bg-dark text-white px-md-5">
       <h4 class="display-4 mb-4">Upload a JSON file here</h4>
       <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
+      <div class="custom-control custom-switch mb-2">
+          <input type="checkbox" class="custom-control-input" id="vectorsEnabled">
+          <label class="custom-control-label" for="vectorsEnabled">Upload format with vectors</label>
+      </div>
       <div class="custom-file mb-2">
         <input type="file" class="custom-file-input" id="customFile">
         <label class="custom-file-label" for="customFile">Choose file</label>

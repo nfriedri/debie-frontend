@@ -43,10 +43,11 @@
       </div>
   </nav>
 
-  <div class = "container-fluid" >
+  <div class = "container" >
+    <h2 class="text-center mt-2 mb-5">Pre-defined Debias Tests</h2>
     <!-- Radio Button Toolbar -->
     <div class="row mt-3 ">
-      <div class="col float-left">
+      <div class="col-6">
         <h6>Choose a word embedding model:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
           <label class="btn btn-primary active" id="fasttext">
@@ -79,8 +80,8 @@
         document.getElementById("cbow").addEventListener("click", function() {hideUpload()});
         </script> 
       </div>
-      <div class="col float-right">
-        <h6>Choose a debiasing method:</h6>
+      <div class="col 4">
+        <h6 class="display-6 float-left">Choose a debiasing method:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
             <label class="btn btn-primary active"  id="gbdd">
               <input type="radio" name="gbdd" autocomplete="off" checked> GBDD
@@ -105,7 +106,17 @@
             </label>
             -->
       </div>
+      </div>
+      <div class="col-2">
+          <div class="custom-control custom-switch float-right">
+              <input type="checkbox" class="custom-control-input" id="pcaSwitch">
+              <label class="custom-control-label" for="pcaSwitch">PCA On</label>
+              <script>
+              </script>
+          </div>
+      </div>
     </div>
+  </div>
      <!-- Upload embeddingspace -->
     <div class="card bg-dark text-white mb-2" id="upload" hidden>
       <div class="card-body">
@@ -125,6 +136,8 @@
         </div>
       </div>
     </div>
+  </div>
+  
   </div>
   
   <div class="container mt-3" style="position: relative;">  
@@ -296,7 +309,7 @@
       <input type="image" src="img/download.png" height="10%" width="10%" id="download9" hidden></input>
     </div>
   </div>
-  <script src="js/debias_predefined.js"></script>
+  <script src="js/debiasPredefined.js"></script>
 
   <footer class="container py-5">
         <div class="row">
