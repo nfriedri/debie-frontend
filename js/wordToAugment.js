@@ -1,6 +1,3 @@
-document.getElementById('SEND_word').addEventListener('click', getWordAugments());
-document.getElementById('SEND_words').addEventListener('click', getWordAugments10k());
-
 var vectorTypeEnum = 'fasttext';
 
 function startSpinner(object_id) {
@@ -27,8 +24,8 @@ function getSelectionValues() {
 function getWordAugments() {
   word = document.getElementById('augmentSend').value;
   console.log(word);
-  getSelectionValues
-  var url = 'http://127.0.0.1:5000/REST/augmentation/single';
+  getSelectionValues();
+  var url = 'http://127.0.0.1:5000/REST/augmentations/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
@@ -39,15 +36,22 @@ function getWordAugments() {
       })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         let output = '';
         output += `
           <div class="card-body" id="response"></div>
             <h5 class="card-title px-2">Result:</h5>
             <p class="card-text px-2">Word: ${data.word}</p>
-            <p class="card-text px-2 pb-2">Vector:<br>${data.vector}</p>
-          </div>  
+            <p class="card-text px-2">Augmentations:   `
+        let augments = data.augments;
+        for (var i=0; i<augments.length; i++){
+          output += augments[i] + " "
+        }
+        output += `</p>
+            <br>
+          </div>
             `;
-        console.log(output);
+        //console.log(output);
         document.getElementById('card1').innerHTML = output;
       })
   } catch (error) {
@@ -56,7 +60,8 @@ function getWordAugments() {
 }
 
 function getWordAugments10k() {
-  var words = document.getElementById('augmentSend10k').value;var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
+  var words = document.getElementById('augmentSend10k').value;
+  var url = 'http://127.0.0.1:5000/REST/augmentations/first10k';
   url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
@@ -74,15 +79,21 @@ function getWordAugments10k() {
         console.log(data);
         let output = `<div class="card-body" id="response2"></div>
                       <h5 class="card-title px-2">Result:</h5><br>`;
-        words = data.word;
-        vectors = data.vector;
+        words = data.words;
+        augments = data.augments;
         for (var i = 0; i < words.length; i++) {
           output += `
           <p class="card-text px-2">Word: ${words[i]}</p>
-          <p class="card-text px-2 pb-2">Vector:<br>${vectors[i]}</p>
-          <br>
-          `;
+          <p class="card-text px-2">Augmentations:   `
+          let singleAugments = augments[i];
+          for (var k=0; k<singleAugments.length; k++){
+            output += singleAugments[k] + " "
+          }
+          output += '</p><br>'
         }
+        output += `
+          </div>
+          `;
         document.getElementById('card2').innerHTML = output;
       })
   } catch (error) {
@@ -90,4 +101,9 @@ function getWordAugments10k() {
   }
 }
 
-
+document.getElementById('SEND_word').addEventListener('click', function(){
+  getWordAugments();
+});
+document.getElementById('SEND_word10k').addEventListener('click', function(){
+  getWordAugments10k();
+});

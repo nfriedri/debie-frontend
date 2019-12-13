@@ -24,7 +24,7 @@ function getSelectionValues() {
 function getWordVecRepresentation() {
   word = document.getElementById('word2Send').value;
   console.log(word);
-  getSelectionValues
+  getSelectionValues();
   var url = 'http://127.0.0.1:5000/REST/vectors/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
@@ -55,7 +55,9 @@ function getWordVecRepresentation() {
 }
 
 function getWordListVecRepresentation() {
-  var words = document.getElementById('words2Send').value;var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
+  getSelectionValues();
+  var words = document.getElementById('words2Send').value;
+  var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
   url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
