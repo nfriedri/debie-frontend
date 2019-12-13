@@ -152,7 +152,7 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   sourceFile['PCA'] = enablePCA
   console.log(sourceFile);
   url += '/' + enablePCA + '/' + debiasMethodEnum;
-  url += '?space=' + vectorTypeEnum + '&augments=database';
+  url += '?space=' + vectorTypeEnum + '&augments=True';
   document.getElementById(cardID).removeAttribute("hidden");
   console.log("card visible");
   var statusFlag = 200;
@@ -181,10 +181,17 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
           `
         }
         else{
+        let typeVar = '';
+        if (enablePCA == 'full'){
+          typeVar = 'with full dimensionality';
+        }
+        else{
+          typeVar = 'with PCA';
+        }
         switch (debiasMethodEnum) {
           case 'gbdd':
             output += `
-              <h5 class="card-title mb-3">GBDD Debiasing Results: </h5>
+              <h5 class="card-title mb-3">GBDD Debiasing Results ${typeVar}: </h5>
               <div id="gbdd_chart"></div>
             `;
             break;
