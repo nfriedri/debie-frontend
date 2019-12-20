@@ -24,6 +24,15 @@ function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
+  if (vectorTypeEnum == "uploadSpace"){
+    fileInputName = document.getElementById("inputLabel")
+    if (fileInputName.innerHTML != undefined){
+      vectorTypeEnum = fileInputName.innerHTML;
+    }
+    else{
+      vectorTypeEnum = fileInputName.getAttribute("placeholder");
+    }
+  }
   evaluationMethodEnum = activeEvalMethod.id;
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
@@ -65,7 +74,7 @@ function sendRequest() {
   //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
-  url += '&vectors=false'
+  //url += '&vectors=false'
   var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 }
   var postJson = JSON.stringify(postDict1)
   console.log(postJson)

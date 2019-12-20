@@ -89,6 +89,15 @@ function getSelectionValues() {
     enablePCA = "pca";
   }
   vectorTypeEnum = activeVectorType.id;
+  if (vectorTypeEnum == "uploadSpace"){
+    fileInputName = document.getElementById("inputLabel")
+    if (fileInputName.innerHTML != undefined){
+      vectorTypeEnum = fileInputName.innerHTML;
+    }
+    else{
+      vectorTypeEnum = fileInputName.getAttribute("placeholder");
+    }
+  }
   debiasMethodEnum = activeEvalMethod.id;
   console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + enablePCA);
 }

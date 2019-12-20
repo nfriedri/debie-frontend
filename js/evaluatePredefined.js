@@ -90,9 +90,9 @@ function getSelectionValues() {
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
   if (vectorTypeEnum == "uploadSpace"){
-    fileInputName = document.getElementById("inputFileInput")
-    if (fileInputName.value != undefined){
-      vectorTypeEnum = fileInputName.value
+    fileInputName = document.getElementById("inputLabel")
+    if (fileInputName.innerHTML != undefined){
+      vectorTypeEnum = fileInputName.innerHTML;
     }
     else{
       vectorTypeEnum = fileInputName.getAttribute("placeholder");

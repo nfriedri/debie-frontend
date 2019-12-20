@@ -1,11 +1,11 @@
 
 const inputJSON = document.getElementById('customFile');
-const debiasBtn = document.getElementById('Evaluate2');
+const evaluateBtn = document.getElementById('Evaluate2');
 var fileContent = '';
 var result = '';
 var vectorTypeEnum = 'fasttext';
 var evaluationMethodEnum = 'all';
-var vectorsEnabled = 'False';
+var vectorsEnabled = 'false';
 
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
@@ -22,10 +22,10 @@ function getSelectionValues() {
   }
   let switcher = document.getElementById('vectorsEnabled');
     if (switcher.checked == false){
-      vectorsEnabled = "False";
+      vectorsEnabled = "false";
     }
     else if (switcher.checked == true){
-      vectorsEnabled = "True";
+      vectorsEnabled = "true";
     }
   evaluationMethodEnum = activeEvalMethod.id;
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
@@ -259,7 +259,7 @@ function downloadOwn(filename, content){
     console.log('Downloaded')
 }
 
-debiasBtn.addEventListener("click", function() { 
+evaluateBtn.addEventListener("click", function() { 
     sendJSONRequest("card_response2", fileContent, result, "download2", "card2" );
     fileContent = '';
  });
