@@ -1,10 +1,18 @@
 var vectorTypeEnum = 'fasttext';
 var debiasMethodEnum = 'gbdd';
+var enablePCA = "full";
 var currentResult = {};
 
 function getSelectionValues() {
     let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
     let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+    let switcher = document.getElementById('pcaSwitch');
+    if (switcher.checked == false){
+      enablePCA = "full";
+    }
+    else if (switcher.checked == true){
+      enablePCA = "pca";
+    }
     vectorTypeEnum = activeVectorType.id;
     evaluationMethodEnum = activeEvalMethod.id;
     console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
@@ -31,10 +39,13 @@ function getSelectionValues() {
     var targetSet2 = document.getElementById('target_set2').value;
     var argSet1 = document.getElementById('argument_set1').value;
     var argSet2 = document.getElementById('argument_set2').value;
-    var postDict1 = { EmbeddingSpace: vectorTypeEnum, Method: debiasMethodEnum, T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2 };
+    var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2};
     var postJson = JSON.stringify(postDict1);
     startSpinner(target_id);
-    const url = 'http://127.0.0.1:5000/REST/debiasing_visualization';
+    var url = 'http://127.0.0.1:5000/REST/debiasing';
+    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
+    url += '/' + enablePCA + '/' + debiasMethodEnum;
+    url += '?space=' + vectorTypeEnum + '&augments=True';
     console.log(postJson);
     document.getElementById(cardID).removeAttribute("hidden");
     console.log("card visible");

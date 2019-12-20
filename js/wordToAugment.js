@@ -26,6 +26,7 @@ function getWordAugments() {
   console.log(word);
   getSelectionValues();
   var url = 'http://127.0.0.1:5000/REST/augmentations/single';
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
@@ -62,6 +63,7 @@ function getWordAugments() {
 function getWordAugments10k() {
   var words = document.getElementById('augmentSend10k').value;
   var url = 'http://127.0.0.1:5000/REST/augmentations/first10k';
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/first10k';
   url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');

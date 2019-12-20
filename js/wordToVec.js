@@ -26,6 +26,7 @@ function getWordVecRepresentation() {
   console.log(word);
   getSelectionValues();
   var url = 'http://127.0.0.1:5000/REST/vectors/single';
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/vectors/single';
   url += '?space=' + vectorTypeEnum + '&word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
@@ -58,6 +59,7 @@ function getWordListVecRepresentation() {
   getSelectionValues();
   var words = document.getElementById('words2Send').value;
   var url = 'http://127.0.0.1:5000/REST/vectors/multiple';
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/vectors/multiple';
   url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');

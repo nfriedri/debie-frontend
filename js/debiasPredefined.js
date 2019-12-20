@@ -147,6 +147,7 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   getSelectionValues();
   startSpinner(target_id)
   var url = 'http://127.0.0.1:5000/REST/debiasing';
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
   sourceFile['EmbeddingSpace'] = vectorTypeEnum;
   sourceFile['Method'] = debiasMethodEnum;
   sourceFile['PCA'] = enablePCA
@@ -205,6 +206,12 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
               output += `
               <h5 class="card-title">DebiasNet Debiasing Results: </h5>
               <div id="debiasNet_chart"></div>
+            `;
+            break;
+            case 'gbddxbam':
+              output += `
+              <h5 class="card-title">GBDD°BAM Debiasing Results: </h5>
+              <div id="bamxgbdd_chart"></div>
             `;
             break;
           case 'bamxgbdd':
