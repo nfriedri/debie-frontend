@@ -3,27 +3,34 @@ const inputJSON = document.getElementById('customFile');
 const debiasBtn = document.getElementById('Evaluate2');
 var fileContent = '';
 var result = '';
+var vectorTypeEnum = 'fasttext';
+var evaluationMethodEnum = 'all';
+var vectorsEnabled = 'False';
 
-/*
-function uploadJSON(){
-    const formData = new FormData();
-    const file = inputJSON.files[0];
-    console.log(file.name);
-    document.getElementById("inputLabel2").innerHTML = file.name;
-    formData.append("uploadFile", file);
-    for (const [key, value] of formData){
-        console.log(`Key: ${key}`);
-        console.log(`Value: ${value}`);
+function getSelectionValues() {
+  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
+  let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+  vectorTypeEnum = activeVectorType.id;
+  if (vectorTypeEnum == "uploadSpace"){
+    fileInputName = document.getElementById("inputFileInput")
+    if (fileInputName.value != undefined){
+      vectorTypeEnum = fileInputName.value
     }
-    document.getElementById("card2").removeAttribute('hidden');
-    document.getElementById("card_response2").innerHTML = `<div class="d-flex justify-content-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>`;
-    return formData;
+    else{
+      vectorTypeEnum = fileInputName.getAttribute("placeholder");
+    }
+  }
+  let switcher = document.getElementById('vectorsEnabled');
+    if (switcher.checked == false){
+      vectorsEnabled = "False";
+    }
+    else if (switcher.checked == true){
+      vectorsEnabled = "True";
+    }
+  evaluationMethodEnum = activeEvalMethod.id;
+  console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
-*/
+
 function handleFileSelect(evt) {
     var files = evt.target.files;
     for (var i = 0, f; f = files[i]; i++) {
@@ -45,8 +52,10 @@ function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, car
     getSelectionValues();
     startSpinner(target_id)
     var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
+    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/bias-evaluation';
     url += '/' + evaluationMethodEnum;
     url += '?space=' + vectorTypeEnum;
+    url += '&vectors=' + vectorsEnabled;
     console.log(url);
     console.log(sourceFile);
     document.getElementById(cardID).removeAttribute("hidden");

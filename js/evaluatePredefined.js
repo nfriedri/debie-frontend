@@ -127,7 +127,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
   //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
-  url += '&vectors=false'
+  //url += '&vectors=false'
   console.log(url);
   console.log(sourceFile);
   document.getElementById(cardID).removeAttribute("hidden");
