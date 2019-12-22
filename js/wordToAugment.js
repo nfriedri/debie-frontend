@@ -1,4 +1,4 @@
-var vectorTypeEnum = 'fasttext';
+
 
 function startSpinner(object_id) {
   spinner = `
@@ -15,19 +15,12 @@ function startSpinner(object_id) {
   }
 }
 
-function getSelectionValues() {
-  let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
-  vectorTypeEnum = activeVectorType.id;
-  console.log("Current Values: " + vectorTypeEnum);
-}
-
 function getWordAugments() {
   word = document.getElementById('augmentSend').value;
   console.log(word);
-  getSelectionValues();
   var url = 'http://127.0.0.1:5000/REST/augmentations/single';
   //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/single';
-  url += '?space=' + vectorTypeEnum + '&word=' + word;
+  url += '?word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
   startSpinner('card1');
