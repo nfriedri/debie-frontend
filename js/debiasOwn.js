@@ -124,6 +124,7 @@ function getSelectionValues() {
         document.getElementById(target_id).innerHTML = output;
           //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
+        drawChart(currentResult, 'xd');
         })
     } catch (error) {
       console.error();
@@ -145,6 +146,54 @@ function getSelectionValues() {
     element.click();
     document.body.removeChild(element);
     console.log('Downloaded')
+  }
+
+  function drawChart(inputData, targetID){
+    console.log(inputData);
+    console.log(inputData.DebiasedVectorsPCA);
+    var labels = []
+    for (ele in inputData.DebiasedVectorsPCA){
+      console.log(ele);
+
+    }
+    /*
+    var ctx = document.getElementById('myChart').getContext('2d'); //Replace myChart with targetID
+      var scatterChart = new Chart(ctx, {
+      type: 'scatter',
+          data: {
+              labels: ['Alpha', 'Bravo', 'Charlie'],
+              datasets: [{
+                  label: 'Scatter Dataset',
+                  data: [{
+                      x: 0.123332,
+                      y: 0.855432
+                  }, {
+                      x: -0.138524,
+                      y: 0.32255
+                  }, {
+                      x: 0.65543,
+                      y: -0.23443
+                  }]
+              }]
+          },
+          options: {
+              scales: {
+                  xAxes: [{
+                      type: 'linear',
+                      position: 'bottom'
+                  }]
+              },
+              tooltips: {
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                      var label = data.labels[tooltipItem.index];
+                      return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+                      }
+                  }
+              }
+          }
+      });
+      */
   }
   
   document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });

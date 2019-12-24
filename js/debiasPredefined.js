@@ -238,12 +238,17 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
         }
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
+              <div class="container" style="background-color: #ffffff; height: 800px; width: 800px;">
+                <canvas id="myChart1"></canvas>
+                <canvas id="myChart2"></canvas>
+              </div>
         `;
         document.getElementById(downloadButtonID).removeAttribute("hidden");  
         //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
       }
       document.getElementById(target_id).innerHTML = output;
+      drawChart(currentResult, '');
       })
   } catch (error) {
     console.error();
@@ -265,6 +270,89 @@ function download(filename, content){
   element.click();
   document.body.removeChild(element);
   console.log('Downloaded')
+}
+
+function drawChart(inputData){
+  var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
+  var listOfPointsDebias = [];
+  var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
+  var listOfPointsBias = [];
+  for (ele in inputData.DebiasedVectorsPCA){
+    var endOfX = inputData.DebiasedVectorsPCA[ele].indexOf(",");
+    var endOfY = inputData.DebiasedVectorsPCA[ele].length -1
+    xAsString = inputData.DebiasedVectorsPCA[ele].substring(1,endOfX);
+    yAsString = inputData.DebiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+    var current_x = parseFloat(xAsString);
+    var current_y = parseFloat(yAsString);
+    var point = {x: current_x, y:current_y};
+    listOfPointsDebias.push(point);
+  }
+  for (ele in inputData.BiasedVectorsPCA){
+    var endOfX = inputData.BiasedVectorsPCA[ele].indexOf(",");
+    var endOfY = inputData.BiasedVectorsPCA[ele].length -1
+    xAsString = inputData.BiasedVectorsPCA[ele].substring(1,endOfX);
+    yAsString = inputData.BiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+    var current_x = parseFloat(xAsString);
+    var current_y = parseFloat(yAsString);
+    var point = {x: current_x, y:current_y};
+    listOfPointsBias.push(point);
+  }
+  var ctx = document.getElementById('myChart1').getContext('2d'); //Replace myChart with targetID
+  var scatterChart = new Chart(ctx, {
+  type: 'scatter',
+    data: {
+      labels: chartLabelsDebias,
+        datasets: [{
+          label: 'Debiased',
+          data: listOfPointsDebias,
+          backgroundColor: '#009dff'
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom'
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+          }
+        }
+      }
+    }
+  });
+  var ctx2 = document.getElementById('myChart2').getContext('2d'); //Replace myChart with targetID
+  var scatterChart2 = new Chart(ctx2, {
+  type: 'scatter',
+    data: {
+      labels: chartLabelsBias,
+        datasets: [{
+          label: 'Biased',
+          data: listOfPointsBias,
+          backgroundColor: '#ffc300'
+        }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom'
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+          }
+        }
+      }
+    }
+  });
 }
 
 document.getElementById('Set1_Debias').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, 'download1', 'card1') });
