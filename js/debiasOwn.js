@@ -1,6 +1,7 @@
 var vectorTypeEnum = 'fasttext';
 var debiasMethodEnum = 'gbdd';
 var enablePCA = "full";
+var enableAugments = "true";
 var currentResult = {};
 
 function getSelectionValues() {
@@ -12,6 +13,13 @@ function getSelectionValues() {
     }
     else if (switcher.checked == true){
       enablePCA = "pca";
+    }
+    let switcher2 = document.getElementById('augmentSwitch');
+    if (switcher2.checked == false){
+      enableAugments = "true";
+    }
+    else if (switcher2.checked == true){
+      enableAugments = "false";
     }
     vectorTypeEnum = activeVectorType.id;
     if (vectorTypeEnum == "uploadSpace"){
@@ -51,10 +59,10 @@ function getSelectionValues() {
     var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2};
     var postJson = JSON.stringify(postDict1);
     startSpinner(target_id);
-    var url = 'http://127.0.0.1:5000/REST/debiasing';
-    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
+    //var url = 'http://127.0.0.1:5000/REST/debiasing';
+    var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
     url += '/' + enablePCA + '/' + debiasMethodEnum;
-    url += '?space=' + vectorTypeEnum + '&augments=True';
+    url += '?space=' + vectorTypeEnum + '&augments=' + enableAugments;
     console.log(postJson);
     document.getElementById(cardID).removeAttribute("hidden");
     console.log("card visible");
@@ -116,6 +124,13 @@ function getSelectionValues() {
               `;
               break;
           }
+          if (enablePCA == 'pca'){
+            output += `
+            <div class="container" style="background-color: #ffffff; max-height:600px; max-width:800px;">
+                <canvas id="chart1"></canvas>
+            </div>
+            `;
+          }
           output += `
                 <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
           `;
@@ -124,7 +139,7 @@ function getSelectionValues() {
         document.getElementById(target_id).innerHTML = output;
           //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
-        drawChart(currentResult, 'xd');
+        drawChart(currentResult, 'chart1');
         })
     } catch (error) {
       console.error();
@@ -149,51 +164,65 @@ function getSelectionValues() {
   }
 
   function drawChart(inputData, targetID){
-    console.log(inputData);
-    console.log(inputData.DebiasedVectorsPCA);
-    var labels = []
+    var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
+    var listOfPointsDebias = [];
+    var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
+    var listOfPointsBias = [];
     for (ele in inputData.DebiasedVectorsPCA){
-      console.log(ele);
-
+      var endOfX = inputData.DebiasedVectorsPCA[ele].indexOf(",");
+      var endOfY = inputData.DebiasedVectorsPCA[ele].length -1
+      xAsString = inputData.DebiasedVectorsPCA[ele].substring(1,endOfX);
+      yAsString = inputData.DebiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+      var current_x = parseFloat(xAsString);
+      var current_y = parseFloat(yAsString);
+      var point = {x: current_x, y:current_y};
+      listOfPointsDebias.push(point);
     }
-    /*
-    var ctx = document.getElementById('myChart').getContext('2d'); //Replace myChart with targetID
-      var scatterChart = new Chart(ctx, {
-      type: 'scatter',
-          data: {
-              labels: ['Alpha', 'Bravo', 'Charlie'],
-              datasets: [{
-                  label: 'Scatter Dataset',
-                  data: [{
-                      x: 0.123332,
-                      y: 0.855432
-                  }, {
-                      x: -0.138524,
-                      y: 0.32255
-                  }, {
-                      x: 0.65543,
-                      y: -0.23443
-                  }]
-              }]
+    for (ele in inputData.BiasedVectorsPCA){
+      var endOfX = inputData.BiasedVectorsPCA[ele].indexOf(",");
+      var endOfY = inputData.BiasedVectorsPCA[ele].length -1
+      xAsString = inputData.BiasedVectorsPCA[ele].substring(1,endOfX);
+      yAsString = inputData.BiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+      var current_x = parseFloat(xAsString);
+      var current_y = parseFloat(yAsString);
+      var point = {x: current_x, y:current_y};
+      listOfPointsBias.push(point);
+    }
+    var ctx = document.getElementById(chart1).getContext('2d'); //Replace myChart with targetID
+    var scatterChart = new Chart(ctx, {
+    type: 'scatter',
+      data: {
+      labels: chartLabelsDebias.concat(chartLabelsBias),
+          datasets: [{
+            label: 'Debiased',
+            data: listOfPointsDebias,
+            backgroundColor: '#009dff',
+            labels: chartLabelsDebias
           },
-          options: {
-              scales: {
-                  xAxes: [{
-                      type: 'linear',
-                      position: 'bottom'
-                  }]
-              },
-              tooltips: {
-                  callbacks: {
-                      label: function(tooltipItem, data) {
-                      var label = data.labels[tooltipItem.index];
-                      return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-                      }
-                  }
-              }
+        {
+          label: 'Biased',
+          data: listOfPointsBias,
+          backgroundColor: '#ffc300',
+          labels: chartLabelsBias
+        }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'linear',
+              position: 'bottom'
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+              var label = data.labels[tooltipItem.index];
+              return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+            }
           }
-      });
-      */
+        }
+      }
+    });
   }
   
   document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });

@@ -155,8 +155,8 @@ function createChart(target_id, sourceData){
 function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   getSelectionValues();
   startSpinner(target_id)
-  var url = 'http://127.0.0.1:5000/REST/debiasing';
-  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
+  //var url = 'http://127.0.0.1:5000/REST/debiasing';
+  var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
   sourceFile['EmbeddingSpace'] = vectorTypeEnum;
   sourceFile['Method'] = debiasMethodEnum;
   sourceFile['PCA'] = enablePCA
@@ -238,6 +238,11 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
         }
         if (enablePCA == 'pca'){
           output += `
+          <div class="container" style="background-color: #ffffff; max-height:600px; max-width:800px;">
+              <canvas id="${target_id}_chart1"></canvas>
+          </div>
+          `;
+          /*
           <div class="row">
             <div class="col mx-1" style="background-color: #ffffff; float:left;">
               <canvas id="${target_id}_chart1"></canvas>
@@ -246,7 +251,7 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
               <canvas id="${target_id}_chart2"></canvas>
             </div>
           </div>
-        `;
+          */
         }
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
@@ -284,7 +289,7 @@ function download(filename, content){
 
 function drawChart(identifier, inputData){
   var chart1 = identifier + '_chart1';
-  var chart2 = identifier + '_chart2';
+  //var chart2 = identifier + '_chart2';
   var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
   var listOfPointsDebias = [];
   var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
@@ -313,12 +318,19 @@ function drawChart(identifier, inputData){
   var scatterChart = new Chart(ctx, {
   type: 'scatter',
     data: {
-      labels: chartLabelsDebias,
+    labels: chartLabelsDebias.concat(chartLabelsBias),
         datasets: [{
           label: 'Debiased',
           data: listOfPointsDebias,
-          backgroundColor: '#009dff'
-        }]
+          backgroundColor: '#009dff',
+          labels: chartLabelsDebias
+        },
+      {
+        label: 'Biased',
+        data: listOfPointsBias,
+        backgroundColor: '#ffc300',
+        labels: chartLabelsBias
+      }]
       },
       options: {
         scales: {
@@ -337,6 +349,7 @@ function drawChart(identifier, inputData){
       }
     }
   });
+  /*
   var ctx2 = document.getElementById(chart2).getContext('2d'); //Replace myChart with targetID
   var scatterChart2 = new Chart(ctx2, {
   type: 'scatter',
@@ -365,6 +378,7 @@ function drawChart(identifier, inputData){
       }
     }
   });
+  */
 }
 
 document.getElementById('Set1_Debias').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, 'download1', 'card1') });

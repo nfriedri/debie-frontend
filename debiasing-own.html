@@ -136,15 +136,15 @@
       <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
       <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="augmentSwitch">
-          <label class="custom-control-label" for="augmentSwitch">Retrieve augmentations from database (takes up to 30s per word)</label>
+          <label class="custom-control-label" for="augmentSwitch">Enter augmentations as word lists</label>
           <script>
           document.getElementById('augmentSwitch').addEventListener("click", function() {
             switcher = document.getElementById('augmentSwitch');
             //console.log(switcher.checked);
-            if (switcher.checked == false){
+            if (switcher.checked == true){
               document.getElementById('partOne').removeAttribute('hidden');
             }
-            else if (switcher.checked == true){
+            else if (switcher.checked == false){
               document.getElementById('partOne').setAttribute('hidden', true);
             }
           });
@@ -154,7 +154,7 @@
       </div>
         
       <!--Input Augmentations-->
-      <div id="partOne">
+      <div id="partOne" hidden>
           <div class="input-group mt-4">     
           <div class="input-group-prepend">
               <span class="input-group-text">Augmentations 1:</span>
@@ -169,6 +169,18 @@
         </div>
       </div>
       <!--Input Sets-->  
+      <div class="input-group mt-2"> 
+        <div class="input-group-prepend">
+          <span class="input-group-text">Attribute Set1:</span>
+        </div>
+        <textarea class="form-control" id="attribute_set1" aria-label="With textarea" style="height: 110px"></textarea>
+      </div>
+      <div class="input-group mt-2"> 
+        <div class="input-group-prepend">
+          <span class="input-group-text">Attribute Set2:</span>
+        </div>
+        <textarea class="form-control" id="attribute_set2" aria-label="With textarea" style="height: 110px"></textarea>
+      </div>
       <div class="input-group mt-2"> 
         <div class="input-group-prepend">
           <span class="input-group-text">Target Set1:</span>
