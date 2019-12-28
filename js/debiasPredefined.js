@@ -202,53 +202,63 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
           case 'gbdd':
             output += `
               <h5 class="card-title mb-3">GBDD Debiasing Results ${typeVar}: </h5>
-              <div id="gbdd_chart"></div>
+              <br>
             `;
             break;
           case 'bam':
               output += `
               <h5 class="card-title">BAM Debiasing Results: </h5>
-              <div id="bam_chart"></div>
+              <br>
               `;
             break;
           case 'debiasNet':
               output += `
               <h5 class="card-title">DebiasNet Debiasing Results: </h5>
-              <div id="debiasNet_chart"></div>
+              <br>
             `;
             break;
             case 'gbddxbam':
               output += `
               <h5 class="card-title">GBDD°BAM Debiasing Results: </h5>
-              <div id="bamxgbdd_chart"></div>
+              <br>
             `;
             break;
           case 'bamxgbdd':
               output += `
               <h5 class="card-title">BAM°GBDD Debiasing Results: </h5>
-              <div id="bamxgbdd_chart"></div>
+              <br>
             `;
             break;
           case 'gbddxdebiasNet':
               output += `
               <h5 class="card-title">GBDD°DebiasNet Debiasing Results: </h5>
-              <div id="gbddxdebiasNet_chart"></div>
+              <br>
             `;
             break;
         }
+        if (enablePCA == 'pca'){
+          output += `
+          <div class="row">
+            <div class="col mx-1" style="background-color: #ffffff; float:left;">
+              <canvas id="${target_id}_chart1"></canvas>
+            </div>
+            <div class="col mx-1" style="background-color: #ffffff; float:right;">
+              <canvas id="${target_id}_chart2"></canvas>
+            </div>
+          </div>
+        `;
+        }
         output += `
               <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-              <div class="container" style="background-color: #ffffff; height: 800px; width: 800px;">
-                <canvas id="myChart1"></canvas>
-                <canvas id="myChart2"></canvas>
-              </div>
-        `;
+              `;
         document.getElementById(downloadButtonID).removeAttribute("hidden");  
         //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
       }
       document.getElementById(target_id).innerHTML = output;
-      drawChart(currentResult, '');
+      if (enablePCA == 'pca'){
+        drawChart(target_id, currentResult);
+      }
       })
   } catch (error) {
     console.error();
@@ -272,7 +282,9 @@ function download(filename, content){
   console.log('Downloaded')
 }
 
-function drawChart(inputData){
+function drawChart(identifier, inputData){
+  var chart1 = identifier + '_chart1';
+  var chart2 = identifier + '_chart2';
   var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
   var listOfPointsDebias = [];
   var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
@@ -297,7 +309,7 @@ function drawChart(inputData){
     var point = {x: current_x, y:current_y};
     listOfPointsBias.push(point);
   }
-  var ctx = document.getElementById('myChart1').getContext('2d'); //Replace myChart with targetID
+  var ctx = document.getElementById(chart1).getContext('2d'); //Replace myChart with targetID
   var scatterChart = new Chart(ctx, {
   type: 'scatter',
     data: {
@@ -325,7 +337,7 @@ function drawChart(inputData){
       }
     }
   });
-  var ctx2 = document.getElementById('myChart2').getContext('2d'); //Replace myChart with targetID
+  var ctx2 = document.getElementById(chart2).getContext('2d'); //Replace myChart with targetID
   var scatterChart2 = new Chart(ctx2, {
   type: 'scatter',
     data: {
