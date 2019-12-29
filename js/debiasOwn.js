@@ -6,7 +6,7 @@ var currentResult = {};
 
 function getSelectionValues() {
     let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
-    let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+    let activeDebiasMethod = document.getElementById('debias_methods').getElementsByClassName('active')[0];
     let switcher = document.getElementById('pcaSwitch');
     if (switcher.checked == false){
       enablePCA = "full";
@@ -31,8 +31,8 @@ function getSelectionValues() {
         vectorTypeEnum = fileInputName.getAttribute("placeholder");
       }
     }
-    evaluationMethodEnum = activeEvalMethod.id;
-    console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
+    debiasMethodEnum = activeDebiasMethod.id;
+    console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + enablePCA);
   }
   
   function startSpinner(object_id) {
@@ -54,9 +54,19 @@ function getSelectionValues() {
     getSelectionValues();  
     var targetSet1 = document.getElementById('target_set1').value;
     var targetSet2 = document.getElementById('target_set2').value;
-    var argSet1 = document.getElementById('argument_set1').value;
-    var argSet2 = document.getElementById('argument_set2').value;
-    var postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2};
+    var argSet1 = document.getElementById('attribute_set1').value;
+    var argSet2 = document.getElementById('attribute_set2').value;
+    var postDict1 = {};
+    if (enableAugments == 'false'){
+      var augSetT1 = document.getElementById('augments1').value;
+      var augSetT2 = document.getElementById('augments2').value;
+      var augSetA1 = document.getElementById('augments3').value;
+      var augSetA2 = document.getElementById('augments4').value;
+      postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2, AugT1: augSetT1, AugT2: augSetT2, AugA1: augSetA1, AugA2: augSetA2};
+    }
+    else{
+      postDict1 = {T1: targetSet1, T2: targetSet2, A1: argSet1, A2: argSet2};
+    }
     var postJson = JSON.stringify(postDict1);
     startSpinner(target_id);
     //var url = 'http://127.0.0.1:5000/REST/debiasing';
@@ -127,7 +137,7 @@ function getSelectionValues() {
           if (enablePCA == 'pca'){
             output += `
             <div class="container" style="background-color: #ffffff; max-height:600px; max-width:800px;">
-                <canvas id="chart1"></canvas>
+              <canvas id="chart1"></canvas>
             </div>
             `;
           }
@@ -137,10 +147,12 @@ function getSelectionValues() {
           document.getElementById(downloadButtonID).removeAttribute("hidden");
         }
         document.getElementById(target_id).innerHTML = output;
-          //createDownloadJson(resultVar, sourceFile, data);
         currentResult = data;
-        drawChart(currentResult, 'chart1');
-        })
+        if (enablePCA == 'pca'){
+          console.log('here')
+          drawChart(currentResult);
+        }
+      })
     } catch (error) {
       console.error();
     }
@@ -163,7 +175,7 @@ function getSelectionValues() {
     console.log('Downloaded')
   }
 
-  function drawChart(inputData, targetID){
+  function drawChart(inputData){
     var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
     var listOfPointsDebias = [];
     var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
@@ -188,7 +200,7 @@ function getSelectionValues() {
       var point = {x: current_x, y:current_y};
       listOfPointsBias.push(point);
     }
-    var ctx = document.getElementById(chart1).getContext('2d'); //Replace myChart with targetID
+    var ctx = document.getElementById('chart1').getContext('2d'); //Replace myChart with targetID
     var scatterChart = new Chart(ctx, {
     type: 'scatter',
       data: {
@@ -227,5 +239,5 @@ function getSelectionValues() {
   
   document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });
 
-  document.getElementById('download').addEventListener("click", function() { download('Set1_Debiasing.json', currentResult)});
+  document.getElementById('download').addEventListener("click", function() { download('Set_Debiasing.json', currentResult)});
   

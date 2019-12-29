@@ -4,12 +4,12 @@ const debiasBtn = document.getElementById('Debias2');
 var fileContent = '';
 var result = '';
 var vectorTypeEnum = 'fasttext';
-var evaluationMethodEnum = 'all';
+var debiasMethodEnum = 'gbdd';
 var vectorsEnabled = 'false';
 
-function getSelectionValues() {
+function getSelectionValuesJSON() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
-  let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
+  let activeDebiasMethod = document.getElementById('debias_methods').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
   if (vectorTypeEnum == "uploadSpace"){
     fileInputName = document.getElementById("inputFileInput")
@@ -27,8 +27,8 @@ function getSelectionValues() {
     else if (switcher.checked == true){
       vectorsEnabled = "true";
     }
-  evaluationMethodEnum = activeEvalMethod.id;
-  console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum + " " + vectorsEnabled);
+    debiasMethodEnum = activeDebiasMethod.id;
+  console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + vectorsEnabled);
 }
 
 function handleFileSelect(evt) {
@@ -49,7 +49,7 @@ function handleFileSelect(evt) {
 document.getElementById('customFile').addEventListener('change', handleFileSelect, false);
 
 function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
-    getSelectionValues();
+    getSelectionValuesJSON();
     startSpinner(target_id)
     var url = 'http://127.0.0.1:5000/REST/debiasing';
     //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';

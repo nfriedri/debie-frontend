@@ -11,8 +11,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <!--<link href="style.css" rel="stylesheet">-->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!--<link href="style.css" rel="stylesheet">-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 <body>
     
@@ -46,7 +46,7 @@
   <!-- Radio Button Toolbar -->
   <div class = "container mt-2" >
     <div class="row mt-3 ">
-      <div class="col float-left">
+      <div class="col">
         <h6>Choose a word embedding model:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
           <label class="btn btn-primary active" id="fasttext">
@@ -80,6 +80,26 @@
         </script>
       </div>
       <div class="col">
+        <h6>Choose a bias evaluation method:</h6>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evaluation_methods">
+            <label class="btn btn-primary active"  id="all">
+                <input type="radio" name="allBtn" autocomplete="off" checked> All
+            </label>
+            <label class="btn btn-primary"  id="ect">
+                <input type="radio" name="ectBtn" autocomplete="off"> ECT
+            </label>
+            <label class="btn btn-primary"  id="bat">
+                <input type="radio" name="batBtn" autocomplete="off"> BAT
+            </label>
+            <label class="btn btn-primary"  id="weat">
+                <input type="radio" name="weatBtn" autocomplete="off"> WEAT
+            </label>
+            <label class="btn btn-primary"  id="kmeans">
+                <input type="radio" name="kmeansBtn" autocomplete="off"> KMeans
+            </label>         
+        </div>
+      </div>
+      <div class="col">
         <h6>Choose a debiasing method:</h6>
         <div class="btn-group btn-group-toggle" data-toggle="buttons" id="debias_methods">
             <label class="btn btn-primary active"  id="gbdd">
@@ -106,7 +126,7 @@
             -->
           </div>
       </div>
-      <div class="col-2">
+      <div class="col">
         <div class="custom-control custom-switch float-right">
             <input type="checkbox" class="custom-control-input" id="pcaSwitch">
             <label class="custom-control-label" for="pcaSwitch">PCA On</label>
@@ -140,7 +160,8 @@
   <!-- Direct word input -->
   <div class="container mt-3">  
     <div class="jumbotron bg-dark text-white px-md-5">
-      <h4 class="display-4">Debias your own test sets here</h4>
+      <h4 class="display-4">Run a full test here</h4>
+      <p>This program evaluates firts the test set, then executes the selected debiasing method on it and evaluates the debiased sets again.</p>
       <p>Please enter the words seperated by whitespaces</p>
       <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
       <div class="custom-control custom-switch">
@@ -164,55 +185,43 @@
         
       <!--Input Augmentations-->
       <div id="partOne" hidden>
-        <div class="input-group mt-4">     
+          <div class="input-group mt-4">     
           <div class="input-group-prepend">
-              <span class="input-group-text">Augmentations <br> Test Set 1:</span>
+              <span class="input-group-text">Augmentations 1:</span>
           </div>
           <textarea class="form-control" id="augments1" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
           <div class="input-group mt-2"> 
           <div class="input-group-prepend">
-              <span class="input-group-text">Augmentations <br> Test Set 2:</span>
+              <span class="input-group-text">Augmentations 2:</span>
           </div>
           <textarea class="form-control" id="augments2" aria-label="With textarea" style="height: 110px"></textarea>
         </div>
-        <div class="input-group mt-2">     
-          <div class="input-group-prepend">
-              <span class="input-group-text">Augmentations <br> Attribute Set 1:</span>
-          </div>
-          <textarea class="form-control" id="augments3" aria-label="With textarea" style="height: 110px"></textarea>
-        </div>
-        <div class="input-group mt-2">     
-          <div class="input-group-prepend">
-              <span class="input-group-text">Augmentations <br> Attribute Set 2:</span>
-          </div>
-          <textarea class="form-control" id="augments4" aria-label="With textarea" style="height: 110px"></textarea>
-        </div>
       </div>
       <!--Input Sets-->  
-      <div class="input-group mt-4"> 
-        <div class="input-group-prepend">
-          <span class="input-group-text">Target Set1:</span>
-        </div>
-        <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px">brother father uncle grandfather son he his him</textarea>
-      </div>
-      <div class="input-group my-2"> 
-        <div class="input-group-prepend">
-            <span class="input-group-text">Target Set2:</span>
-        </div>
-        <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px">sister mother aunt grandmother daughter she hers her</textarea>
-      </div>
       <div class="input-group mt-2"> 
         <div class="input-group-prepend">
           <span class="input-group-text">Attribute Set1:</span>
         </div>
-        <textarea class="form-control" id="attribute_set1" aria-label="With textarea" style="height: 110px">science technology physics chemistry Einstein NASA experiment astronomy</textarea>
+        <textarea class="form-control" id="attribute_set1" aria-label="With textarea" style="height: 110px">brother father uncle grandfather son he his him</textarea>
       </div>
       <div class="input-group mt-2"> 
         <div class="input-group-prepend">
           <span class="input-group-text">Attribute Set2:</span>
         </div>
-        <textarea class="form-control" id="attribute_set2" aria-label="With textarea" style="height: 110px">poetry art Shakespeare dance literature novel symphony drama</textarea>
+        <textarea class="form-control" id="attribute_set2" aria-label="With textarea" style="height: 110px">sister mother aunt grandmother daughter she hers her</textarea>
+      </div>
+      <div class="input-group mt-2"> 
+        <div class="input-group-prepend">
+          <span class="input-group-text">Target Set1:</span>
+        </div>
+        <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px">science technology physics chemistry Einstein NASA experiment astronomy</textarea>
+      </div>
+      <div class="input-group my-2"> 
+        <div class="input-group-prepend">
+            <span class="input-group-text">Target Set2:</span>
+        </div>
+        <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px">poetry art Shakespeare dance literature novel symphony drama</textarea>
       </div>
       <button class="btn btn-primary btn-lg" id="Debias1">Debias</button>
       </p>
@@ -220,41 +229,15 @@
   </div>
 
   <!-- Response -->
-  <div class="container mb-5">
+  <div class="container mb-3">
     <div class="card bg-dark text-white mb-2" id = "card" hidden>
       <div class="card-body" id="card_response">
       </div>
       <input type="image" src="img/download.png" height="10%" width="10%" id="download" hidden></input>
     </div>
-  </div>
+</div>
 
-<!-- Upload a file -->
-  <div class="container">
-    <div class="jumbotron bg-dark text-white px-md-5">
-      <h4 class="display-4 mb-4">Upload a JSON file here</h4>
-      <p>Please be aware that the uploaded JSON file needs to have the same structure as the example file you can find under "about".</p>
-      <div class="custom-control custom-switch mb-2">
-          <input type="checkbox" class="custom-control-input" id="vectorsEnabled">
-          <label class="custom-control-label" for="vectorsEnabled">Upload format with vectors</label>
-      </div>
-      <div class="custom-file mb-2">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Choose file</label>
-      </div>
-      <button class="btn btn-primary btn-lg" id='Debias2'>Debias</button>
-    </div>
-  </div>
-
-  <div class="container mb-5">
-    <div class="card bg-dark text-white mb-2" id = "card2" hidden>
-      <div class="card-body" id="card_response2">
-      </div>
-      <input type="image" src="img/download.png" height="10%" width="10%" id="download2" hidden></input>
-    </div>
-  </div>
-
-<script src="js/debiasOwn.js"> </script>
-<script src="js/debiasUploadJSON.js"></script>
+<script src="js/fullProgram.js"> </script>
 
 <!-- Footer -->
 <footer class="container py-5">
