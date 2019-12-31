@@ -45,7 +45,7 @@
     <div class="container-fluid">
         <div class="jumbotron bg-dark text-white px-md-5">
             <h1 class="display-4">DEBIE</h1>
-            <p class="lead">With the help of this webapplication it is possible to evalute bias in word embeddings and to remove the bias from them (debias). 
+            <p class="lead">With the help of this web application it is possible to evalute bias in word embeddings and to remove the bias from them (debiasing). 
                 </p>
             <hr class="my-4">
             <p>In the following you will get a short introduction to the topics "word embeddings", "word2Vec algorithms", "implicit and explixit bias", "bias evaluation" and "debiasing"</p>
@@ -59,10 +59,11 @@
                 <hr class="my-4">
                 <p class="lead">Usage</p> 
                 <p>In the web application DEBIE you can choose between 4 different embedding spaces or simply upload your own embedding space. Fastened to the application
-                    are 4 databases containing vectors retrieved through using fasttext, skipgram, glove and cbow on an word corpus of wikipedia. All vectors have a dimension of 300.
-                    By uploading your own embedding space, please pay attention that all vectors have the same dimensionality. If you want to start multiple requests with your own
-                    embedding space please do not upload your embedding space multiple times instead just copy the name of the database and insert it into the field on top "Selected File".
-                    Alternatively you can access the RESTful API of this application via a tool like postman. You can find a short "how-to" for the API under <a id="goToAPI">"RESTful API"</a> on this site.
+                    are 4 databases containing pre trained word vector representations retrieved through using the fastText, Skip-Gram, GloVe and CBOW models on wikipedia word corpora.
+                    The contained vectors all have a dimensionality of 300. For further details on the used vector training models, please follow the links to the references provided in the 
+                    footer of this web site. By uploading your own embedding space, please pay attention that all vectors have the same dimensionality, otherwise a correct computation can not be ensured.
+                    If you want to start multiple requests with your own embedding space please do not upload your embedding space multiple times, instead just copy the name of the database and insert it 
+                    into the field on top, called "Selected File". The system will then retrieve your file from its memory automatically.
                 </p>
           </div>
         </div>
@@ -72,12 +73,13 @@
             <h1 class="display-4">Bias Evaluation</h1>
             <hr class="my-4">
             <p class="lead">Usage</p> 
-            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
-            <p class="lead">Predefined test and attribute sets</p>
-            <p>By retrieving bias evaluations from the predefined sets simply choose the wanted evaluation methods and the embedding space you want in the selection bar on top of 
-                the site and click on 'Evaluate'. You can choose between the embedding coherence test (ect), the bias analogy test (bat), the word embedding association test (weat) 
-                for explicit bias measuring and the kmeans clustering algorithm for measuring the implicit bias. Alternatively you can simply let the app calculate all named measurements, 
-                but please be aware that this can take a certain amount of time.
+            <p>This webapplication gives the possibility to either evaluate the bias on pre-defined test sets or to evaluate self-defined test sets.</p>
+            <p class="lead">Pre-defined test sets</p>
+            <p>By retrieving bias evaluations from the pre-defined test sets, simply choose the wanted evaluation methods and the embedding space in the selection bar on top of 
+                the site and click on the 'Evaluate'-button. You can choose between the embedding coherence test (ECT), the bias analogy test (BAT), the word embedding association test (WEAT) 
+                for explicit bias measuring and the k Means++ clustering algorithm for measuring implicit bias. Alternatively you can simply let the application compute all named measurements, 
+                but please be aware that this can take a certain amount of time, depending on the size of the test set.
+                To accelerate the calculation of the WEAT test, only the first 1000 random permutations are taken into account for the p-value computation. The result of the 
             </p>
             <p class="lead">Own defined test and attribute sets</p>
             <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
@@ -90,7 +92,7 @@
 
     <div class="container-fluid">
             <div class="jumbotron">
-                <h1 class="display-4">Debias</h1>
+                <h1 class="display-4">Debiasing</h1>
                 <hr class="my-4">
                 <p class="lead">Usage</p> 
                 <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
@@ -104,51 +106,142 @@
                 <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
                     whitespaces into the corresponding fields. Field T1 is for the first target set, field T2 for the second target set, field A1 for the first attribute set and
                     field A2 is for the second attribute set. Choose the wanted evaluations and embedding spaces in the selection bar on top and you are ready to go for 
-                    evaluating your self defined test.
+                    evaluating your self defined test. <br>
+                    Additionally you can turn self-defined augmentations on by pressing the augmentations switch-button. Then you have to enter also augmentations on which the
+                    debiasing models can be trained.
                 </p>
           </div>
         </div>
 
     <div class="container-fluid">
         <div class="jumbotron">
-            <h1 class="display-4">JSON Formats</h1>
+            <h1 class="display-4">Accepted Files & Formats</h1>
             <hr class="my-4">
-            <p class="lead">Usage</p> 
-            <p>
-                <code>{
-                        "T1":
-                        [
-                            {
-                            "word": "",
-                            "vector": ""
-                            }
-                        ]
-                        "T2":
-                        [
-                            {
-                            "word": "",
-                            "vector": ""
-                            }
-                        ]
-                        "A1":
-                        [
-                            {
-                            "word": "",
-                            "vector": ""
-                            }
-                        ]
-                        "A2":
-                        [
-                            {
-                            "word": "",
-                            "vector": ""
-                            }
-                        ]
-                    }
-                </code>
-            </p>
-            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
-      </div>
+            <p class="lead">API accepted JSON-formats</p>
+            <div class="row">
+            <div class="col">
+                <a>For Evaluation & Debiasing with augmentation flag = false:</a> 
+                <p><pre><code>
+{
+    "T1": "string",
+    "T2": "string",
+    "A1": "string",
+    "A2": "string"
+}
+                </code></pre></p>
+                <a>For Debiasing with augmentation flag = true:</a>
+                <p><pre><code></code>
+{
+    "T1": "string",
+    "T2": "string",
+    "A1": "string",
+    "A2": "string",
+    "AugT1": "string",
+    "AugT2": "string",
+    "AugA1": "string",
+    "AugA2": "string"
+}
+                </code></pre></p>
+        </div>
+        <div class="col"> 
+            <a>For Evaluation & Debiasing with vector flag = true and augmentation flag = false</a>
+            <p><pre><code>
+{
+    "T1": [
+        {
+        "word": "string", 
+        "vector": "string"
+        }
+    ],
+    "T2": [
+        {
+        "word": "string",
+        "vector": "string"
+        }
+    ],
+    "A1": [
+        {
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ], 
+    "A2": [ 
+        { 
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ]
+}
+            </code></pre></p>
+        </div>
+        <div class="col">
+            <a>For Evaluation & Debiasing with vector flag = true and augmentation flag = true</a>
+        <p><pre><code>
+{
+    "T1": [
+        {
+        "word": "string", 
+        "vector": "string"
+        }
+    ],
+    "T2": [
+        {
+        "word": "string",
+        "vector": "string"
+        }
+    ],
+    "A1": [
+        {
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ], 
+    "A2": [ 
+        { 
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ]
+    "AugT1": [
+        {
+        "word": "string", 
+        "vector": "string"
+        }
+    ],
+    "AugT2": [
+        {
+        "word": "string",
+        "vector": "string"
+        }
+    ],
+    "AugA1": [
+        {
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ], 
+    "AugA2": [ 
+        { 
+        "word": "string", 
+        "vector": "string" 
+        } 
+    ]
+}
+            </code></pre></p>
+        </div>
+        </div>
+        <hr class="my-4">
+        <p class="lead">API output formats</p>
+        <div class="row">
+        <div class="col">
+        </div>
+        </div>
+        <hr class="my-4">
+        <p class="lead">Upload Embedding Space</p>
+        <div class="row">
+        <div class="col">
+        </div>
+        </div>
     </div>
 
     <div class="container-fluid">
@@ -156,86 +249,50 @@
             <h1 class="display-4">RESTful API</h1>
             <hr class="my-4">
             <p class="lead">Usage</p> 
-            <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
+            <p>For evaluating bias and debiasing it is not necessarily to use this web application as a front-end. In some cases it might be useful to connect 
+                directly to the back-end of this application. Therefore, the REST-ful API can be used. The API is accessible via the link:
+                <a href="wifo5-29.informatik.uni-mannheim.de:8000/REST/test">wifo5-29.informatik.uni-mannheim.de:8000/REST/</a>.
+                The complete documentation of the API can be found by following the link below.</p>
+            <p class="lead"><a href="/swagger/index.html">Swagger Documentation</a></p>
         </div>
     </div>
 
-
-    <div class="container" width="50" height="50">
-            <canvas id="myChart" width="50" height="50"></canvas>
-            <script>
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var scatterChart = new Chart(ctx, {
-            type: 'scatter',
-                data: {
-                    labels: ['Alpha', 'Bravo', 'Charlie'],
-                    datasets: [{
-                        label: 'Scatter Dataset',
-                        data: [{
-                            x: 0.123332,
-                            y: 0.855432
-                        }, {
-                            x: -0.138524,
-                            y: 0.32255
-                        }, {
-                            x: 0.65543,
-                            y: -0.23443
-                        }]
-                    }]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            type: 'linear',
-                            position: 'bottom'
-                        }]
-                    },
-                    tooltips: {
-                        callbacks: {
-                            label: function(tooltipItem, data) {
-                            var label = data.labels[tooltipItem.index];
-                            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-                            }
-                        }
-                    }
-                }
-            });
-            </script>
-    </div>
-
     <footer class="container py-5">
-            <div class="row">
-                <div class="col-12 col-md">
-                <img src="img/logo.png" width="128" height="64">
-                <img src="img/logo2.png" width="32" height="32"> 
-                <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
-            </div>
-            <div class="col-6 col-md">
-                <h5>About</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Random feature</a></li>
-                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                    <li><a class="text-muted" href="#">Another one</a></li>
-                    <li><a class="text-muted" href="#">Last time</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Related Work</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">General Framework</a></li>
-                    <li><a class="text-muted" href="#">Paper #2</a></li>
-                    <li><a class="text-muted" href="#">Paper #3</a></li>
-                    <li><a class="text-muted" href="#">Vector sources</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Impressum</h5>
-                <ul class="list-unstyled text-small">
-                    <p>Data and Web Science Group</p>
-                    <p>University of Mannheim</p>
-                </ul>
-            </div>
-            </div>
-        </footer>
+        <div class="row">
+            <div class="col-12 col-md">
+            <img src="img/logo.png" width="128" height="64">
+            <img src="img/logo-nkf.png" width="32" height="32"> 
+            <small class="d-block mb-3 ml-3 text-muted">&copy; 2019-2020</small>
+        </div>
+        <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
+                <li><a class="text-muted" href="https://arxiv.org/pdf/1301.3781.pdf">SkipGram & CBOW</a></li>
+                <li><a class="text-muted" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
+                <li><a class="text-muted" href="/about.html">Vector sources</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Related Work</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="https://arxiv.org/abs/1909.06092">General Framework</a></li>
+                <li><a class="text-muted" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
+                <li><a class="text-muted" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
+                <li><a class="text-muted" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>
+                
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Impressum</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted">Bachelor Thesis by Niklas Friedrich</a></li>
+                <li><a class="text-muted">Supervised by Anne Lauscher and Prof. Dr. Goran Glavaš</a></li>
+                <li><a class="text-muted" href="https://www.uni-mannheim.de/dws/">Data and Web Science Group</a></li>
+                <li><a class="text-muted" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+            </ul>
+        </div>
+        </div>
+    </footer>
 
 </body>
