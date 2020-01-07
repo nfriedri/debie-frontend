@@ -1,7 +1,7 @@
 var vectorTypeEnum = 'fasttext';
 var debiasMethodEnum = 'gbdd';
 var enablePCA = "full";
-var enableAugments = "true";
+var enableAugments = "false";
 var currentResult = {};
 
 function getSelectionValues() {
@@ -16,10 +16,10 @@ function getSelectionValues() {
     }
     let switcher2 = document.getElementById('augmentSwitch');
     if (switcher2.checked == false){
-      enableAugments = "true";
+      enableAugments = "false";
     }
     else if (switcher2.checked == true){
-      enableAugments = "false";
+      enableAugments = "true";
     }
     vectorTypeEnum = activeVectorType.id;
     if (vectorTypeEnum == "uploadSpace"){
@@ -57,7 +57,7 @@ function getSelectionValues() {
     var argSet1 = document.getElementById('attribute_set1').value;
     var argSet2 = document.getElementById('attribute_set2').value;
     var postDict1 = {};
-    if (enableAugments == 'false'){
+    if (enableAugments == 'true'){
       var augSetT1 = document.getElementById('augments1').value;
       var augSetT2 = document.getElementById('augments2').value;
       var augSetA1 = document.getElementById('augments3').value;
@@ -69,8 +69,8 @@ function getSelectionValues() {
     }
     var postJson = JSON.stringify(postDict1);
     startSpinner(target_id);
-    //var url = 'http://127.0.0.1:5000/REST/debiasing';
-    var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
+    var url = 'http://127.0.0.1:5000/REST/debiasing';
+    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
     url += '/' + enablePCA + '/' + debiasMethodEnum;
     url += '?space=' + vectorTypeEnum + '&augments=' + enableAugments;
     console.log(postJson);

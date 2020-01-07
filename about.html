@@ -45,23 +45,24 @@
     <div class="container-fluid">
         <div class="jumbotron bg-dark text-white px-md-5">
             <h1 class="display-4">DEBIE</h1>
-            <p class="lead">With the help of this web application it is possible to evalute bias in word embeddings and to remove the bias from them (debiasing). 
+            <p class="lead">This web application evalutes bias in word embeddings out of bias specifications and removes the bias as far as possible from them through debiasing. 
                 </p>
             <hr class="my-4">
-            <p>In the following you will get a short introduction to the topics "word embeddings", "word2Vec algorithms", "implicit and explixit bias", "bias evaluation" and "debiasing"</p>
+            <p>In the following a short introduction to the topics "word embeddings", "implicit and explixit bias", "bias evaluation" and "debiasing" is presented</p>
             <p class="lead">
             </p>
         </div>
     </div>
     <div class="container-fluid">
             <div class="jumbotron">
-                <h1 class="display-4">Embedding spaces</h1>
+                <h1 class="display-4">Word Embeddings</h1>
                 <hr class="my-4">
                 <p class="lead">Usage</p> 
-                <p>In the web application DEBIE you can choose between 4 different embedding spaces or simply upload your own embedding space. Fastened to the application
-                    are 4 databases containing pre trained word vector representations retrieved through using the fastText, Skip-Gram, GloVe and CBOW models on wikipedia word corpora.
-                    The contained vectors all have a dimensionality of 300. For further details on the used vector training models, please follow the links to the references provided in the 
-                    footer of this web site. By uploading your own embedding space, please pay attention that all vectors have the same dimensionality, otherwise a correct computation can not be ensured.
+                <p>In the web application DEBIE 4 different embedding spaces are provided for retrieving word vector representations. Alternatively, additionall embedding spaces can be uploaded. 
+                    Fastened to the application are 4 databases containing pre-trained word vector representations retrieved through training the fastText, CBOW, Skip-Gram and GloVe and models on wikipedia word corpora.
+                    The contained vectors for fastText, CBOW and GloVe have the dimension 300 and the Skip-Gram vectors have the dimension 250. 
+                    For further details on the used vector training models, please follow the links to the references provided below under "Pre-trained word embeddings".
+                    By uploading your own embedding space, please pay attention that all vectors have the same dimensionality, otherwise a correct computation can not be ensured.
                     If you want to start multiple requests with your own embedding space please do not upload your embedding space multiple times, instead just copy the name of the database and insert it 
                     into the field on top, called "Selected File". The system will then retrieve your file from its memory automatically.
                 </p>
@@ -73,19 +74,28 @@
             <h1 class="display-4">Bias Evaluation</h1>
             <hr class="my-4">
             <p class="lead">Usage</p> 
-            <p>This webapplication gives the possibility to either evaluate the bias on pre-defined test sets or to evaluate self-defined test sets.</p>
+            <p>The Evaluation Engine offers the possibility to either evaluate bias on pre-defined test sets or to evaluate bias in self-defined test sets.</p>
             <p class="lead">Pre-defined test sets</p>
             <p>By retrieving bias evaluations from the pre-defined test sets, simply choose the wanted evaluation methods and the embedding space in the selection bar on top of 
-                the site and click on the 'Evaluate'-button. You can choose between the embedding coherence test (ECT), the bias analogy test (BAT), the word embedding association test (WEAT) 
-                for explicit bias measuring and the k Means++ clustering algorithm for measuring implicit bias. Alternatively you can simply let the application compute all named measurements, 
-                but please be aware that this can take a certain amount of time, depending on the size of the test set.
-                To accelerate the calculation of the WEAT test, only the first 1000 random permutations are taken into account for the p-value computation. The result of the 
+                the site and click on the 'Evaluate'-button. There are 4 methods offered, the embedding coherence test (ECT), the bias analogy test (BAT) or
+                the word embedding association test (WEAT) for evaluating explicit bias specifications and the k Means++ clustering algorithm for measuring implicit bias. 
+                Alternatively it is offered to simply run all evaluation methods, but please be aware that this can take a certain amount of time, depending on the size of the test set.
+                If certain words are not contained in the databases, the term sets of the specifications are adjustet to the same size by removing values randomly.
+                This is done to ensure that the sets all have the same size.
+                To accelerate the calculation of the WEAT test, only the first 1000 random permutations are taken into account for the p-value computation.
+                <br>
+                The presented pre-defined test sets are introduced by <a href="https://arxiv.org/abs/1608.07187">Caliskan et. al. (2017)</a> as WEAT T8 and WEAT T1 
+                test sets in the paper "Semantics derived automatically from language corpora contain human-like biases".
             </p>
-            <p class="lead">Own defined test and attribute sets</p>
-            <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
-                whitespaces into the corresponding fields. Field T1 is for the first target set, field T2 for the second target set, field A1 for the first attribute set and
-                field A2 is for the second attribute set. Choose the wanted evaluations and embedding spaces in the selection bar on top and you are ready to go for 
-                evaluating your self defined test.
+            <p class="lead">Self-defined test sets</p>
+            <p>Alternatively it is offerd to evaluate self-defined test sets under "Upload your own test". Simply enter the words for the target term sets and the attribute term sets 
+                seperated by whitespaces into the corresponding fields. Field T1 is for the first target term set, field T2 for the second target term set, field A1 for the first attribute term set and
+                field A2 is for the second attribute term set. For evaluating, the same embedding spaces and evaluation methods are offered than for pre-defined test sets.
+                These can be selected in the selection bar on top of the site.
+                <br>
+                Additionally, it is offered to upload the test set in a JSON file on the bottom of the side. Therefore, simply pack the input word list into one of the 
+                provided formats which can be found under "Accepted Files & Formats". It is possible to upload the file containing only the word lists or if the switch-button is selected,
+                the vectors have to be uploaded together with the terms.
             </p>
       </div>
     </div>
@@ -96,19 +106,24 @@
                 <hr class="my-4">
                 <p class="lead">Usage</p> 
                 <p>This webapplication gives the possibility to either evaluate the bias on the predefined test sets or to evaluate own defined test and attribute sets.</p>
-                <p class="lead">Predefined test and attribute sets</p>
-                <p>By retrieving bias evaluations from the predefined sets simply choose the wanted evaluation methods and the embedding space you want in the selection bar on top of 
-                    the site and click on 'Evaluate'. You can choose between the embedding coherence test (ect), the bias analogy test (bat), the word embedding association test (weat) 
-                    for explicit bias measuring and the kmeans clustering algorithm for measuring the implicit bias. Alternatively you can simply let the app calculate all named measurements, 
-                    but please be aware that this can take a certain amount of time.
+                <p class="lead">Pre-defined test sets</p>
+                <p>By debiasing pre-defined test sets, simply select the embedding space for vector retrieval and one of the 4 offered debiasing models in the selection bar on top of 
+                    the site and press on the 'Debias'-button under the test set which should be debiased. For debiasing, the General Bias-Direction Debiasing (GBDD) and the Bias Analogy Model (BAM)
+                    are offered together with their compositions GBDD x BAM and BAM x GBDD.
+                    If the switch-button "Enable-PCA" is selected, the application retrieves additionally to the debiased vectors in full dimension their values with a dimension of 2, 
+                    reduced by performing a principal components analysis (PCA). Next to the results, a diagram is displayed comparing the biased and debiased vectors.
+                    <br>
+                    The presented pre-defined test sets are introduced by <a href="https://arxiv.org/abs/1608.07187">Caliskan et. al. (2017)</a> as WEAT T8 and WEAT T1 
+                    test sets in the paper "Semantics derived automatically from language corpora contain human-like biases".
                 </p>
-                <p class="lead">Own defined test and attribute sets</p>
-                <p>Alternatively you can evaluate your own target and attribute sets under "Upload your own test". Here simply enter your words for the target set seperated by 
-                    whitespaces into the corresponding fields. Field T1 is for the first target set, field T2 for the second target set, field A1 for the first attribute set and
-                    field A2 is for the second attribute set. Choose the wanted evaluations and embedding spaces in the selection bar on top and you are ready to go for 
-                    evaluating your self defined test. <br>
-                    Additionally you can turn self-defined augmentations on by pressing the augmentations switch-button. Then you have to enter also augmentations on which the
-                    debiasing models can be trained.
+                <p class="lead">Self-defined test sets</p>
+                <p>Alternatively it is offered to debias selff defined test sets.
+                    Therefore, simply select the embedding space for vector retrieval and one of the 4 offered debiasing models in the selection bar on top of the site.
+                    The debiasing models are trained by using augmentations of the provided input words. 
+                    These can either be retrieved by the system or can be specified in the input by pressing the offered augments switch-button and entering the word lists in the offered fields.
+                    The words in the words list have to be separated by blanc spaces.
+                    If the "Enable-PCA" switch-button on top is selected, the application retrieves additionally to the debiased vectors in full dimension their values with a dimension of 2, 
+                    reduced by performing a principal components analysis (PCA). Next to the results, a diagram is displayed comparing the biased and debiased vectors.
                 </p>
           </div>
         </div>
@@ -234,12 +249,98 @@
         <p class="lead">API output formats</p>
         <div class="row">
         <div class="col">
+            <a>Bias evaluation response for "ALL" methods</a>
+            <p><pre><code>
+{
+   "EmbeddingSpace":"string",
+   "EvaluationMethods":"string",
+   "ECT-Value1": number,
+   "ECT-P-Value1": number,
+   "ECT-Value2": number,
+   "ECT-P-Value2": number,
+   "BAT-Value": number,
+   "WEAT-effect-size": number,
+   "WEAT-p-value": number,
+   "K-Means-value": number,
+   "T1":"string",
+   "T2":"string",
+   "A1":"string",
+   "A2":"string"
+}
+            </code></pre></p>
+        </div>
+        <div class="col">
+            <p>Response format for a debiasing-request </p>
+            <p><pre><code>
+{ 
+    "EmbeddingSpace":"string",
+    "Method":"string",
+    "BiasedVecs:": { 
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+    "DebiasedVecs": {
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+}
+            </code></pre></p>
+        </div>
+        <div class="col">
+            <p>Response format for a debiasing-request with PCA enabled:</p>
+            <p><pre><code>
+{ 
+    "EmbeddingSpace":"string",
+    "Method":"string",
+    "BiasedVecs:": { 
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+    "DebiasedVecs": {
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+    "BiasedVecsPCA:": { 
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+    "DebiasedVecsPCA": {
+        "word1": "string",
+        "word2": "string",
+        "word3": "string",
+        "word4": "string"
+    }
+}
+            </code></pre></p>
         </div>
         </div>
         <hr class="my-4">
         <p class="lead">Upload Embedding Space</p>
         <div class="row">
         <div class="col">
+            <p>Accepted format for embedding space uploads:</p>
+            <p><pre><code>
+word1 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word2 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word3 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word4 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word5 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word6 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word7 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word8 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+...
+            </code></pre></p>
         </div>
         </div>
     </div>
