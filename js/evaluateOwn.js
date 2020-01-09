@@ -114,32 +114,44 @@ function sendRequest() {
                 <table class="table table-borderless table-dark">
                   <tbody>
                     <tr>
+                    <th scope="row">ECT with combined argument sets: </th>
+                    <td>${data.EctValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with combined argument sets: </th>
+                    <td>${data.EctPValue}</td>
+                    </tr>
+                    <tr>
                     <th scope="row">ECT with argument set 1: </th>
-                    <td>${data.ect_value1}</td>
+                    <td>${data.EctValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 1: </th>
-                    <td>${data.p_value1}</td>
+                    <td>${data.EctPValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT with argument set 2: </th>
-                    <td>${data.ect_value2}</td>
+                    <td>${data.EctValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 2: </th>
-                    <td>${data.p_value2}</td>
+                    <td>${data.EctPValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">BAT score: </th>
-                    <td>${data.bat_result}</td>
+                    <td>${data.BatValue}</td>
                     </tr>
                     <tr>
                     <th scope="row">WEAT effect size: </th>
-                    <td>${data.weat_effect_size}</td>
+                    <td>${data.WeatEffectSize}</td>
                     </tr>
                     <tr>
                     <th scope="row">WEAT p-value: </th>
-                    <td>${data.weat_pvalue}</td>
+                    <td>${data.WeatPValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">K-Means result: </th>
+                    <td>${data.KmeansValue}</td>
                     </tr>
                   </tbody>
                 </table>       
@@ -151,20 +163,28 @@ function sendRequest() {
                 <table class="table table-borderless table-dark">
                   <tbody>
                     <tr>
-                    <th scope="row">ECT with argument set 1: </th>
-                    <td>${data.ect_value1}</td>
+                    <th scope="row">ECT with combined argument sets: </th>
+                    <td>${data.EctValue}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 1: </th>
-                    <td>${data.p_value1}</td>
+                    <td>${data.EctPValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.EctValue1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.EctPValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT with argument set 2: </th>
-                    <td>${data.ect_value2}</td>
+                    <td>${data.EctValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 2: </th>
-                    <td>${data.p_value2}</td>
+                    <td>${data.EctPValue2}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -177,7 +197,7 @@ function sendRequest() {
                   <tbody>
                     <tr>
                       <th scope="row">BAT score: </th>
-                      <td>${data.bat_result}</td>
+                      <td>${data.BatValue}</td>
                     </tr>
                   </tbody>
                 </table>  
@@ -190,11 +210,11 @@ function sendRequest() {
                   <tbody>
                   <tr>
                   <th scope="row">WEAT effect size: </th>
-                  <td>${data.weat_effect_size}</td>
+                  <td>${data.WeatEffectSize}</td>
                   </tr>
                   <tr>
                   <th scope="row">WEAT p-value: </th>
-                  <td>${data.weat_pvalue}</td>
+                  <td>${data.WeatPValue}</td>
                   </tr>
                   </tbody>
                 </table>  
@@ -207,7 +227,7 @@ function sendRequest() {
                   <tbody>
                     <tr>
                       <th scope="row">K-Means result: </th>
-                      <td>${data.k_means}</td>
+                      <td>${data.KmeansValue}</td>
                     </tr>
                   </tbody>
                 </table> 
@@ -231,6 +251,7 @@ function sendRequestJSON(){
   startSpinner('card_response2')
   getSelectionValues()
   var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
+  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
   url += '&vectors='+ getToggleSelection()
@@ -271,32 +292,44 @@ function sendRequestJSON(){
                 <table class="table table-borderless table-dark">
                   <tbody>
                     <tr>
+                    <th scope="row">ECT with combined argument sets: </th>
+                    <td>${data.EctValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with combined argument sets: </th>
+                    <td>${data.EctPValue}</td>
+                    </tr>
+                    <tr>
                     <th scope="row">ECT with argument set 1: </th>
-                    <td>${data.ect_value1}</td>
+                    <td>${data.EctValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 1: </th>
-                    <td>${data.p_value1}</td>
+                    <td>${data.EctPValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT with argument set 2: </th>
-                    <td>${data.ect_value2}</td>
+                    <td>${data.EctValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 2: </th>
-                    <td>${data.p_value2}</td>
+                    <td>${data.EctPValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">BAT score: </th>
-                    <td>${data.bat_result}</td>
+                    <td>${data.BatValue}</td>
                     </tr>
                     <tr>
                     <th scope="row">WEAT effect size: </th>
-                    <td>${data.weat_effect_size}</td>
+                    <td>${data.WeatEffectSize}</td>
                     </tr>
                     <tr>
                     <th scope="row">WEAT p-value: </th>
-                    <td>${data.weat_pvalue}</td>
+                    <td>${data.WeatPValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">K-Means result: </th>
+                    <td>${data.KmeansValue}</td>
                     </tr>
                   </tbody>
                 </table>       
@@ -308,20 +341,28 @@ function sendRequestJSON(){
                 <table class="table table-borderless table-dark">
                   <tbody>
                     <tr>
-                    <th scope="row">ECT with argument set 1: </th>
-                    <td>${data.ect_value1}</td>
+                    <th scope="row">ECT with combined argument sets: </th>
+                    <td>${data.EctValue}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 1: </th>
-                    <td>${data.p_value1}</td>
+                    <td>${data.EctPValue}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT with argument set 1: </th>
+                    <td>${data.EctValue1}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">ECT p-value with argument set 1: </th>
+                    <td>${data.EctPValue1}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT with argument set 2: </th>
-                    <td>${data.ect_value2}</td>
+                    <td>${data.EctValue2}</td>
                     </tr>
                     <tr>
                     <th scope="row">ECT p-value with argument set 2: </th>
-                    <td>${data.p_value2}</td>
+                    <td>${data.EctPValue2}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -334,7 +375,7 @@ function sendRequestJSON(){
                   <tbody>
                     <tr>
                       <th scope="row">BAT score: </th>
-                      <td>${data.bat_result}</td>
+                      <td>${data.BatValue}</td>
                     </tr>
                   </tbody>
                 </table>  
@@ -347,11 +388,11 @@ function sendRequestJSON(){
                   <tbody>
                   <tr>
                   <th scope="row">WEAT effect size: </th>
-                  <td>${data.weat_effect_size}</td>
+                  <td>${data.WeatEffectSize}</td>
                   </tr>
                   <tr>
                   <th scope="row">WEAT p-value: </th>
-                  <td>${data.weat_pvalue}</td>
+                  <td>${data.WeatPValue}</td>
                   </tr>
                   </tbody>
                 </table>  
@@ -364,7 +405,7 @@ function sendRequestJSON(){
                   <tbody>
                     <tr>
                       <th scope="row">K-Means result: </th>
-                      <td>${data.k_means}</td>
+                      <td>${data.KmeansValue}</td>
                     </tr>
                   </tbody>
                 </table> 
@@ -388,41 +429,44 @@ function sendRequestJSON(){
 function createDownloadJson2(evalResults){
   resultData['EmbeddingSpace'] = vectorTypeEnum;
   resultData['EvaluationMethods'] = evaluationMethodEnum;
-  var content = JSON.parse(fileContent);
   console.log(evalResults.weat_effect_size);
 
-  resultData['T1'] = content.T1;
-  resultData['T2'] = content.T2;
-  resultData['A1'] = content.A1;
-  resultData['A2'] = content.A2;
+  resultData['T1'] = evalResults.T1;
+  resultData['T2'] = evalResults.T2;
+  resultData['A1'] = evalResults.A1;
+  resultData['A2'] = evalResults.A2;
+
   switch(evaluationMethodEnum){
     case 'all':
-      resultData['ECT-Value1'] = evalResults.ect_value1;
-      resultData['ECT-P-Value1'] = evalResults.p_value1;
-      resultData['ECT-Value2'] = evalResults.ect_value2;
-      resultData['ECT-P-Value2'] = evalResults.p_value2;
-      resultData['BAT-Value'] = evalResults.bat_result;
-      resultData['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultData['WEAT-p-value'] = evalResults.weat_effect_size;
-      resultData['K-Means-value'] = evalResults.k_means;
-      console.log(resultVar);
+      resultVar['EctValue'] = evalResults.EctValue;
+      resultVar['EctPValue'] = evalResults.EctPValue;
+      resultVar['EctValue1'] = evalResults.EctValue1;
+      resultVar['EctPValue1'] = evalResults.EctPValue1;
+      resultVar['EctValue2'] = evalResults.EctValue2;
+      resultVar['EctPValue2'] = evalResults.EctPValue2;
+      resultVar['BatValue'] = evalResults.BatValue;
+      resultVar['WeatEffectSize'] = evalResults.WeatEffectSize;
+      resultVar['WeatPValue'] = evalResults.WeatPValue;
+      resultVar['KmeansValue'] = evalResults.KmeansValue;
       break;
     case 'ect':
-      resultData['ECT-Value1'] = evalResults.ect_value1;
-      resultData['ECT-P-Value1'] = evalResults.p_value1;
-      resultData['ECT-Value2'] = evalResults.ect_value2;
-      resultData['ECT-P-Value2'] = evalResults.p_value2;
+      resultVar['EctValue'] = evalResults.EctValue;
+      resultVar['EctPValue'] = evalResults.EctPValue;
+      resultVar['EctValue1'] = evalResults.EctValue1;
+      resultVar['EctPValue1'] = evalResults.EctPValue1;
+      resultVar['EctValue2'] = evalResults.EctValue2;
+      resultVar['EctPValue2'] = evalResults.EctPValue2;
       break;
     case 'bat':
-      resultData['BAT-Value'] = evalResults.bat_result;
+      resultVar['BatValue'] = evalResults.BatValue;
       break;
     case 'weat':
-      resultData['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultData['WEAT-p-value'] = evalResults.weat_effect_size;
+      resultVar['WeatEffectSize'] = evalResults.WeatEffectSize;
+      resultVar['WeatPValue'] = evalResults.WeatPValue;
       break;
     case 'kmeans':
-      resultData['K-Means-value'] = evalResults.k_means;
-      break;  
+      resultVar['KmeansValue'] = evalResults.KmeansValue;
+      break;
   }
   
   console.log(resultData)
@@ -433,31 +477,34 @@ function createDownloadJson(resultVar, sourceFile, evalResults){
   resultVar['EvaluationMethods'] = evaluationMethodEnum;
   switch(evaluationMethodEnum){
     case 'all':
-      resultVar['ECT-Value1'] = evalResults.ect_value1;
-      resultVar['ECT-P-Value1'] = evalResults.p_value1;
-      resultVar['ECT-Value2'] = evalResults.ect_value2;
-      resultVar['ECT-P-Value2'] = evalResults.p_value2;
-      resultVar['BAT-Value'] = evalResults.bat_result;
-      resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
-      resultVar['K-Means-value'] = evalResults.k_means;
-      console.log(resultVar);
+      resultVar['ECT-Value1'] = evalResults.ECT-Value;
+      resultVar['ECT-P-Value1'] = evalResults.ECT-ValueP;
+      resultVar['ECT-Value1'] = evalResults.ECT-Value1;
+      resultVar['ECT-P-Value1'] = evalResults.ECT-ValueP1;
+      resultVar['ECT-Value2'] = evalResults.ECT-Value2;
+      resultVar['ECT-P-Value2'] = evalResults.ECT-ValueP2;
+      resultVar['BAT-Value'] = evalResults.BAT-Value;
+      resultVar['WEAT-effect-size'] = evalResults.WEAT-effect-size;
+      resultVar['WEAT-p-value'] = evalResults.WEAT-p-value;
+      resultVar['K-Means-value'] = evalResults.K-Means-value;
       break;
     case 'ect':
-      resultVar['ECT-Value1'] = evalResults.ect_value1;
-      resultVar['ECT-P-Value1'] = evalResults.p_value1;
-      resultVar['ECT-Value2'] = evalResults.ect_value2;
-      resultVar['ECT-P-Value2'] = evalResults.p_value2;
+      resultVar['ECT-Value1'] = evalResults.ECT-Value;
+      resultVar['ECT-P-Value1'] = evalResults.ECT-ValueP;
+      resultVar['ECT-Value1'] = evalResults.ECT-Value1;
+      resultVar['ECT-P-Value1'] = evalResults.ECT-ValueP1;
+      resultVar['ECT-Value2'] = evalResults.ECT-Value2;
+      resultVar['ECT-P-Value2'] = evalResults.ECT-ValueP2;
       break;
     case 'bat':
-      resultVar['BAT-Value'] = evalResults.bat_result;
+      resultVar['BAT-Value'] = evalResults.BAT-Value;
       break;
     case 'weat':
-      resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-      resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
+      resultVar['WEAT-effect-size'] = evalResults.WEAT-effect-size;
+      resultVar['WEAT-p-value'] = evalResults.WEAT-p-value;
       break;
     case 'kmeans':
-      resultVar['K-Means-value'] = evalResults.k_means;
+      resultVar['K-Means-value'] = evalResults.K-Means-value;
       break;  
   }
   resultVar['T1'] = sourceFile.T1;
