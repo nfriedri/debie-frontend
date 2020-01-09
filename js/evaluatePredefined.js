@@ -16,15 +16,28 @@ const jsonFile_8 = '/res/test_set8.json';
 var jsonFileContent8 = {};
 const jsonFile_9 = '/res/test_set9.json';
 var jsonFileContent9 = {};
-const elementID_1 = 'table_1';
-const elementID_2 = 'table_2';
-const elementID_3 = 'table_3';
-const elementID_4 = 'table_4';
-const elementID_5 = 'table_5';
-const elementID_6 = 'table_6';
-const elementID_7 = 'table_7';
-const elementID_8 = 'table_8';
-const elementID_9 = 'table_9';
+const jsonFile_10 = '/res/test_set10.json';
+var jsonFileContent10 = {};
+const tableID_1 = 'table_1';
+const tableID_2 = 'table_2';
+const tableID_3 = 'table_3';
+const tableID_4 = 'table_4';
+const tableID_5 = 'table_5';
+const tableID_6 = 'table_6';
+const tableID_7 = 'table_7';
+const tableID_8 = 'table_8';
+const tableID_9 = 'table_9';
+const tableID_10 = 'table_10';
+const captionID_1 = 'name1';
+const captionID_2 = 'name2';
+const captionID_3 = 'name3';
+const captionID_4 = 'name4';
+const captionID_5 = 'name5';
+const captionID_6 = 'name6';
+const captionID_7 = 'name7';
+const captionID_8 = 'name8';
+const captionID_9 = 'name9';
+const captionID_10 = 'name10';
 var result1 = {};
 var result2 = {};
 var result3 = {};
@@ -34,25 +47,27 @@ var result6 = {};
 var result7 = {};
 var result8 = {};
 var result9 = {};
+var result10 = {};
 var vectorTypeEnum = 'fasttext';
 var evaluationMethodEnum = 'all';
 
 window.onload = doByStart()
 
 function doByStart() {
-  loadTestData(jsonFile_1, elementID_1, jsonFileContent1);
-  loadTestData(jsonFile_2, elementID_2, jsonFileContent2);
-  loadTestData(jsonFile_3, elementID_3, jsonFileContent3);
-  loadTestData(jsonFile_4, elementID_4, jsonFileContent4);
-  loadTestData(jsonFile_5, elementID_5, jsonFileContent5);
-  loadTestData(jsonFile_6, elementID_6, jsonFileContent6);
-  loadTestData(jsonFile_7, elementID_7, jsonFileContent7);
-  loadTestData(jsonFile_8, elementID_8, jsonFileContent8);
-  loadTestData(jsonFile_9, elementID_9, jsonFileContent9);
+  loadTestData(jsonFile_1, tableID_1, captionID_1, jsonFileContent1);
+  loadTestData(jsonFile_2, tableID_2, captionID_2, jsonFileContent2);
+  loadTestData(jsonFile_3, tableID_3, captionID_3, jsonFileContent3);
+  loadTestData(jsonFile_4, tableID_4, captionID_4, jsonFileContent4);
+  loadTestData(jsonFile_5, tableID_5, captionID_5, jsonFileContent5);
+  loadTestData(jsonFile_6, tableID_6, captionID_6, jsonFileContent6);
+  loadTestData(jsonFile_7, tableID_7, captionID_7, jsonFileContent7);
+  loadTestData(jsonFile_8, tableID_8, captionID_8, jsonFileContent8);
+  loadTestData(jsonFile_9, tableID_9, captionID_9, jsonFileContent9);
+  loadTestData(jsonFile_10, tableID_10, captionID_10, jsonFileContent10);
   getSelectionValues();
 }
 
-function loadTestData(jsonFile, elementID, target) {
+function loadTestData(jsonFile, tableID, captionID, target) {
   fetch(jsonFile)
     .then(response => response.json())
     .then((data) => {
@@ -77,7 +92,9 @@ function loadTestData(jsonFile, elementID, target) {
     </tr>
     </tbody>
     `;
-      document.getElementById(elementID).innerHTML = output;
+      document.getElementById(captionID).innerHTML = data.Name;
+      document.getElementById(tableID).innerHTML = output;
+      target['Name'] = data.Name;
       target['T1'] = data.T1;
       target['T2'] = data.T2;
       target['A1'] = data.A1;
@@ -362,6 +379,7 @@ document.getElementById('Set6_Evaluate').addEventListener('click', function () {
 document.getElementById('Set7_Evaluate').addEventListener('click', function () { sendRequest('card_words_response7', jsonFileContent7, result7, 'download7', 'card7') });
 document.getElementById('Set8_Evaluate').addEventListener('click', function () { sendRequest('card_words_response8', jsonFileContent8, result8, 'download8', 'card8') });
 document.getElementById('Set9_Evaluate').addEventListener('click', function () { sendRequest('card_words_response9', jsonFileContent9, result9, 'download9', 'card9') });
+document.getElementById('Set10_Evaluate').addEventListener('click', function () { sendRequest('card_words_response10', jsonFileContent10, result10, 'download10', 'card10') });
 
 document.getElementById('download1').addEventListener("click", function() { download('Set1_Evaluation.json', result1)})
 document.getElementById('download2').addEventListener("click", function() { download('Set2_Evaluation.json', result2)})
@@ -372,3 +390,4 @@ document.getElementById('download6').addEventListener("click", function() { down
 document.getElementById('download7').addEventListener("click", function() { download('Set7_Evaluation.json', result7)})
 document.getElementById('download8').addEventListener("click", function() { download('Set8_Evaluation.json', result8)})
 document.getElementById('download9').addEventListener("click", function() { download('Set9_Evaluation.json', result9)})
+document.getElementById('download10').addEventListener("click", function() { download('Set10_Evaluation.json', result10)})
