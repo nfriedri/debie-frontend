@@ -69,8 +69,8 @@ function getSelectionValues() {
     }
     var postJson = JSON.stringify(postDict1);
     startSpinner(target_id);
-    var url = 'http://127.0.0.1:5000/REST/debiasing';
-    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
+    //var url = 'http://127.0.0.1:5000/REST/debiasing';
+    var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/debiasing';
     url += '/' + enablePCA + '/' + debiasMethodEnum;
     url += '?space=' + vectorTypeEnum + '&augments=' + enableAugments;
     console.log(postJson);

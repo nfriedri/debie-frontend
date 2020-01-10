@@ -51,8 +51,8 @@ document.getElementById('customFile').addEventListener('change', handleFileSelec
 function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
     getSelectionValues();
     startSpinner(target_id)
-    var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
-    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/bias-evaluation';
+    //var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
+    var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/bias-evaluation';
     url += '/' + evaluationMethodEnum;
     url += '?space=' + vectorTypeEnum;
     url += '&vectors=' + vectorsEnabled;

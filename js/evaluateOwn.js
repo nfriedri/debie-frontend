@@ -70,8 +70,8 @@ function sendRequest() {
   var targetSet2 = document.getElementById('target_set2').value
   var argSet1 = document.getElementById('argument_set1').value
   var argSet2 = document.getElementById('argument_set2').value
-  var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
-  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
+  //var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
+  var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
   //url += '&vectors=false'
@@ -250,8 +250,8 @@ function sendRequest() {
 function sendRequestJSON(){
   startSpinner('card_response2')
   getSelectionValues()
-  var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
-  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
+  //var url = 'http://127.0.0.1:5000/REST/bias-evaluation'
+  var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
   url += '/' + evaluationMethodEnum;
   url += '?space=' + vectorTypeEnum;
   url += '&vectors='+ getToggleSelection()
