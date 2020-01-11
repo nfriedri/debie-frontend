@@ -4,6 +4,7 @@ var enablePCA = "full";
 var enableAugments = "false";
 var currentResult = {};
 
+//Updates the values of the currently selected parameters
 function getSelectionValues() {
     let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
     let activeDebiasMethod = document.getElementById('debias_methods').getElementsByClassName('active')[0];
@@ -35,7 +36,8 @@ function getSelectionValues() {
     console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + enablePCA);
   }
   
-  function startSpinner(object_id) {
+// Starts a spinner inside the parameter html-object
+function startSpinner(object_id) {
     spinner = `
           <div class="d-flex justify-content-center">
             <div class="spinner-border text-primary" role="status">
@@ -48,9 +50,10 @@ function getSelectionValues() {
     } catch (error) {
       console.error();
     }
-  }
+}
 
-  function sendRequest(target_id, downloadButtonID, cardID) {
+//Send a debiasing request
+function sendRequest(target_id, downloadButtonID, cardID) {
     getSelectionValues();  
     var targetSet1 = document.getElementById('target_set1').value;
     var targetSet2 = document.getElementById('target_set2').value;
@@ -156,15 +159,17 @@ function getSelectionValues() {
     } catch (error) {
       console.error();
     }
-  }
-  
-  function createDownloadJson(resultVar, sourceFile){
+}
+
+//Prepare content for download
+function createDownloadJson(resultVar, sourceFile){
     resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
     resultVar['DebiasingMethods'] = sourceFile.Method;
     console.log(resultVar);
-  }
-  
-  function download(filename, content){
+}
+
+//Download prepared content
+function download(filename, content){
     var element = document.createElement('a');
     element.style.display = 'none';
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(content)));
@@ -173,9 +178,10 @@ function getSelectionValues() {
     element.click();
     document.body.removeChild(element);
     console.log('Downloaded')
-  }
+}
 
-  function drawChart(inputData){
+//Draw a scatter chart 
+function drawChart(inputData){
     var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
     var listOfPointsDebias = [];
     var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
@@ -235,9 +241,9 @@ function getSelectionValues() {
         }
       }
     });
-  }
-  
-  document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });
+}
 
-  document.getElementById('download').addEventListener("click", function() { download('Set_Debiasing.json', currentResult)});
+//Set Event Listeners
+document.getElementById('Debias1').addEventListener("click", function () { sendRequest('card_response', 'download', 'card') });
+document.getElementById('download').addEventListener("click", function() { download('Set_Debiasing.json', currentResult)});
   

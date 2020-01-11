@@ -1,5 +1,6 @@
 var vectorTypeEnum = 'fasttext';
 
+// Starts a spinner inside the parameter html-object
 function startSpinner(object_id) {
   spinner = `
       <div class="d-flex justify-content-center">
@@ -15,12 +16,15 @@ function startSpinner(object_id) {
   }
 }
 
+// Updates the values of the currently selected parameters
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   vectorTypeEnum = activeVectorType.id;
   console.log("Current Values: " + vectorTypeEnum);
 }
 
+
+//Start word2Vec request with one word
 function getWordVecRepresentation() {
   word = document.getElementById('word2Send').value;
   console.log(word);
@@ -55,6 +59,7 @@ function getWordVecRepresentation() {
   }
 }
 
+//Start word2Vec request with a word list
 function getWordListVecRepresentation() {
   getSelectionValues();
   var words = document.getElementById('words2Send').value;
@@ -94,6 +99,6 @@ function getWordListVecRepresentation() {
   }
 }
 
-
+// Set Event Listeners
 document.getElementById('SEND_word').addEventListener('click', function() {getWordVecRepresentation()});
 document.getElementById('SEND_words').addEventListener('click', function() {getWordListVecRepresentation()});

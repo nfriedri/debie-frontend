@@ -5,6 +5,10 @@ var enablePCA = "full";
 var enableAugments = "true";
 var currentResult = {};
 
+
+ // IN DEVELOPMENT
+
+ 
 function getSelectionValues() {
     let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
     let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];

@@ -2,6 +2,7 @@
 const inputFile = document.getElementById('inputFile');
 const btnUpload = document.getElementById('btnUpload');
 
+// Upload an embedding space to the server by a post-request
 function uploadEmbeddingSpace(){
     //var url = "http://127.0.0.1:5000/REST/uploads/embedding-spaces";
     var url = "http://wifo5-29.informatik.uni-mannheim.de:8000/REST/uploads/embedding-spaces";
@@ -36,9 +37,7 @@ function uploadEmbeddingSpace(){
     catch(error){
         console.log(error);
     }
-
-    
-    
 }
 
+//Set Event Listener
 btnUpload.addEventListener("click", function() { uploadEmbeddingSpace() });

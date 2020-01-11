@@ -7,6 +7,7 @@ var vectorTypeEnum = 'fasttext';
 var evaluationMethodEnum = 'all';
 var vectorsEnabled = 'false';
 
+// Updates the values of the currently selected parameters
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
@@ -31,6 +32,7 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
 
+//Handle uploaded JSON-file
 function handleFileSelect(evt) {
     var files = evt.target.files;
     for (var i = 0, f; f = files[i]; i++) {
@@ -48,6 +50,7 @@ function handleFileSelect(evt) {
 }
 document.getElementById('customFile').addEventListener('change', handleFileSelect, false);
 
+//Send bias-evaluation request
 function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
     getSelectionValues();
     startSpinner(target_id)
@@ -210,6 +213,7 @@ function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, car
     }
 }
 
+//Create the JSON-file for downloading results
 function createDownloadOwnJson(resultVar, sourceFile, evalResults){
     resultVar['EmbeddingSpace'] = vectorTypeEnum;
     resultVar['EvaluationMethods'] = evaluationMethodEnum;
@@ -248,6 +252,7 @@ function createDownloadOwnJson(resultVar, sourceFile, evalResults){
     console.log(resultVar)
 }
   
+//Add download functionality
 function downloadOwn(filename, content){
     var element = document.createElement('a');
     element.style.display = 'none';
@@ -264,4 +269,5 @@ evaluateBtn.addEventListener("click", function() {
     fileContent = '';
  });
 
+ // Set Event Listeners
  document.getElementById('download2').addEventListener("click", function() { downloadOwn('Evaluation.json', result)})

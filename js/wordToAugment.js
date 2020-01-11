@@ -1,5 +1,5 @@
 
-
+// Starts a spinner inside the parameter html-object
 function startSpinner(object_id) {
   spinner = `
       <div class="d-flex justify-content-center">
@@ -15,6 +15,7 @@ function startSpinner(object_id) {
   }
 }
 
+// Start augmentation-retrieval request for one word
 function getWordAugments() {
   word = document.getElementById('augmentSend').value;
   console.log(word);
@@ -53,6 +54,7 @@ function getWordAugments() {
   }
 }
 
+//Start augmentation-retrieval request for a word list
 function getWordAugments10k() {
   var words = document.getElementById('augmentSend10k').value;
   //var url = 'http://127.0.0.1:5000/REST/augmentations/first10k';
@@ -96,6 +98,7 @@ function getWordAugments10k() {
   }
 }
 
+//Set Event Listeners
 document.getElementById('SEND_word').addEventListener('click', function(){
   getWordAugments();
 });

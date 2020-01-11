@@ -7,6 +7,7 @@ var vectorTypeEnum = 'fasttext';
 var debiasMethodEnum = 'gbdd';
 var vectorsEnabled = 'false';
 
+//Updates the values of the currently selected parameters
 function getSelectionValuesJSON() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeDebiasMethod = document.getElementById('debias_methods').getElementsByClassName('active')[0];
@@ -31,6 +32,7 @@ function getSelectionValuesJSON() {
   console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + vectorsEnabled);
 }
 
+//Handle uploaded file 
 function handleFileSelect(evt) {
     var files = evt.target.files;
     for (var i = 0, f; f = files[i]; i++) {
@@ -48,6 +50,7 @@ function handleFileSelect(evt) {
 }
 document.getElementById('customFile').addEventListener('change', handleFileSelect, false);
 
+//Send a debiasing request
 function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
     getSelectionValuesJSON();
     startSpinner(target_id)
@@ -118,6 +121,13 @@ function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, car
                 `;
                 break;
             }
+            if (enablePCA == 'pca'){
+              output += `
+              <div class="container" style="background-color: #ffffff; max-height:600px; max-width:800px;">
+                  <canvas id="${target_id}_chart1"></canvas>
+              </div>
+              `;
+            }
             output += `
                   <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
             `;
@@ -126,6 +136,9 @@ function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, car
           document.getElementById(target_id).innerHTML = output;
             //createDownloadJson(resultVar, sourceFile, data);
           currentResult = data;
+          if (enablePCA == 'pca'){
+            drawChart(target_id, currentResult);
+          }
           })
         }
        catch (error) {
@@ -133,44 +146,77 @@ function sendJSONRequest(target_id, sourceFile, resultVar, downloadButtonID, car
     }
 }
 
-function createDownloadOwnJson(resultVar, sourceFile, evalResults){
-    resultVar['EmbeddingSpace'] = vectorTypeEnum;
-    resultVar['EvaluationMethods'] = evaluationMethodEnum;
-    switch(evaluationMethodEnum){
-      case 'all':
-        resultVar['ECT-Value1'] = evalResults.ect_value1;
-        resultVar['ECT-P-Value1'] = evalResults.p_value1;
-        resultVar['ECT-Value2'] = evalResults.ect_value2;
-        resultVar['ECT-P-Value2'] = evalResults.p_value2;
-        resultVar['BAT-Value'] = evalResults.bat_result;
-        resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-        resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
-        resultVar['K-Means-value'] = evalResults.k_means;
-        break;
-      case 'ect':
-        resultVar['ECT-Value1'] = evalResults.ect_value1;
-        resultVar['ECT-P-Value1'] = evalResults.p_value1;
-        resultVar['ECT-Value2'] = evalResults.ect_value2;
-        resultVar['ECT-P-Value2'] = evalResults.p_value2;
-        break;
-      case 'bat':
-        resultVar['BAT-Value'] = evalResults.bat_result;
-        break;
-      case 'weat':
-        resultVar['WEAT-effect-size'] = evalResults.weat_effect_size;
-        resultVar['WEAT-p-value'] = evalResults.weat_effect_size;
-        break;
-      case 'kmeans':
-        resultVar['K-Means-value'] = evalResults.k_means;
-        break;  
-    }
-    resultVar['T1'] = sourceFile.T1;
-    resultVar['T2'] = sourceFile.T2;
-    resultVar['A1'] = sourceFile.A1;
-    resultVar['A2'] = sourceFile.A2;
-    console.log(resultVar)
+//Create content for download
+function createDownloadJson(resultVar, sourceFile, evalResults){
+  resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
+  resultVar['DebiasingMethods'] = sourceFile.Method;
+  console.log(resultVar);
 }
-  
+
+//Draw a scatter chart 
+function drawChart(inputData){
+  var chartLabelsDebias = Object.keys(inputData.DebiasedVectorsPCA);
+  var listOfPointsDebias = [];
+  var chartLabelsBias = Object.keys(inputData.BiasedVectorsPCA);
+  var listOfPointsBias = [];
+  for (ele in inputData.DebiasedVectorsPCA){
+    var endOfX = inputData.DebiasedVectorsPCA[ele].indexOf(",");
+    var endOfY = inputData.DebiasedVectorsPCA[ele].length -1
+    xAsString = inputData.DebiasedVectorsPCA[ele].substring(1,endOfX);
+    yAsString = inputData.DebiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+    var current_x = parseFloat(xAsString);
+    var current_y = parseFloat(yAsString);
+    var point = {x: current_x, y:current_y};
+    listOfPointsDebias.push(point);
+  }
+  for (ele in inputData.BiasedVectorsPCA){
+    var endOfX = inputData.BiasedVectorsPCA[ele].indexOf(",");
+    var endOfY = inputData.BiasedVectorsPCA[ele].length -1
+    xAsString = inputData.BiasedVectorsPCA[ele].substring(1,endOfX);
+    yAsString = inputData.BiasedVectorsPCA[ele].substring(endOfX+1, endOfY);
+    var current_x = parseFloat(xAsString);
+    var current_y = parseFloat(yAsString);
+    var point = {x: current_x, y:current_y};
+    listOfPointsBias.push(point);
+  }
+  var ctx = document.getElementById('chart1').getContext('2d'); //Replace myChart with targetID
+  var scatterChart = new Chart(ctx, {
+  type: 'scatter',
+    data: {
+    labels: chartLabelsDebias.concat(chartLabelsBias),
+        datasets: [{
+          label: 'Debiased',
+          data: listOfPointsDebias,
+          backgroundColor: '#009dff',
+          labels: chartLabelsDebias
+        },
+      {
+        label: 'Biased',
+        data: listOfPointsBias,
+        backgroundColor: '#ffc300',
+        labels: chartLabelsBias
+      }]
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom'
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+            var label = data.labels[tooltipItem.index];
+            return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+          }
+        }
+      }
+    }
+  });
+}
+
+//Download the prepared content
 function downloadOwn(filename, content){
     var element = document.createElement('a');
     element.style.display = 'none';
@@ -182,6 +228,7 @@ function downloadOwn(filename, content){
     console.log('Downloaded')
 }
 
+//Set Event Listeners
 debiasBtn.addEventListener("click", function() { 
     sendJSONRequest("card_response2", fileContent, result, "download2", "card2" );
     fileContent = '';

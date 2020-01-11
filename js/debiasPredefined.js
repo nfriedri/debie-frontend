@@ -45,6 +45,7 @@ var enablePCA = "full";
 
 window.onload = doByStart()
 
+//Load pre-defined test sets
 function doByStart() {
   loadTestData(jsonFile_1, tableID_1, captionID_1, jsonFileContent1);
   loadTestData(jsonFile_2, tableID_2, captionID_2, jsonFileContent2);
@@ -59,6 +60,7 @@ function doByStart() {
   getSelectionValues();
 }
 
+//Present loaded data on the website
 function loadTestData(jsonFile, tableID, captionID, target) {
   fetch(jsonFile)
     .then(response => response.json())
@@ -94,6 +96,7 @@ function loadTestData(jsonFile, tableID, captionID, target) {
     })
 }
 
+//Updates the values of the currently selected parameters
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
@@ -118,6 +121,7 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum + " " + debiasMethodEnum + " " + enablePCA);
 }
 
+// Starts a spinner inside the parameter html-object
 function startSpinner(object_id) {
   spinner = `
       <div class="d-flex justify-content-center">
@@ -133,6 +137,7 @@ function startSpinner(object_id) {
   }
 }
 
+//Create a chart for comparing results if PCA is enabled
 function createChart(target_id, sourceData){
   var label= 'Biased'
   var wordList = jsonFileContent1.T1 + ' ' + jsonFileContent1.T2 + ' ' + jsonFileContent1.A1 + ' ' + jsonFileContent1.A2;
@@ -168,6 +173,7 @@ function createChart(target_id, sourceData){
   });
 }
 
+//Send a request for debiasing
 function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   getSelectionValues();
   startSpinner(target_id)
@@ -286,12 +292,14 @@ function sendRequest(target_id, sourceFile, downloadButtonID, cardID) {
   }
 }
 
+//Prepare results for download
 function createDownloadJson(resultVar, sourceFile, evalResults){
   resultVar['EmbeddingSpace'] = sourceFile.EmbeddingSpace;
   resultVar['DebiasingMethods'] = sourceFile.Method;
   console.log(resultVar);
 }
 
+//Download results
 function download(filename, content){
   var element = document.createElement('a');
   element.style.display = 'none';
@@ -303,6 +311,7 @@ function download(filename, content){
   console.log('Downloaded')
 }
 
+//Draw a scatter chart for result comparing
 function drawChart(identifier, inputData){
   var chart1 = identifier + '_chart1';
   //var chart2 = identifier + '_chart2';
@@ -397,6 +406,7 @@ function drawChart(identifier, inputData){
   */
 }
 
+//Set Event Listeners
 document.getElementById('Set1_Debias').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, 'download1', 'card1') });
 document.getElementById('Set2_Debias').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2, 'download2', 'card2') });
 document.getElementById('Set3_Debias').addEventListener('click', function () { sendRequest('card_words_response3', jsonFileContent3, 'download3', 'card3') });

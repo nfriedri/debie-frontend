@@ -3,6 +3,7 @@ var evaluationMethodEnum = 'all';
 var fileContent = '';
 var resultData = {};
 
+// Handle uploaded file
 function handleFileSelect(evt) {
   var files = evt.target.files;
   for (var i = 0, f; f = files[i]; i++) {
@@ -20,6 +21,7 @@ function handleFileSelect(evt) {
 }
 document.getElementById('customFile').addEventListener('change', handleFileSelect, false);
 
+//Updates the values of the currently selected parameters
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0]
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
@@ -37,6 +39,7 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
 
+// Get the toggle-button selection
 function getToggleSelection(){
   switcher = document.getElementById('vectorsEnabled');
   console.log(switcher.checked);
@@ -48,6 +51,7 @@ function getToggleSelection(){
   }
 }
 
+// Starts a spinner inside the parameter html-object
 function startSpinner(object_id) {
   spinner = `
         <div class="d-flex justify-content-center">
@@ -63,6 +67,7 @@ function startSpinner(object_id) {
   }
 }
 
+//Send a bias evaluation request 
 function sendRequest() {
   startSpinner('card_response')
   getSelectionValues()

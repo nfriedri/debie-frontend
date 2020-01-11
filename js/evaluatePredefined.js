@@ -53,6 +53,7 @@ var evaluationMethodEnum = 'all';
 
 window.onload = doByStart()
 
+//Load pre-defined test sets
 function doByStart() {
   loadTestData(jsonFile_1, tableID_1, captionID_1, jsonFileContent1);
   loadTestData(jsonFile_2, tableID_2, captionID_2, jsonFileContent2);
@@ -67,6 +68,7 @@ function doByStart() {
   getSelectionValues();
 }
 
+//Present loaded data on the website
 function loadTestData(jsonFile, tableID, captionID, target) {
   fetch(jsonFile)
     .then(response => response.json())
@@ -102,6 +104,7 @@ function loadTestData(jsonFile, tableID, captionID, target) {
     });
 }
 
+//Updates the values of the currently selected parameters
 function getSelectionValues() {
   let activeVectorType = document.getElementById('word_embedding').getElementsByClassName('active')[0];
   let activeEvalMethod = document.getElementById('evaluation_methods').getElementsByClassName('active')[0];
@@ -120,6 +123,7 @@ function getSelectionValues() {
   console.log("Current Values: " + vectorTypeEnum + " " + evaluationMethodEnum);
 }
 
+// Starts a spinner inside the parameter html-object
 function startSpinner(object_id) {
   spinner = `
       <div class="d-flex justify-content-center">
@@ -136,7 +140,7 @@ function startSpinner(object_id) {
 }
 
 
-
+//Send bias evaluation request
 function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID) {
   getSelectionValues();
   startSpinner(target_id)
@@ -317,6 +321,7 @@ function sendRequest(target_id, sourceFile, resultVar, downloadButtonID, cardID)
   }
 }
 
+//Prepare content for download
 function createDownloadJson(resultVar, evalResults){
   resultVar['EmbeddingSpace'] = vectorTypeEnum;
   resultVar['EvaluationMethods'] = evaluationMethodEnum;
@@ -359,6 +364,7 @@ function createDownloadJson(resultVar, evalResults){
   console.log(resultVar)
 }
 
+//Create download file
 function download(filename, content){
   var element = document.createElement('a');
   element.style.display = 'none';
@@ -370,6 +376,7 @@ function download(filename, content){
   console.log('Downloaded')
 }
 
+//Set Event Listeners
 document.getElementById('Set1_Evaluate').addEventListener("click", function () { sendRequest('card_words_response', jsonFileContent1, result1, 'download1', 'card1') });
 document.getElementById('Set2_Evaluate').addEventListener('click', function () { sendRequest('card_words_response2', jsonFileContent2, result2, 'download2', 'card2') });
 document.getElementById('Set3_Evaluate').addEventListener('click', function () { sendRequest('card_words_response3', jsonFileContent3, result3, 'download3', 'card3') });
