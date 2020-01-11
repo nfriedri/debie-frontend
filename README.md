@@ -8,4 +8,6 @@ For debiasing, the General Bias-Direction Debiasing (GBDD) and the Bias Analogy 
 
 This repository contains the front-end of the application. The back-end together with the RESTful-API can be found here: https://github.com/nfriedri/debie-backend
 
+The scripts for creating the required databases etc. are published here: https://github.com/nfriedri/debie-scripts
+
 This application is accessible under: http://wifo5-29.informatik.uni-mannheim.de
