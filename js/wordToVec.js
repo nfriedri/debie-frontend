@@ -35,12 +35,27 @@ function getWordVecRepresentation() {
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
   startSpinner('card1');
+  var statusFlag = 200;
   try {
     const response = fetch(url, {
         method: 'GET',
       })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
       .then((data) => {
+        let output = '';
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
         let output = '';
         let vec = data.vector.toString().replace(/,/g, ' ');
         output += `
@@ -52,7 +67,9 @@ function getWordVecRepresentation() {
             `;
         console.log(output);
         currentVec = data.vector;
+        }
         document.getElementById('card1').innerHTML = output;
+        
       })
   } catch (error) {
     console.error();
@@ -69,6 +86,7 @@ function getWordListVecRepresentation() {
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
   startSpinner('card2');
+  var statusFlag = 200;
   try {
     const response = fetch(url, {
         method: 'POST',
@@ -77,8 +95,22 @@ function getWordListVecRepresentation() {
           'Content-Type': 'application/json'
         }
       })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
       .then((data) => {
+        let output = '';
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
         console.log(data);
         let output = `<div class="card-body" id="response2"></div>
                       <h5 class="card-title px-2">Result:</h5><br>`;
@@ -92,6 +124,7 @@ function getWordListVecRepresentation() {
           <br>
           `;
         }
+      }
         document.getElementById('card2').innerHTML = output;
       })
   } catch (error) {

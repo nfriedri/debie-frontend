@@ -19,18 +19,33 @@ function startSpinner(object_id) {
 function getWordAugments() {
   word = document.getElementById('augmentSend').value;
   console.log(word);
-  var url = 'http://127.0.0.1:5000/REST/augmentations/single';
-  //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/single';
+  //var url = 'http://127.0.0.1:5000/REST/augmentations/single';
+  var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/single';
   url += '?word=' + word;
   console.log(url);
   document.getElementById('card1').removeAttribute('hidden');
   startSpinner('card1');
+  var statusFlag = 200;
   try {
     const response = fetch(url, {
         method: 'GET',
       })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
       .then((data) => {
+        let output = '';
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
         console.log(data);
         let output = '';
         output += `
@@ -47,7 +62,9 @@ function getWordAugments() {
           </div>
             `;
         //console.log(output);
+      }
         document.getElementById('card1').innerHTML = output;
+      
       })
   } catch (error) {
     console.error();
@@ -57,12 +74,12 @@ function getWordAugments() {
 //Start augmentation-retrieval request for a word list
 function getWordAugments10k() {
   var words = document.getElementById('augmentSend10k').value;
-  //var url = 'http://127.0.0.1:5000/REST/augmentations/first10k';
+  //var url = 'http://127.0.0.1:5000/REST/augmentations/multiple';
   var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/augmentations/multiple';
-  url += '?space=' + vectorTypeEnum;
   dataJSON = { data: words };
   document.getElementById('card2').removeAttribute('hidden');
   startSpinner('card2');
+  var statusFlag = 200;
   try {
     const response = fetch(url, {
         method: 'POST',
@@ -71,8 +88,22 @@ function getWordAugments10k() {
           'Content-Type': 'application/json'
         }
       })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok){
+          statusFlag = res.status;
+        }
+        return res.json();
+      })
       .then((data) => {
+        let output = '';
+        if (statusFlag != 200){
+          output += `
+          <h5 class="card-title mb-3">ERROR</h5>
+          <p>${statusFlag} ${data.message}</p> 
+          <p>Please check your input and try again.</p>
+          `
+        }
+        else{
         console.log(data);
         let output = `<div class="card-body" id="response2"></div>
                       <h5 class="card-title px-2">Result:</h5><br>`;
@@ -91,6 +122,7 @@ function getWordAugments10k() {
         output += `
           </div>
           `;
+      }
         document.getElementById('card2').innerHTML = output;
       })
   } catch (error) {
