@@ -11,17 +11,21 @@ var tableButtonArray = [];
 async function loadTestData() {   
     console.log('TestData Loading')
     for (i=1; i<=numberOfResources; i++){
-        console.log(i)
+        //console.log(i)
         var filePath = resourcePath + i + resourceType;
         var tableName = 'table' + i;
-        var tableIcon = 'table' + i + 'icon';
-        var tableContent = 'table' + i + 'content';
-        var tableButton = 'table' + i + 'button';
-        var tableScript = 'table' + i + 'script';
-        console.log(tableName +' '+ tableIcon + ' ' + tableContent + " " + tableButton)
+        var tableIcon = 'tableIcon' + i;
+        var tableContent = 'tableContent' + i;
+        var tableButton = 'tableButton' + i;
+        //console.log(tableName +' '+ tableIcon + ' ' + tableContent + " " + tableButton)
         await fetch(filePath)
         .then(response => response.json())
         .then((data) => {
+            var dataName = data.Name;
+            var T1 = data.T1;
+            var T2 = data.T2;
+            var A1 = data.A1;
+            var A2 = data.A2;
             let output = "";
             output += `
             <div class="my-4">
@@ -74,12 +78,10 @@ async function loadTestData() {
                         return 0;
                     }
                 }
+
                 document.getElementById("${tableName}").addEventListener("click", function() {show("${tableContent}", "${tableButton}", "${tableIcon}")});
                 document.getElementById("${tableIcon}").addEventListener("click", function() {show("${tableContent}", "${tableButton}", "${tableIcon}")});
-            </script>
-            <script>
-                var x = document.getElementById($)
-                console.log('WTF');
+                document.getElementById("${tableButton}").addEventListener("click", function() { selectSpecification("${dataName}", "${T1}", "${T2}", "${A1}", "${A2}")});
             </script>
             `;
             element.innerHTML += output;
@@ -93,4 +95,35 @@ async function loadTestData() {
 
 window.onload = loadTestData();
 
-
+function selectSpecification(name, t1, t2, a1, a2) {
+    selectionContainer = document.getElementById('selectionContainer')
+    selectionContainer.removeAttribute('hidden');
+    var targetTable = document.getElementById('selectedSpec');
+    targetTable.innerHTML = `<table class="table table-borderless table-dark my-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><a class="btn" role="button"> <i class="icon-angle-down"></i> </a></th>
+                                        <th scope="col" id="valuesName">${name}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="selectedValues">
+                                    <tr>
+                                        <th scope="row">T1</th>
+                                        <td id="valuesT1">${t1}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">T2</th>
+                                        <td id="valuesT2">${t2}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">A1</th>
+                                        <td id="valuesA1">${a1}</td> 
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">A2</th>
+                                        <td id="valuesA2">${a2}</td> 
+                                    </tr>
+                                </tbody> 
+                            </table>`;
+    selectionContainer.scrollIntoView();   
+}

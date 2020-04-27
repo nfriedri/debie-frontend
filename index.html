@@ -65,23 +65,18 @@
             
                 <h4 class="mb-4">Step 1: Select the embedding space on which you would like to operate:</h5>
                 <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="word_embedding">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="embeddingSpaces">
                     <label class="btn btn-secondary btn-lg active" id="fasttext">
-                        <input type="radio" name="options" autocomplete="off" checked> Fasttext
+                        <input type="radio" name="options" autocomplete="off" checked>Fasttext
                     </label>
-                    <!--
-                    <label class="btn btn-secondary" id="skipgram">
-                        <input type="radio" name="options" autocomplete="off"> Skipgram
-                    </label>
-                    -->
                     <label class="btn btn-secondary btn-lg"  id="glove">
-                        <input type="radio" name="options" autocomplete="off"> GloVe
+                        <input type="radio" name="options" autocomplete="off">GloVe
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="cbow">
-                        <input type="radio" name="options" autocomplete="off"> CBOW
+                        <input type="radio" name="options" autocomplete="off">CBOW
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="upload">
-                        <input type="radio" name="options" autocomplete="off"> Upload Embeddings    
+                        <input type="radio" name="options" autocomplete="off">Upload Embeddings    
                     </label>  
                 </div>
                 <a class="btn btn-primary btn-lg ml-auto text-light" role="button" id="selectSpace" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Confirm</a>
@@ -91,10 +86,10 @@
 
         <!--Upload embeddings space-->
         <div class="container py-3 " id="uploadContainer">
-            <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Upload a embedding space here</h5>
-                <div class="custom-control custom-switch float-right">
-                    <input type="checkbox" class="custom-control-input" id="binarySwitch" onclick="showSwitch()">
+            <div class="jumbotron bg-dark text-white" id="uploadJumbo">
+                <h4 class="mb-4">Upload an embedding space here</h4>
+                <div class="custom-control custom-switch float-right mb-2">
+                    <input type="checkbox" class="custom-control-input" id="binarySwitch">
                     <label class="custom-control-label" for="binarySwitch">Separated Vocab and Vec File</label>
                 </div>
             
@@ -106,22 +101,12 @@
                     <input type="file" class="custom-file-input" id="inputVecs">
                     <label class="custom-file-label" for="inputVecs" id="inputVecsLabel">Choose vector file</label>
                 </div>
-                <button class="btn btn-primary my-2" id='uploadButton' style="background-color: #222E58; border-color: #FFFFFF;">Upload space</button>     
-                <script>
-                    var switcher = document.getElementById('binarySwitch');
-                    var inputVocab = document.getElementById('uploadVocab');
-                    function showSwitch(){
-                        console.log('Function is executed')
-                        if (switcher.checked == false){
-                            inputVocab.setAttribute('hidden', true);
-                        }
-                        else if (switcher.checked == true){
-                            inputVocab.removeAttribute('hidden');
-                        }
-                    }
-                </script>
-                <!--TODO: Upload Progress Bar-->
-                
+
+                <button class="btn btn-primary mt-2 mb-4" id='uploadButton' style="background-color: #222E58; border-color: #FFFFFF;" disabled>Upload space</button>
+                <div class="progress" style="height: 40px;" id="progressContainer" hidden>
+                    <div class="progress-bar lg" role="progressbar" id="progressBar" style="width: 0%; background-color: #222E58; color: black;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+                <div id="initSuccess" hidden>false</div>                
             </div>
         </div>
 
@@ -157,10 +142,6 @@
         <div class="container text-dark py-3" id="predefinedContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Step 3: Select one predefined test set</h4>
-                <div class="custom-control custom-switch float-right">
-                    <input type="checkbox" class="custom-control-input" id="lowerSwitch">
-                    <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
-                </div>
                 <div id="tables"> 
                 </div>
                 <div class="card text-white mb-2" id="card1" style="background-color: black;" hidden>
@@ -169,10 +150,47 @@
                     <input type="image" src="img/download.png" height="10%" width="10%" id="download1"></input>
                 </div>
             </div> 
-            <script src="js/preDefinedSpecs.js"></script>
+        </div>
+
+        <!--Selected Bias Specification-->
+        <div class="container py-3" id="selectionContainer">
+            <div class="jumbotron bg-dark text-white" id="selectionJumbo">
+                <h5 class="display-5 my-2">Selected Bias Specification</h5>
+                <div class="custom-control custom-switch float-right">
+                    <input type="checkbox" class="custom-control-input" id="lowerSwitch">
+                    <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
+                </div>
+                <div class="mb-4" id="selectedSpec"> 
+                </div>
+                <p>Choose method(s):</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
+                    <label class="btn btn-secondary btn-lg active" id="all">
+                        <input type="radio" name="options" autocomplete="off" checked> All
+                    </label>
+                    <label class="btn btn-secondary btn-lg" id="ect">
+                        <input type="radio" name="options" autocomplete="off"> ECT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="bat">
+                        <input type="radio" name="options" autocomplete="off"> BAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="weat">
+                        <input type="radio" name="options" autocomplete="off"> WEAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="kmeans">
+                        <input type="radio" name="options" autocomplete="off"> K-Means++
+                    </label>  
+                </div>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="startEvaluation" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Start Bias Evaluation</a>
+                <div class="card bg-secondary text-light mt-2" id="responseCard" hidden>
+                    <div class="card-body" id ="responseCardBody" >
+                        
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!--Select Main Operation to start with-->
+        <!--
         <div class="container py-3" id="operationContainer">
             <div class="jumbotron bg-dark text-white">
                 <h5 class="display-5 mb-4">Do you want to evaluate a bias specification or do you want to test a debiasing method?</h5>
@@ -200,6 +218,8 @@
                 </div>
             </div>
         </div>
+        -->
+        
         
        
           
@@ -245,6 +265,10 @@
         </div>
     </footer>
 
+
+    <script src="js/preDefinedSpecs.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/biasEvaluation.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
