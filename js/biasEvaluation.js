@@ -2,11 +2,14 @@ var selectionJumbo = document.getElementById('selectionJumbo');
 var startButton = document.getElementById('startEvaluation');
 var responseCard = document.getElementById('responseCard');
 var responseCardBody = document.getElementById('responseCardBody');
+var responseCard2 = document.getElementById('responseCard2');
+var responseCardBody2 = document.getElementById('responseCardBody2');
 var selfResponseCard = document.getElementById('selfResponseCard');
 var selfResponseCardBody = document.getElementById('selfResponseCardBody');
 var lowerSwitch = document.getElementById('lowerSwitch');
-var continueDebiasing = document.getElementById('continueDebiasing')
+var continueDebiasing = document.getElementById('continueDebiasing');
 var evalResponse = null;
+var json = 'false';
 
 var model = 'bam'
 var pca = '';
@@ -23,6 +26,8 @@ var space = '';
 var evalMethod = '';
 var uploaded = '';
 var lower = 'false';
+
+var debiased = '';
 
 const format = (num, decimals) => num.toLocaleString('en-US', {
     minimumFractionDigits: 2,      
@@ -99,6 +104,9 @@ function getContent(){
         content['T2'] = document.getElementById('target2').value;
         content['A1'] = document.getElementById('attribute1').value;
         content['A2'] = document.getElementById('attribute2').value; 
+    }
+    if (debiased != ''){
+        content = debiased;
     }
     return content;
 }
@@ -445,6 +453,7 @@ async function debiasing(){
                 `;
             debiasingCardBody.innerHTML = output;
             document.getElementById('debiasDownloadButton').addEventListener("click", function() {download(model + '-debiasing', data)});
+            
             try{
                 if (pca == 'true'){
                     drawChart(data);
@@ -453,12 +462,228 @@ async function debiasing(){
             catch (error){
                 console.log(error);
             }
-            
+            debiased = data;
+            document.getElementById('evaluateDebiased').removeAttribute('hidden');
+            document.getElementById('evaluateDebiased').addEventListener("click", function() {document.getElementById('evaluationContainer').removeAttribute('hidden'); biasEvaluation2();});
         });
     }
     catch (error){
         console.error(error);
-    } 
+    }  
+}
+
+
+//Send bias evaluation request
+async function biasEvaluation2() {
+    await getSelectionEval();
+    var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
+    //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
+    url += '/' + evalMethod;
+    if (space != ''){
+        url += '?space=' + space;
+    }
+    if (uploaded != '')
+        url += '&uploaded=' + uploaded;
+    if (lower != 'false'){
+        url += '&lower=true'
+    }
+    url += '&json=true';
+    var content = getContent();
+    var statusFlag = 200;
+    console.log(JSON.stringify(content));
+    if (predefined){responseCard2.removeAttribute('hidden');}
+    else{selfResponseCard.removeAttribute('hidden');}
+    startSpinner(responseCardBody2);
+    try {
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(content),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((res) => {
+            if (!res.ok){
+                statusFlag = res.status;
+                let output = `<div class="alert alert-danger mt-4 mb-0" role="alert">${res.status}: ${res.message}</div>`;
+                responseCard2.innerHTML = output;
+            }
+            return res.json();
+        })
+        .then((data) => {
+            if (statusFlag != 200){
+                output += `
+                <h5 class="card-title mb-3">ERROR</h5>
+                <p>${statusFlag} ${data.message}</p> 
+                <p>Please check your input and try again.</p>
+                `
+            }
+            console.log(data)
+            let output = '';
+            if (data.BiasSpecification.Deleted == ''){
+                data.BiasSpecification.Deleted = '-';
+            }
+            if (data.BiasSpecification.NotFound == ''){
+                data.BiasSpecification.NotFound = '-';
+            }
+            switch (evalMethod) {
+                case 'all':
+                    output += `
+                    <h5 class="card-title mb-3">Evaluation results: </h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">ECT Score: </th>
+                        <td>${format(data.Scores.ECT_Score)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">ECT P-Value: </th>
+                        <td>${format(data.Scores.ECT_P_Value)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">BAT Score: </th>
+                        <td>${format(data.Scores.BAT_Score)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">WEAT effect-size: </th>
+                        <td>${format(data.Scores.WEAT_Effect_Size)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">WEAT P-Value: </th>
+                        <td>${format(data.Scores.WEAT_P_Value)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">K-Means result: </th>
+                        <td>${format(data.Scores.K_Means)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${String(data.BiasSpecification.Deleted).replace(new RegExp(',', 'g'), " ")}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${String(data.BiasSpecification.NotFound).replace(new RegExp(',', 'g'), " ")}</td>
+                        </tr>
+                        </tbody>
+                    </table>       
+                    `;
+                    break;
+                case 'ect':
+                    output += `
+                    <h5 class="card-title">ECT Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">ECT Score: </th>
+                        <td>${format(data.Scores.ECT_Score)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">ECT P-Value: </th>
+                        <td>${format(data.Scores.ECT_P_Value)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${data.BiasSpecification.Deleted}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    `;
+                    break;
+                case 'bat':
+                    output += `
+                    <h5 class="card-title">BAT Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">BAT Score: </th>
+                        <td>${format(data.Scores.BAT_Score)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${data.BiasSpecification.Deleted}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table>  
+                    `;
+                    break;
+                case 'weat':
+                    output += `
+                    <h5 class="card-title">WEAT Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">WEAT effect-size: </th>
+                        <td>${format(data.Scores.WEAT_Effect_Size)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">WEAT P-Value: </th>
+                        <td>${format(data.Scores.WEAT_P_Value)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${data.BiasSpecification.Deleted}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table>  
+                    `;
+                    break;
+                case 'kmeans':
+                    output += `
+                    <h5 class="card-title">KMeans Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">K-Means result: </th>
+                        <td>${format(data.Scores.K_Means)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${data.BiasSpecification.Deleted}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    `;
+                    break;
+                }
+                output += `
+                    <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
+                    <input type="image" src="img/download.png" height="10%" width="10%" id="downloadButton"></input>
+                `;
+                evalResponse = data;
+            if (predefined){responseCardBody2.innerHTML = output;}
+            else{selfResponseCardBody.innerHTML = output;}
+            
+            try{ 
+                if (predefined){
+                    document.getElementById('downloadButton').addEventListener("click", function(){download(content['Name'], data);});
+                }
+                else{
+                    document.getElementById('downloadButton').addEventListener("click", function(){download('self-defined-bias', data);});
+                }
+            }
+            catch (error){
+                console.error(error);
+            }
+        })
+    } catch (error) {
+      console.error(error);
+    }
     
 }
 

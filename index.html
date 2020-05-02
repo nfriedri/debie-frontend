@@ -29,15 +29,18 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
+                    <!--
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About</a>
                     </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="bias-evaluation.html" style=" white-space:nowrap;">Bias Evaluation</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="debiasing.html">Debiasing</a>
                     </li>
+                    -->
                 </ul>
             </div>
         </div>
@@ -151,7 +154,7 @@
             </div>
             
             <div class="jumbotron bg-dark text-white mt-3" id="selectionJumbo" hidden>
-                <h5 class="display-5 my-2">Selected Bias Specification</h5>
+                <h4 class="my-2">Step 3.1 Selected Bias Specification</h4>
                 <div class="custom-control custom-switch float-right">
                     <input type="checkbox" class="custom-control-input" id="lowerSwitch">
                     <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
@@ -182,14 +185,14 @@
                         
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="continueDebiasing" style="background-color: #222E58; border-color: #FFFFFF;" hidden>Continue with Debiasing</a>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="continueDebiasing" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Continue with Debiasing</a>
             </div>
         </div>
 
         <!-- Self-Defined Specification -->
         <div class="container py-3" id="selfDefinedContainer" hidden>  
             <div class="jumbotron bg-dark text-white px-md-5">
-                <h5 class="display-5 my-2">Evaluate self-defined bias specifications</h4>
+                <h4 class="my-2">Step 3: Evaluate self-defined bias specifications</h4>
                 <p>Please enter the words seperated by whitespaces</p>
                 <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
                 <div class="custom-control custom-switch float-right mb-2">
@@ -267,9 +270,9 @@
         </div>
 
         <!--Debiasing-->
-        <div class="container text-dark py-2" id="debiasingContainer">
+        <div class="container text-dark py-2" id="debiasingContainer" hidden>
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Step X: Debiasing</h4>
+                <h4 class="mb-4">Step 4: Debiasing</h4>
                 <div class="custom-control custom-switch float-right">
                     <input type="checkbox" class="custom-control-input" id="pcaoffSwitch">
                     <label class="custom-control-label text-light" for="pcaoffSwitch">PCA off</label>
@@ -297,7 +300,19 @@
                         
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="evaluatedebiased" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Evaluate debiased space</a>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="evaluateDebiased" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Evaluate debiased space</a>
+            </div>
+        </div>
+
+        <div class="container text-dark py-2" id="evaluationContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mb-4">Step 5: Bias Evaluation on debiased space</h4>
+                
+                <div class="card bg-secondary text-light mt-2" id="responseCard2" hidden>
+                    <div class="card-body" id ="responseCardBody2">
+                        
+                    </div>
+                </div>
             </div>
         </div>
         
