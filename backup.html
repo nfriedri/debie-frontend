@@ -6,7 +6,7 @@
     <title>DEBIE - Webapp</title>
     <link rel="icon" href="img/favicon.png">
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
      <!--
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -57,9 +57,10 @@
 
     <!--Content-->
     <div class="container-fluid" id="container1" hidden>
+        <script src="js/main.js"></script>
 
         <!--Select Space-->
-        <div class="container " id="spaceContainer" hidden>
+        <div class="container " id="spaceContainer">
             <div class="jumbotron bg-dark text-white">
             
                 <h4 class="mb-4">Step 1: Select the embedding space on which you would like to operate:</h5>
@@ -84,7 +85,7 @@
         </div>
 
         <!--Upload embeddings space-->
-        <div class="container py-2 " id="uploadContainer" hidden>
+        <div class="container py-3 " id="uploadContainer">
             <div class="jumbotron bg-dark text-white" id="uploadJumbo">
                 <h4 class="mb-4">Upload an embedding space here</h4>
                 <div class="custom-control custom-switch float-right mb-2">
@@ -110,16 +111,16 @@
         </div>
 
          <!--Select Pre-Defined or Self-Defined Specifications-->
-         <div class="container text-dark py-2" id="specificationContainer" hidden>
+         <div class="container text-dark py-2" id="specificationContainer">
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Step 2: Select a pre-defined bias specification or define one on your own?</h5>
+                <h4 class="mb-5">Step 2: Select a pre-defined bias specification or define one on your own?</h5>
                 <div class="card-deck">
                     <div class="card bg-secondary text-white mx-3" >
                         <div class="card-body">
                             <h5 class="card-title">Pre-defined Bias Specifications</h5>
                             <hr class="bg-white">
                             <p>Evaluate bias specification test sets from WEAT by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al.</a> These specifications are explicit bias specifications containing two target and two attribute sets. </p>
-                            <a class="btn btn-primary btn-lg text-light" role="button" id="preDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
+                            <a class="btn btn-primary btn-lg text-light" role="button" id="biasEvaluation" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
                             <br>
                         </div>
                     </div>
@@ -129,7 +130,7 @@
                             <hr class="bg-white">
                             <p>Enter an explicit self-defined bias specification test set consisting out of two target and two attribute sets here.</p>
                             <br>
-                            <a class="btn btn-primary btn-lg text-light" role="button" id="selfDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Self-Defined Sets</a>
+                            <a class="btn btn-primary btn-lg text-light" role="button" id="debiasing" style="background-color: #222E58; border-color: #FFFFFF;">Self-Defined Sets</a>
                             <br>
                         </div>
                     </div>
@@ -137,8 +138,8 @@
             </div>
         </div>
 
-        <!-- Pre-definden Specification-->
-        <div class="container text-dark py-3" id="preDefinedContainer" hidden>
+        <!--Select Pre-definden Specification-->
+        <div class="container text-dark py-3" id="predefinedContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Step 3: Select one predefined test set</h4>
                 <div id="tables"> 
@@ -148,9 +149,12 @@
                     </div> 
                     <input type="image" src="img/download.png" height="10%" width="10%" id="download1"></input>
                 </div>
-            </div>
-            
-            <div class="jumbotron bg-dark text-white mt-3" id="selectionJumbo" hidden>
+            </div> 
+        </div>
+
+        <!--Selected Bias Specification-->
+        <div class="container py-3" id="selectionContainer">
+            <div class="jumbotron bg-dark text-white" id="selectionJumbo">
                 <h5 class="display-5 my-2">Selected Bias Specification</h5>
                 <div class="custom-control custom-switch float-right">
                     <input type="checkbox" class="custom-control-input" id="lowerSwitch">
@@ -182,127 +186,80 @@
                         
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="continueDebiasing" style="background-color: #222E58; border-color: #FFFFFF;" hidden>Continue with Debiasing</a>
             </div>
         </div>
 
-        <!-- Self-Defined Specification -->
-        <div class="container py-3" id="selfDefinedContainer" hidden>  
+        <!-- Self-Defined Bias Specification -->
+        <div class="container mt-3">  
             <div class="jumbotron bg-dark text-white px-md-5">
-                <h5 class="display-5 my-2">Evaluate self-defined bias specifications</h4>
-                <p>Please enter the words seperated by whitespaces</p>
-                <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
-                <div class="custom-control custom-switch float-right mb-2">
-                    <input type="checkbox" class="custom-control-input" id="lowerSwitch">
-                    <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
-                </div>
-                <div class="custom-control custom-switch float-right mb-2">
-                    <input type="checkbox" class="custom-control-input" id="augmentSwitch">
-                    <label class="custom-control-label" for="augmentSwitch">Augmentations</label>
-                </div>
+                <h4 class="display-4">Evaluate your own test sets</h4>
+                <p class="lead">Please enter the words seperated by whitespaces</p>
+                <p class="lead">Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
                 <div class="input-group mt-4">       
                     <div class="input-group-prepend">
                         <span class="input-group-text">T1:</span>
                     </div>
-                    <textarea class="form-control" id="target1" aria-label="With textarea" style="height: 110px">science technology physics chemistry Einstein NASA experiment astronomy</textarea>
+                    <textarea class="form-control" id="target_set1" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div class="input-group mt-2"> 
                     <div class="input-group-prepend">
                         <span class="input-group-text">T2:</span>
                     </div>
-                    <textarea class="form-control" id="target2" aria-label="With textarea" style="height: 110px">poetry art Shakespeare dance literature novel symphony drama</textarea>
+                    <textarea class="form-control" id="target_set2" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div class="input-group mt-2"> 
                     <div class="input-group-prepend">
                         <span class="input-group-text">A1:</span>
                     </div>
-                    <textarea class="form-control" id="attribute1" aria-label="With textarea" style="height: 110px">brother father uncle grandfather son he his him</textarea>
+                    <textarea class="form-control" id="argument_set1" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
-                <div class="input-group mt-2"> 
+                <div class="input-group mt-2 mb-3"> 
                     <div class="input-group-prepend">
                         <span class="input-group-text">A2:</span>
                     </div>
-                    <textarea class="form-control" id="attribute2" aria-label="With textarea" style="height: 110px">sister mother aunt grandmother daughter she hers her</textarea>
-                </div>
-                <div id="augmentationsInput" hidden>
-                    <div class="input-group mt-2">     
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Augmentations 1:</span>
-                        </div>
-                        <textarea class="form-control" id="augmentations1" aria-label="With textarea" style="height: 110px"></textarea>
-                    </div>
-                    <div class="input-group mt-2"> 
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Augmentations 2:</span>
-                        </div>
-                        <textarea class="form-control" id="augmentations2" aria-label="With textarea" style="height: 110px"></textarea>
-                    </div>
-                </div>
-                <p class="mt-3">Choose method(s):</p>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
-                    <label class="btn btn-secondary btn-lg active" id="all">
-                        <input type="radio" name="options" autocomplete="off" checked> All
-                    </label>
-                    <label class="btn btn-secondary btn-lg" id="ect">
-                        <input type="radio" name="options" autocomplete="off"> ECT
-                    </label>
-                    <label class="btn btn-secondary btn-lg"  id="bat">
-                        <input type="radio" name="options" autocomplete="off"> BAT
-                    </label>
-                    <label class="btn btn-secondary btn-lg"  id="weat">
-                        <input type="radio" name="options" autocomplete="off"> WEAT
-                    </label>
-                    <label class="btn btn-secondary btn-lg"  id="kmeans">
-                        <input type="radio" name="options" autocomplete="off"> K-Means++
-                    </label>  
+                    <textarea class="form-control" id="argument_set2" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <a class="btn btn-primary btn-lg text-light mb-2" role="button" id="startEvaluation" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
-                <div class="card bg-secondary text-light mt-2" id="selfResponseCard" hidden>
-                    <div class="card-body" id ="selfResponseCardBody">
-                        
-                    </div>
-                </div>
-
+                </p>
             </div>
         </div>
+        
+  
 
-        <!--Debiasing-->
-        <div class="container text-dark py-2" id="debiasingContainer">
+        <!--Select Main Operation to start with-->
+        <!--
+        <div class="container py-3" id="operationContainer">
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Step X: Debiasing</h4>
-                <div class="custom-control custom-switch float-right">
-                    <input type="checkbox" class="custom-control-input" id="pcaoffSwitch">
-                    <label class="custom-control-label text-light" for="pcaoffSwitch">PCA off</label>
-                </div>
-
-                <p>Select a debiasing model</p>
-                
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="debiasModel">
-                    <label class="btn btn-secondary btn-lg active" id="bam">
-                        <input type="radio" name="options" autocomplete="off" checked> BAM
-                    </label>
-                    <label class="btn btn-secondary btn-lg" id="gbdd">
-                        <input type="radio" name="options" autocomplete="gbdd"> GBDD
-                    </label>
-                    <label class="btn btn-secondary btn-lg"  id="bamxgbdd">
-                        <input type="radio" name="options" autocomplete="bamxgbdd"> BAM <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> GBDD
-                    </label>
-                    <label class="btn btn-secondary btn-lg"  id="gbddxbam">
-                        <input type="radio" name="options" autocomplete="gbddxbam"> GBDD <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> BAM
-                    </label> 
-                </div>
-                <a class="btn btn-primary btn-lg text-light" role="button" id="debiasingBtn" style="background-color: #222E58; border-color: #FFFFFF; float: right;" >Debiasing</a>
-                <div class="card bg-secondary text-light mt-2" id="debiasingCard" hidden>
-                    <div class="card-body" id ="debiasingCardBody">
-                        
+                <h5 class="display-5 mb-4">Do you want to evaluate a bias specification or do you want to test a debiasing method?</h5>
+                <div class="card-deck mt-5">
+                    <div class="card bg-secondary text-white mx-3" >
+                        <div class="card-body bg-secondary">
+                            <h5 class="card-title">Bias Evaluation</h5>
+                            <hr class="bg-white">
+                            <p>Either pre-defined bias specifications or self-defined specifications can be evaluated here</p>
+                            <p>Following scores are provided for evaluating the contained bias: ECT, BAT, WEAT, K-Means++</p>
+                            <a class="btn btn-primary btn-lg text-light" role="button" id="biasEvaluation" style="background-color: #222E58; border-color: #FFFFFF;">Bias Evaluation</a>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="card bg-secondary text-white mx-3" >
+                        <div class="card-body bg-secondary">
+                            <h5 class="card-title">Debiasing</h5>
+                            <hr class="bg-white">
+                            <p>Either pre-defined bias specifications or self-defined specifications can be debiased here</p>
+                            <p>Following debiasing methods are provided: BAM, GBDD, BAM x GBDD, GBDD x BAM</p>
+                            <a class="btn btn-primary btn-lg text-light" role="button" id="debiasing" style="background-color: #222E58; border-color: #FFFFFF;">Debiasing</a>
+                            <br>
+                        </div>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="evaluatedebiased" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Evaluate debiased space</a>
             </div>
         </div>
+        -->
         
         
-
+       
+          
 
     </div>
 
@@ -346,18 +303,13 @@
     </footer>
 
 
-    
     <script src="js/preDefinedSpecs.js"></script>
     <script src="js/upload.js"></script>
     <script src="js/biasEvaluation.js"></script>
-    <!--<script src="js/debiasing.js"></script>-->
-    <script src="js/main.js"></script>
 
-    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
 
 </body>
