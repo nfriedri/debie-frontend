@@ -473,9 +473,7 @@ async function debiasing(){
 }
 
 
-//Send bias evaluation request
-async function biasEvaluation2() {
-    await getSelectionEval();
+function createEvaluatiuonUrl(){
     var url = 'http://127.0.0.1:5000/REST/bias-evaluation';
     //var url = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/bias-evaluation';
     url += '/' + evalMethod;
@@ -487,13 +485,21 @@ async function biasEvaluation2() {
     if (lower != 'false'){
         url += '&lower=true'
     }
-    url += '&json=true';
+    if (json != ''){
+        url += '&json=' + json;
+    }
+    return url;
+}
+
+//Send bias evaluation request
+async function biasEvaluation2(card, cardBody) {
+    await getSelectionEval();
+    var url = createEvaluatiuonUrl();
     var content = getContent();
     var statusFlag = 200;
     console.log(JSON.stringify(content));
-    if (predefined){responseCard2.removeAttribute('hidden');}
-    else{selfResponseCard.removeAttribute('hidden');}
-    startSpinner(responseCardBody2);
+    card.removeAttribute('hidden');
+    startSpinner(cardBody);
     try {
         fetch(url, {
             method: 'POST',
@@ -666,6 +672,7 @@ async function biasEvaluation2() {
                     <input type="image" src="img/download.png" height="10%" width="10%" id="downloadButton"></input>
                 `;
                 evalResponse = data;
+            card
             if (predefined){responseCardBody2.innerHTML = output;}
             else{selfResponseCardBody.innerHTML = output;}
             

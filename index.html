@@ -54,12 +54,12 @@
             <hr class="my-4" style="border: 1px solid black;">
             <p class="text-dark ml-2">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
             <p class="lead"></p>
-            <p class="text-light"><a class="btn btn-primary btn-lg" role="button" id="start" style="background-color: #222E58; border-color: #FFFFFF;">Start DEBIE &raquo;</a></p>
+            <p class="text-light"><a class="btn btn-primary btn-lg" role="button" id="startButton" style="background-color: #222E58; border-color: #FFFFFF;">Start DEBIE &raquo;</a></p>
         </div>
     </div>
 
     <!--Content-->
-    <div class="container-fluid" id="container1" hidden>
+    <div class="container-fluid" id="mainContainer" hidden>
 
         <!--Select Space-->
         <div class="container " id="spaceContainer" hidden>
@@ -67,7 +67,7 @@
             
                 <h4 class="mb-4">Step 1: Select the embedding space on which you would like to operate:</h5>
                 <br>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="embeddingSpaces">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="spaceToggleGroup">
                     <label class="btn btn-secondary btn-lg active" id="fasttext">
                         <input type="radio" name="options" autocomplete="off" checked>Fasttext
                     </label>
@@ -81,7 +81,7 @@
                         <input type="radio" name="options" autocomplete="off">Upload Embeddings    
                     </label>  
                 </div>
-                <a class="btn btn-primary btn-lg ml-auto text-light" role="button" id="selectSpace" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Confirm</a>
+                <a class="btn btn-primary btn-lg ml-auto text-light" role="button" id="selectSpaceButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Confirm</a>
                 <br>
             </div>
         </div>
@@ -94,7 +94,6 @@
                     <input type="checkbox" class="custom-control-input" id="binarySwitch">
                     <label class="custom-control-label" for="binarySwitch">Separated Vocab and Vec File</label>
                 </div>
-            
                 <div class="custom-file mb-2" id="uploadVocab" hidden>
                     <input type="file" class="custom-file-input" id="inputVocab">
                     <label class="custom-file-label" for="inputVocab" id="inputVocabLabel">Choose vocab file</label>
@@ -107,8 +106,7 @@
                 <button class="btn btn-primary mt-2 mb-4" id='uploadButton' style="background-color: #222E58; border-color: #FFFFFF;" disabled>Upload space</button>
                 <div class="progress" style="height: 40px;" id="progressContainer" hidden>
                     <div class="progress-bar lg" role="progressbar" id="progressBar" style="width: 0%; background-color: #222E58; color: black;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                </div>
-                <div id="initSuccess" hidden>false</div>                
+                </div>              
             </div>
         </div>
 
@@ -179,9 +177,9 @@
                         <input type="radio" name="options" autocomplete="off"> K-Means++
                     </label>  
                 </div>
-                <a class="btn btn-primary btn-lg text-light" role="button" id="startEvaluation" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
-                <div class="card bg-secondary text-light mt-2" id="responseCard" hidden>
-                    <div class="card-body" id ="responseCardBody" >
+                <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
+                <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
+                    <div class="card-body" id ="evaluationCardBody">
                         
                     </div>
                 </div>
@@ -259,9 +257,9 @@
                         <input type="radio" name="options" autocomplete="off"> K-Means++
                     </label>  
                 </div>
-                <a class="btn btn-primary btn-lg text-light mb-2" role="button" id="startEvaluation" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
-                <div class="card bg-secondary text-light mt-2" id="selfResponseCard" hidden>
-                    <div class="card-body" id ="selfResponseCardBody">
+                <a class="btn btn-primary btn-lg text-light mb-2" role="button" id="sEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Start Bias Evaluation</a>
+                <div class="card bg-secondary text-light mt-2" id="sEvaluationCard" hidden>
+                    <div class="card-body" id ="sEvaluationCardBody">
                         
                     </div>
                 </div>
@@ -277,9 +275,7 @@
                     <input type="checkbox" class="custom-control-input" id="pcaoffSwitch">
                     <label class="custom-control-label text-light" for="pcaoffSwitch">PCA off</label>
                 </div>
-
                 <p>Select a debiasing model</p>
-                
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="debiasModel">
                     <label class="btn btn-secondary btn-lg active" id="bam">
                         <input type="radio" name="options" autocomplete="off" checked> BAM
@@ -300,16 +296,16 @@
                         
                     </div>
                 </div>
-                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="evaluateDebiased" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Evaluate debiased space</a>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="dEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Evaluate debiased space</a>
             </div>
         </div>
 
-        <div class="container text-dark py-2" id="evaluationContainer" hidden>
+        <div class="container text-dark py-2" id="evaluationContainer">
             <div class="jumbotron bg-dark text-white">
                 <h4 class="mb-4">Step 5: Bias Evaluation on debiased space</h4>
                 
-                <div class="card bg-secondary text-light mt-2" id="responseCard2" hidden>
-                    <div class="card-body" id ="responseCardBody2">
+                <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
+                    <div class="card-body" id ="evaluationCardBody2">
                         
                     </div>
                 </div>
@@ -362,11 +358,14 @@
 
 
     
+    <!--
     <script src="js/preDefinedSpecs.js"></script>
     <script src="js/upload.js"></script>
     <script src="js/biasEvaluation.js"></script>
-    <!--<script src="js/debiasing.js"></script>-->
+    <script src="js/debiasing.js"></script>
     <script src="js/main.js"></script>
+        -->
+    <script src="js/app.js"></script>
 
     <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
