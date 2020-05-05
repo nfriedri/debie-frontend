@@ -194,10 +194,10 @@
                 <p>Please enter the words seperated by whitespaces</p>
                 <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
                 <div class="custom-control custom-switch float-right mb-2">
-                    <input type="checkbox" class="custom-control-input" id="lowerSwitch">
-                    <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
+                    <input type="checkbox" class="custom-control-input" id="lowerSwitch2">
+                    <label class="custom-control-label text-light" for="lowerSwitch2">Lower</label>
                 </div>
-                <div class="custom-control custom-switch float-right mb-2">
+                <div class="custom-control custom-switch float-right mb-2 mr-2">
                     <input type="checkbox" class="custom-control-input" id="augmentSwitch">
                     <label class="custom-control-label" for="augmentSwitch">Augmentations</label>
                 </div>
@@ -263,7 +263,7 @@
                         
                     </div>
                 </div>
-
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="sContinueDebiasing" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Continue with Debiasing</a>
             </div>
         </div>
 
@@ -290,7 +290,7 @@
                         <input type="radio" name="options" autocomplete="gbddxbam"> GBDD <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> BAM
                     </label> 
                 </div>
-                <a class="btn btn-primary btn-lg text-light" role="button" id="debiasingBtn" style="background-color: #222E58; border-color: #FFFFFF; float: right;" >Debiasing</a>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="debiasingButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" >Debiasing</a>
                 <div class="card bg-secondary text-light mt-2" id="debiasingCard" hidden>
                     <div class="card-body" id ="debiasingCardBody">
                         
@@ -300,20 +300,24 @@
             </div>
         </div>
 
-        <div class="container text-dark py-2" id="evaluationContainer">
+        <div class="container text-dark py-2" id="dEvaluateContainer" hidden>
             <div class="jumbotron bg-dark text-white">
                 <h4 class="mb-4">Step 5: Bias Evaluation on debiased space</h4>
                 
-                <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
-                    <div class="card-body" id ="evaluationCardBody2">
+                <div class="card bg-secondary text-light mt-2" id="evalCard2" hidden>
+                    <div class="card-body" id ="evalCardBody2">
                         
                     </div>
                 </div>
             </div>
         </div>
-        
-        
 
+        <div class="container text-dark py-2" id="thankYouContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h1 class="display-1 mb-4">Thank you very much for using DEBIE</h1>
+
+            </div>
+        </div>
 
     </div>
 

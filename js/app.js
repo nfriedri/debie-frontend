@@ -2,6 +2,8 @@
 var mainContainer = document.getElementById('mainContainer')
 var selectionJumbo = document.getElementById('selectionJumbo');
 var uploadJumbo = document.getElementById('uploadJumbo');
+var dEvaluateContainer = document.getElementById('dEvaluateContainer');
+var thankYou = document.getElementById('thankYouContainer');
 
 //Buttons
 var startButton = document.getElementById('startButton');
@@ -11,6 +13,8 @@ var predefinedButton = document.getElementById('preDefinedButton');
 var selfdefinedButton = document.getElementById('selfDefinedButton');
 var evaluationButton = document.getElementById('evaluationButton');
 var sEvaluationButton = document.getElementById('sEvaluationButton');
+var continueDebiasing = document.getElementById('continueDebiasing');
+var sContinueDebiasing = document.getElementById('sContinueDebiasing');
 var dEvaluationButton = document.getElementById('dEvaluationButton');
 var debiasingButton = document.getElementById('debiasingButton');
 
@@ -21,8 +25,8 @@ var sEvalCard = document.getElementById('sEvaluationCard');
 var sEvalCardBody = document.getElementById('sEvaluationCardBody');
 var debiasingCard = document.getElementById('debiasingCard');
 var debiasingCardBody = document.getElementById('debiasingCardBody');
-var evalCard2 = document.getElementById('evaluationCard2');
-var evalCardBody2 = document.getElementById('evaluationCardBody2');
+var evalCard2 = document.getElementById('evalCard2');
+var evalCardBody2 = document.getElementById('evalCardBody2');
 
 //Switches
 var augmentSwitch = document.getElementById('augmentSwitch');
@@ -50,8 +54,10 @@ var tableIconArray = [];
 var tableContentArray = [];
 var tableButtonArray = [];
 var evalResponse = null;
+var debiasResponse = null;
 var predefined = null;
 var initSuccess = '';
+var counter = 0;
 
 //URL 
 var mainURL = 'http://127.0.0.1:5000/REST/';
@@ -63,6 +69,7 @@ var method = '';
 var uploaded = '';
 var json = '';
 var lower = 'false';
+var debiased = '';
 
 //Format Numbers
 const format = (num, decimals) => num.toLocaleString('en-US', {
@@ -99,7 +106,7 @@ function hideContainer(containerID){
 
 //Starts a Spinner in the target element
 function startSpinner(object) {
-    object.innerHTML = `
+    object.innerHTML += `
     <div class="d-flex justify-content-center"><div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div></div>
     `;
 }
@@ -115,7 +122,7 @@ function showSuccessAlert(target, message) {
 }
 
 async function getSelections() {
-    space = document.getElementById('embeddingSpaces').getElementsByClassName('active')[0].id;
+    space = document.getElementById('spaceToggleGroup').getElementsByClassName('active')[0].id;
     if (space == "upload") {
         if (init.innerText != 'false') {
             space = init.innerText;
@@ -129,11 +136,21 @@ async function getSelections() {
             return;
         }
     }
-    if (lowerSwitch.checked == true) {
-        lower = 'true';
+    if (predefined){
+        if (lowerSwitch.checked == true) {
+            lower = 'true';
+        }
+        else {
+            lower = 'false';
+        }
     }
-    else {
-        lower = 'false';
+    else{
+        if (lowerSwitch2.checked == true) {
+            lower = 'true';
+        }
+        else {
+            lower = 'false';
+        }
     }
 }
 
@@ -156,6 +173,10 @@ async function getSelectionDebiasing() {
 
 function getContent() {
     content = {};
+    if (debiased == 'true') {
+        console.log('here');
+        return debiasResponse;
+    }
     if (document.getElementById('preDefinedContainer').getAttribute('hidden') == null) {
         predefined = true;
         content['Name'] = document.getElementById('valuesName').innerText;
@@ -171,9 +192,7 @@ function getContent() {
         content['A1'] = document.getElementById('attribute1').value;
         content['A2'] = document.getElementById('attribute2').value;
     }
-    if (debiased != '') {
-        content = debiased;
-    }
+    
     return content;
 }
 
@@ -245,7 +264,7 @@ function upload() {
     var vecFileName = vecFile.name;
     var vecFileSize = vecFile.size;
 
-    if (switcher.checked == true) {
+    if (binarySwitcher.checked == true) {
         var vocabFile = inputVocab.files[0];
         var vocabFileName = vocabFile.name;
         var vocabFileSize = vocabFile.size;
@@ -299,12 +318,12 @@ function upload() {
 
 //API call for initializing uploaded file
 function initializeUpload() {
-    startSpinner(uploadJumbo);
+    uploadJumbo.innerHTML += `<div class="d-flex justify-content-center" id='initSpinner'><div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div></div>`;
     var url = 'http://127.0.0.1:5000/REST/uploads/initialize?';
     var statusFlag = 200;
     var vecFile = inputVecs.files[0];
     var vecFileName = vecFile.name;
-    if (switcher.checked == true) {
+    if (binarySwitcher.checked == true) {
         var vocabFile = inputVocab.files[0];
         var vocabFileName = vocabFile.name;
         url += 'vocab=' + vocabFileName + '&vecs=' + vecFileName;
@@ -333,7 +352,6 @@ function initializeUpload() {
             }
             document.getElementById('initSpinner').remove();
             uploadJumbo.innerHTML += output;
-            init.innerText = vecFileName;
         });
 }
 
@@ -481,7 +499,7 @@ async function setTableEventListeners() {
 
 //Create URL for bias evaluation
 async function createEvaluationURL() {
-    await getSelectionEval();
+    await getSelectionEvaluation();
     var url = mainURL + 'bias-evaluation';
     url += '/' + evalMethod;
     if (space != '') {
@@ -492,8 +510,9 @@ async function createEvaluationURL() {
     if (lower != 'false') {
         url += '&lower=' + lower;
     }
-    if (json != '') {
-        url += '&json=' + json;
+    if (debiased == 'true') {
+        json = 'true';
+        url += '&json=true';
     }
     return url;
 }
@@ -502,12 +521,12 @@ async function createEvaluationURL() {
 async function biasEvaluation() {
     var url = await createEvaluationURL();
     var content = getContent();
-    console.log(JSON.stringify(content));
+    content = JSON.stringify(content);
     var result = null;
     try {
         await fetch(url, {
             method: 'POST',
-            body: JSON.stringify(content),
+            body: content,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -669,11 +688,18 @@ async function formatEvaluationScores(data) {
                     `;
             break;
     }
-    output += `
-        <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        <a class="btn" role="button"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>
-    `;
+    output += `<h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>`;
+    if (debiased == 'true'){
+        output += `<a class="btn" role="button" id="debDownloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>`;
+    }
+    else{
+        output += `<a class="btn" role="button" id="downloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>`;
+    }
     return output;
+}
+
+async function addOutputToTarget(target, output){
+    target.innerHTML = output;
 }
 
 //Perform an API-Call, format results, create download functionality
@@ -681,14 +707,20 @@ async function performEvaluation(target){
     startSpinner(target);
     var data = await biasEvaluation();
     let output = await formatEvaluationScores(data);
-    target.innerHTML = output;
-    document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores', data)});
+    counter += 1;
+    if (debiased == 'true'){
+        addOutputToTarget(target, output).then(document.getElementById('debDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
+    }
+    else{
+        addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
+    }
+    evalResponse = data;
 }
 
 // --- DEBIASING ---
 async function createDebiasingURL(){
     await getSelectionDebiasing();
-    var url = mainURL + 'debiasing/';
+    var url = mainURL + 'debiasing';
     url += '/' + model;
     if (space != ''){
         url += '?space=' + space;
@@ -724,11 +756,13 @@ async function debiasing(){
         .then((data) => {
             console.log(data);
             result = data;
+            debiasResponse = data;
         });
     }
     catch (error){
         console.error(error);
-    }  
+    }
+    return result;  
 }
 
 async function formatDebiasing() {
@@ -761,12 +795,23 @@ async function formatDebiasing() {
     return output;
 }
 
+async function addDebiasingOutput(target, output){
+    target.innerHTML = output;
+}
+
+async function drawPCAChart(){
+    if (pca == 'true'){
+        drawChart();
+    }
+}
+
 async function performDebiasing(target){
     startSpinner(target);
-    var data = await debiasing();
+    await debiasing();
     let output = await formatDebiasing();
-    target.innerHTML = output;
-    document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores', data)});
+    addDebiasingOutput(target, output).then( await drawPCAChart());
+    counter += 1;
+    document.getElementById('debiasDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, results)});
 }
 
 // --- DEBIASING CHARTS ---
@@ -787,7 +832,9 @@ function getVector(vector){
 }
 
 //Draw a scatter chart for result comparing
-function drawChart(data){
+function drawChart(){
+    console.log('start');
+    var data = debiasResponse;
     var biasLables = [];
     var debiasLabels = [];
     biasLabels = biasLables.concat(Object.keys(data.BiasedSpacePCA.T1), Object.keys(data.BiasedSpacePCA.T2), Object.keys(data.BiasedSpacePCA.A1), Object.keys(data.BiasedSpacePCA.A2));
@@ -891,10 +938,10 @@ uploadButton.addEventListener('click', function () { upload() });
 //Display File name and enable/disenable uploadButton
 inputVecs.onchange = function () {
     inputVecsLabel.innerText = (inputVecs.files[0].name);
-    if (switcher.checked == false) {
+    if (binarySwitcher.checked == false) {
         uploadButton.removeAttribute('disabled');
     }
-    if (switcher.checked == true && inputVocabLabel.innerText != "Choose vocab file") {
+    if (binarySwitcher.checked == true && inputVocabLabel.innerText != "Choose vocab file") {
         uploadButton.removeAttribute('disabled');
     }
 };
@@ -909,11 +956,22 @@ inputVocab.onchange = function () {
 
 //Switch Button, adds second file upload input
 binarySwitcher.onchange = function () {
-    if (switcher.checked == false) {
+    if (binarySwitcher.checked == false) {
         uploadVocab.setAttribute('hidden', true);
     }
-    else if (switcher.checked == true) {
+    else if (binarySwitcher.checked == true) {
         uploadVocab.removeAttribute('hidden');
+    }
+};
+
+augmentSwitch.onchange = function() {
+    console.log('augmentswitch');
+    div = document.getElementById('augmentationsInput');
+    if (div.getAttribute('hidden') == null){
+        div.setAttribute('hidden', 'true');
+    }
+    else {
+        div.removeAttribute('hidden');
     }
 };
 
@@ -933,6 +991,7 @@ confirmButton.addEventListener("click", function() {
 predefinedButton.addEventListener("click", function() {
     expandContainer('preDefinedContainer');
     hideContainer('selfDefinedContainer');
+    loadTestData().then(function () { setTableEventListeners() });
 });
 
 selfdefinedButton.addEventListener("click", function() {
@@ -940,19 +999,38 @@ selfdefinedButton.addEventListener("click", function() {
     hideContainer('preDefinedContainer');
 });
 
-augmentSwitch.addEventListener("onclick", function() {
-    div = document.getElementById('augmentationsInput');
-    if (div.getAttribute('hidden') == null){
-        div.setAttribute('hidden', 'true');
-    }
-    else {
-        div.removeAttribute('hidden');
-    }
+evaluationButton.addEventListener("click", function() {
+    predefined = true;
+    evalCard.removeAttribute('hidden');
+    performEvaluation(evalCardBody);
+    continueDebiasing.removeAttribute('hidden');
+});
+
+sEvaluationButton.addEventListener("click", function() {
+    predefined = false;
+    sEvalCard.removeAttribute("hidden");
+    performEvaluation(sEvalCardBody);
+    sContinueDebiasing.removeAttribute('hidden');
 });
 
 continueDebiasing.addEventListener("click", function() {
     expandContainer('debiasingContainer');
 });
 
-//TODO Replace with load when preDefinedContainer is opened
-window.onload = loadTestData().then(function () { setTableEventListeners() });
+sContinueDebiasing.addEventListener("click", function() {
+    expandContainer('debiasingContainer');
+});
+
+debiasingButton.addEventListener("click", function() {
+    debiasingCard.removeAttribute('hidden');
+    performDebiasing(debiasingCardBody);
+    dEvaluationButton.removeAttribute('hidden');
+});
+
+dEvaluationButton.addEventListener("click", function() {
+    debiased = 'true';
+    dEvaluateContainer.removeAttribute('hidden');
+    evalCard2.removeAttribute('hidden');
+    performEvaluation(evalCardBody2);
+    thankYou.removeAttribute('hidden');
+});
