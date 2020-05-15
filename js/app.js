@@ -43,7 +43,7 @@ var inputVocab = document.getElementById('inputVocab');
 var inputVocabLabel = document.getElementById('inputVocabLabel');
 var uploadVocab = document.getElementById('uploadVocab');
 
-//Placeholders
+//Global variables
 const element = document.getElementById('tables');
 const numberOfResources = 10;
 const resourcePath = '/res/test_set';
@@ -59,9 +59,11 @@ var predefined = null;
 var initSuccess = '';
 var counter = 0;
 
-//URL 
+//URL - Replace depending on usage
 var mainURL = 'http://127.0.0.1:5000/REST/';
-// var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de';
+// var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de/';
+
+//Gloabal variables required for URL's
 var model = '';
 var pca = '';
 var space = '';
@@ -79,6 +81,7 @@ const format = (num, decimals) => num.toLocaleString('en-US', {
 
 // --- GENERAL FUNCTIONS ---
 
+//Displays the main container of the application
 function expandAppSelection(){
     if (mainContainer.getAttribute('hidden') == null){
         mainContainer.setAttribute('hidden', 'true');
@@ -87,6 +90,7 @@ function expandAppSelection(){
         mainContainer.removeAttribute('hidden');
     }
 }
+
 //Expands a container
 function expandContainer(containerID){
     container = document.getElementById(containerID);
@@ -121,6 +125,7 @@ function showSuccessAlert(target, message) {
     target.innerHTML += `<div class="alert alert-success mt-4 mb-0" role="alert"> ${message}</div>`
 }
 
+//Returns currently selected embedding space and whether pre-defined specs or self-defined specs are used
 async function getSelections() {
     space = document.getElementById('spaceToggleGroup').getElementsByClassName('active')[0].id;
     if (space == "upload") {
@@ -154,12 +159,14 @@ async function getSelections() {
     }
 }
 
+//Returns selections required for creating evaluation API call
 async function getSelectionEvaluation() {
     await getSelections();
     evalMethod = document.getElementById('evalMethods').getElementsByClassName('active')[0].id;
     //TODO: ADD JSON QUESTION...
 }
 
+//Returns selections required for creating debiasing API call
 async function getSelectionDebiasing() {
     await getSelections();
     model = document.getElementById('debiasModel').getElementsByClassName('active')[0].id;
@@ -171,6 +178,7 @@ async function getSelectionDebiasing() {
     }
 }
 
+//Returns content for evaluation API call
 function getContent() {
     content = {};
     if (debiased == 'true') {
@@ -196,6 +204,7 @@ function getContent() {
     return content;
 }
 
+//Returns content for debiasing API call
 function getContentDebiasing() {
     content = {};
     if (evalResponse != null) {
@@ -319,7 +328,7 @@ function upload() {
 //API call for initializing uploaded file
 function initializeUpload() {
     uploadJumbo.innerHTML += `<div class="d-flex justify-content-center" id='initSpinner'><div class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div></div>`;
-    var url = 'http://127.0.0.1:5000/REST/uploads/initialize?';
+    var url = mainURL + 'uploads/initialize?';
     var statusFlag = 200;
     var vecFile = inputVecs.files[0];
     var vecFileName = vecFile.name;
@@ -353,6 +362,29 @@ function initializeUpload() {
             document.getElementById('initSpinner').remove();
             uploadJumbo.innerHTML += output;
         });
+}
+
+//API call for deleting uploaded file
+async function deleteUpload(fileName){
+    var url = mainURL + 'uploads/delete?';
+    url += 'file=' + fileName ;
+
+    fetch(url, { method: 'DELETE' })
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+        });
+}
+
+//Handle API Call for deleting the uploaded file
+function handleFileDelete(){
+    var vecFileName = inputVecs.files[0].name;
+    deleteUpload(vecFileName);
+    if (binarySwitcher.checked == true) {
+        var vocabFileName = inputVocab.files[0].name;
+        deleteUpload(vocabFileName);
+    }
 }
 
 
@@ -497,7 +529,7 @@ async function setTableEventListeners() {
 
 // --- BIAS EVALUATION ---
 
-//Create URL for bias evaluation
+//Create URL for bias evaluation call
 async function createEvaluationURL() {
     await getSelectionEvaluation();
     var url = mainURL + 'bias-evaluation';
@@ -698,6 +730,7 @@ async function formatEvaluationScores(data) {
     return output;
 }
 
+//Adds content to an as target specified object
 async function addOutputToTarget(target, output){
     target.innerHTML = output;
 }
@@ -714,10 +747,13 @@ async function performEvaluation(target){
     else{
         addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
     }
+    continueDebiasing.removeAttribute('hidden');
     evalResponse = data;
 }
 
 // --- DEBIASING ---
+
+//Create URL for debiasing call
 async function createDebiasingURL(){
     await getSelectionDebiasing();
     var url = mainURL + 'debiasing';
@@ -737,6 +773,7 @@ async function createDebiasingURL(){
     return url;
 }
 
+//API-Call for debiasing
 async function debiasing(){
     var url = await createDebiasingURL();
     var content = await getContentDebiasing();
@@ -765,6 +802,7 @@ async function debiasing(){
     return result;  
 }
 
+//Format json content to html
 async function formatDebiasing() {
     let output = '';
     switch (model) {
@@ -783,28 +821,45 @@ async function formatDebiasing() {
     }
     if (pca == 'true'){
         output += `
-            <div class="container" style="background-color: #ffffff; max-height:600px; max-width:800px;">
-                <canvas id="debiasingChart"></canvas>
+            <div class="row">
+                <div class="col">
+                    <p class="ml-5"> Biased Embedding Space: </p>
+                    <div class="container" style="background-color: #ffffff; max-height:600px; max-width:400px; display:float;">
+                        <canvas id="biasedChart"></canvas>        
+                    </div>
+                </div>
+                <div class="col">
+                    <p class="ml-5"> Debiased Embedding Space: </p>
+                    <div class="container" style="background-color: #ffffff; max-height:600px; max-width:400px; display:float;">
+                        <canvas id="debiasedChart"></canvas>
+                    </div>    
+                </div>
             </div>
+
         `;
     }
     output += `
         <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        <input type="image" src="img/download.png" height="10%" width="10%" id="debiasDownloadButton"></input>
+        <a class="btn" role="button" id="debiasDownloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>
     `;
     return output;
 }
 
+//Adds content to an as target specified object
 async function addDebiasingOutput(target, output){
     target.innerHTML = output;
 }
 
+//Steers the drawing of the debiasing visualizations
 async function drawPCAChart(){
     if (pca == 'true'){
-        drawChart();
+        //drawChart();
+        drawChartData(debiasResponse.BiasedSpacePCA, 'biasedChart');
+        drawChartData(debiasResponse.DebiasedSpacePCA, 'debiasedChart');
     }
 }
 
+//Controlls the whole debiasing process
 async function performDebiasing(target){
     startSpinner(target);
     await debiasing();
@@ -833,7 +888,6 @@ function getVector(vector){
 
 //Draw a scatter chart for result comparing
 function drawChart(){
-    console.log('start');
     var data = debiasResponse;
     var biasLables = [];
     var debiasLabels = [];
@@ -851,20 +905,20 @@ function drawChart(){
         }
     }
     for (let ele in data.DebiasedSpacePCA.T2){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.T2[ele] != null){
+        point = getVector(data.DebiasedSpacePCA.T2[ele]);
         debiasPoints.push(point);
         }
     }
     for (let ele in data.DebiasedSpacePCA.A1){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.A1[ele] != null){
+        point = getVector(data.DebiasedSpacePCA.A1[ele]);
         debiasPoints.push(point);
         }
     }
     for (let ele in data.DebiasedSpacePCA.A2){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.A2[ele] != null){
+        point = getVector(data.DebiasedSpacePCA.A2[ele]);
         debiasPoints.push(point);
         }
     }
@@ -876,20 +930,20 @@ function drawChart(){
         }
     }
     for (let ele in data.BiasedSpacePCA.T2){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.BiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.T2[ele] != null){
+        point = getVector(data.BiasedSpacePCA.T2[ele]);
         biasPoints.push(point);
         }
     }
     for (let ele in data.BiasedSpacePCA.A1){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.BiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.A1[ele] != null){
+        point = getVector(data.BiasedSpacePCA.A1[ele]);
         biasPoints.push(point);
         }
     }
     for (let ele in data.BiasedSpacePCA.A2){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.BiasedSpacePCA.T1[ele]);
+        if (data.DebiasedSpacePCA.A2[ele] != null){
+        point = getVector(data.BiasedSpacePCA.A2[ele]);
         biasPoints.push(point);
         }
     }
@@ -910,6 +964,96 @@ function drawChart(){
           backgroundColor: '#ffc300',
           labels: biasLables
         }]
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              type: 'linear',
+              position: 'bottom'
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+              var label = data.labels[tooltipItem.index];
+              return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+            }
+          }
+        }
+      }
+    });
+}
+
+//Draw two scatter charts for debiasing results
+function drawChartData(data, target){
+    console.log('start');
+    var dataLabels = [];
+    var t1Labels = Object.keys(data.T1);
+    var t2labels = Object.keys(data.T2);
+    var a1Labels = Object.keys(data.A1);
+    var a2Labels = Object.keys(data.A2);
+    dataLabels = dataLabels.concat(t1Labels, t2labels, a1Labels, a2Labels);
+    var points = [];
+    for (let ele in data.T1){
+        if (data.T1[ele] != null){
+            point = getVector(data.T1[ele]);
+            points.push(point);
+        }
+    }
+    for (let ele in data.T2){
+        if (data.T1[ele] != null){
+            point = getVector(data.T1[ele]);
+            points.push(point);
+        }
+    }
+    for (let ele in data.A1){
+        if (data.A1[ele] != null){
+            point = getVector(data.A1[ele]);
+            points.push(point);
+        }
+    }
+    for (let ele in data.A2){
+        if (data.A2[ele] != null){
+            point = getVector(data.A2[ele]);
+            points.push(point);
+        }
+    }
+
+    var ctx1 = document.getElementById(target).getContext('2d'); //Replace myChart with targetID
+    var scatterChart1 = new Chart(ctx1, {
+    type: 'scatter',
+      data: {
+      labels: dataLabels,
+          datasets: [{
+            label: 'T1',
+            data: points,
+            backgroundColor: '#009dff',
+            pointsBackgroundColor: '#009dff',
+            labels: t1Labels
+          },
+        {
+          label: 'T2',
+          data: points,
+          backgroundColor: '#ffc300',
+          pointsBackgroundColor: '#ffc300',
+          labels: t2labels
+        },
+        {
+            label: 'A1',
+            data: points,
+            backgroundColor: '#2efe64',
+            pointsBackgroundColor: '#2efe64',
+            labels: a1Labels
+        },
+        {
+            label: 'A2',
+            data: points,
+            backgroundColor: '#0174df',
+            pointsBackgroundColor: '#0174df',
+            labels: a2Labels
+          }
+    
+    ]
         },
         options: {
           scales: {
@@ -964,6 +1108,7 @@ binarySwitcher.onchange = function () {
     }
 };
 
+//Switch button, displays or hides input fields for augmentations
 augmentSwitch.onchange = function() {
     console.log('augmentswitch');
     div = document.getElementById('augmentationsInput');
@@ -975,8 +1120,10 @@ augmentSwitch.onchange = function() {
     }
 };
 
+//Starts Application by displaying first container
 startButton.addEventListener("click", function() {expandAppSelection(); expandContainer('spaceContainer')});
 
+//Confirm to operate on the selected embedding space
 confirmButton.addEventListener("click", function() {
     if (document.getElementById('spaceToggleGroup').getElementsByClassName('active')[0].id == 'upload'){
         hideContainer('specificationContainer');
@@ -988,24 +1135,27 @@ confirmButton.addEventListener("click", function() {
     }
 });
 
+//Proceed with pre-defined bias specs
 predefinedButton.addEventListener("click", function() {
     expandContainer('preDefinedContainer');
     hideContainer('selfDefinedContainer');
     loadTestData().then(function () { setTableEventListeners() });
 });
 
+//Proceed with self-defined bias specs
 selfdefinedButton.addEventListener("click", function() {
     expandContainer('selfDefinedContainer');
     hideContainer('preDefinedContainer');
 });
 
+//Start evaluation of pre-defined bias spec
 evaluationButton.addEventListener("click", function() {
     predefined = true;
     evalCard.removeAttribute('hidden');
     performEvaluation(evalCardBody);
-    continueDebiasing.removeAttribute('hidden');
 });
 
+//Start evaluation of self-defined bias spec
 sEvaluationButton.addEventListener("click", function() {
     predefined = false;
     sEvalCard.removeAttribute("hidden");
@@ -1013,20 +1163,24 @@ sEvaluationButton.addEventListener("click", function() {
     sContinueDebiasing.removeAttribute('hidden');
 });
 
+//Continue with debiasing after pre-defined evaluation
 continueDebiasing.addEventListener("click", function() {
     expandContainer('debiasingContainer');
 });
 
+//Continue with debiasing after self-defined evaluation
 sContinueDebiasing.addEventListener("click", function() {
     expandContainer('debiasingContainer');
 });
 
+//Start debiasing using selected model
 debiasingButton.addEventListener("click", function() {
     debiasingCard.removeAttribute('hidden');
     performDebiasing(debiasingCardBody);
     dEvaluationButton.removeAttribute('hidden');
 });
 
+//Start a second evaluation of the debiased results
 dEvaluationButton.addEventListener("click", function() {
     debiased = 'true';
     dEvaluateContainer.removeAttribute('hidden');
@@ -1034,3 +1188,8 @@ dEvaluationButton.addEventListener("click", function() {
     performEvaluation(evalCardBody2);
     thankYou.removeAttribute('hidden');
 });
+
+//Delete uploaded file by closing the window
+window.addEventListener("beforeunload", function() {
+    handleFileDelete();
+})

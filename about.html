@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DEBIE - Webapp</title>
+    <link rel="icon" href="img/favicon.png">
+    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+</head>
+<body class="bg-light" id="body">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="15%"></a>  
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="bias-evaluation.html" style=" white-space:nowrap;">Bias Evaluation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="debiasing.html">Debiasing</a>
+                    </li>
+                    -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--DEBIE-->
+    <div class="jumbotron mb-0" style="background-image: url(img/background.jpg); background-position:center; ">
+        <div class="container">
+            <h1 class="display-1 mb-3" style="color: #222E58;" ><b>DEBIE</b></h1>
+            <p class="lead text-dark ml-2"><b>DEBiasing embeddings Implicitly and Explicitly </b></p>
+            <hr class="my-4" style="border: 1px solid black;">
+            <p class="text-dark ml-2">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
+        </div>
+    </div>
+
+    <!--Content-->
+    <div class="container-fluid" id="infoContainer">
+        <div class="container-fluid text-dark mt-4" id="contentContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Contents</h4>
+                <br>
+                <ul>
+                    <li><a class="lead">Bias Evaluation Scores</a></li>
+                    <li><a class="lead">Debiasing Models</a></li>
+                    <li><a class="lead">Provided Embedding Spaces</a></li>
+                    <li><a class="lead">Upload Formats</a></li>
+                    <li><a class="lead">API Access & Formats</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="biasEvalScoresContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Bias Evaluation Scores</h4>
+                <br>
+                <p class="lead">ECT &#8210; Embedding Coherence Test</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">BAT &#8210; Bias Alignement Test</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">WEAT &#8210; Word Embedding Association Test</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">KMeans++ &#8210; Implicit Bias Test</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="debiasingModelsContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Debiasing Models</h4>
+                <br>
+                <p class="lead">BAM &#8210; Bias Alignment Model</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">GBDD &#8210; General Bias Debiasing Model</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">BAM &#5867; GBDD</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">GBDD &#5867; BAM</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="embeddingSpacesContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Embedding Spaces</h4>
+                <br>
+                <p class="lead">FastText</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <br>
+                <p class="lead">GloVe &#5867; Global Vectors</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <br>
+                <p class="lead">CBOW &#5867; Continous Bag of Words</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="uploadFormatsContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Upload Formats</h4>
+                <p class="lead">DEBIE accepts two different formats of embedding spaces</p>
+                <br>
+                <p class="lead">Format 1: Clear text vector files</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">Format 2: Splitted vocabulary and vector files</p>
+                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="apiAccessContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">API Access & Formats</h4>
+                <p class="lead">DEBIE offers a RESTful API for direct requests</p>
+            </div>
+        </div>
+
+    </div>
+    
+
+    <!--Footer-->
+    <footer class="container-fluid bg-light">
+        <hr class="mb-5" style="border-color: #222E58;">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img src="img/logo.png" width="40%">
+                <li class="list-unstyled text-small"><a class="text-muted ml-4" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                <small class="d-block mb-3 ml-4 text-muted">&copy; 2020</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/pdf/1301.3781.pdf">SkipGram & CBOW</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
+                    <li><a class="text-muted" href="/">Vector sources</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Related Work</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">General Framework</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
+                    <li><a class="text-muted" target="_blank" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Impressum</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted">Based on <a class="text-muted" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;" target="_blank">A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces</a></a> </li>
+                    <li><a class="text-muted">Created by Anne Lauscher and Niklas Friedrich</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de/dws/">Data and Web Science Group</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+    </script>
+    
+    <script src="js/app.js"></script>
+    <!--
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    -->
+
+</body>
+
+</html>

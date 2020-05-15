@@ -6,14 +6,12 @@
     <title>DEBIE - Webapp</title>
     <link rel="icon" href="img/favicon.png">
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">-->
-     <!--
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    -->
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
 </head>
 <body class="bg-light" id="body">
 
@@ -29,11 +27,11 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
-                    <!--
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About</a>
                     </li>
-                    
+                    <!--
                     <li class="nav-item">
                         <a class="nav-link" href="bias-evaluation.html" style=" white-space:nowrap;">Bias Evaluation</a>
                     </li>
@@ -65,19 +63,21 @@
         <div class="container " id="spaceContainer" hidden>
             <div class="jumbotron bg-dark text-white">
             
-                <h4 class="mb-4">Step 1: Select the embedding space on which you would like to operate:</h5>
+                <h4 class="mb-4">Step 1: Select the Embedding Space on which you would like to operate:</h5>
                 <br>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="spaceToggleGroup">
-                    <label class="btn btn-secondary btn-lg active" id="fasttext">
+                    <label class="btn btn-secondary btn-lg active" id="fasttext" data-toggle="tooltip" data-placement="top" title="fastText - Bojanoswki et al. (2016) - vectors retrieved on wikipedia corpus, 
+                    vectors with a dimensionality of 300.">
                         <input type="radio" name="options" autocomplete="off" checked>Fasttext
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="glove">
+                    <label class="btn btn-secondary btn-lg"  id="glove" data-toggle="tooltip" data-placement="top" title="GloVe - Global Vectors Pennington et al. (2014) - vectors retreived on wikipedia corpus,
+                    vectors with a dimensionality of 300.">
                         <input type="radio" name="options" autocomplete="off">GloVe
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="cbow">
+                    <label class="btn btn-secondary btn-lg"  id="cbow" data-toggle="tooltip" data-placement="top" title="CBOW - Continuous Bag of Words, Word2Vec by Mikolov et al. (2013)">
                         <input type="radio" name="options" autocomplete="off">CBOW
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="upload">
+                    <label class="btn btn-secondary btn-lg"  id="upload" data-toggle="tooltip" data-placement="top" title="Upload your own embedding space into DEBIE">
                         <input type="radio" name="options" autocomplete="off">Upload Embeddings    
                     </label>  
                 </div>
@@ -89,10 +89,15 @@
         <!--Upload embeddings space-->
         <div class="container py-2 " id="uploadContainer" hidden>
             <div class="jumbotron bg-dark text-white" id="uploadJumbo">
-                <h4 class="mb-4">Upload an embedding space here</h4>
+                <h4 class="mb-4" data-toggle="tooltip" data-placement="top" title="Only vector-file: word 0.0001 0.0002 ... 0.0009 \n
+                Vector and Vocab file: must contain a list of vocab and a dict ordered after vocab which can be readable by python pickle. 
+                Accepted file endings: .vec, .vector, .vocab, .txt - 
+                For further details and examples of accepted upload data see the about page.
+                ">Upload an Embedding Space here</h4>
+                <p>The uploaded files will be deleted automatically after this session is closed in the browser or in case of errors after two days.</p>
                 <div class="custom-control custom-switch float-right mb-2">
                     <input type="checkbox" class="custom-control-input" id="binarySwitch">
-                    <label class="custom-control-label" for="binarySwitch">Separated Vocab and Vec File</label>
+                    <label class="custom-control-label" for="binarySwitch" >Separated Vocab and Vec File</label>
                 </div>
                 <div class="custom-file mb-2" id="uploadVocab" hidden>
                     <input type="file" class="custom-file-input" id="inputVocab">
@@ -100,7 +105,7 @@
                 </div>
                 <div class="custom-file mb-2" id=uploadVecs>
                     <input type="file" class="custom-file-input" id="inputVecs">
-                    <label class="custom-file-label" for="inputVecs" id="inputVecsLabel">Choose vector file</label>
+                    <label class="custom-file-label" for="inputVecs" id="inputVecsLabel" >Choose vector file</label>
                 </div>
 
                 <button class="btn btn-primary mt-2 mb-4" id='uploadButton' style="background-color: #222E58; border-color: #FFFFFF;" disabled>Upload space</button>
@@ -113,11 +118,11 @@
          <!--Select Pre-Defined or Self-Defined Specifications-->
          <div class="container text-dark py-2" id="specificationContainer" hidden>
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Step 2: Select a pre-defined bias specification or define one on your own?</h5>
+                <h4 class="mb-4">Step 2: Select a Pre-Defined Bias Specification or define one on your own?</h5>
                 <div class="card-deck">
                     <div class="card bg-secondary text-white mx-3" >
                         <div class="card-body">
-                            <h5 class="card-title">Pre-defined Bias Specifications</h5>
+                            <h5 class="card-title">Pre-Defined Bias Specifications</h5>
                             <hr class="bg-white">
                             <p>Evaluate bias specification test sets from WEAT by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al.</a> These specifications are explicit bias specifications containing two target and two attribute sets. </p>
                             <a class="btn btn-primary btn-lg text-light" role="button" id="preDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
@@ -126,9 +131,9 @@
                     </div>
                     <div class="card bg-secondary text-white mx-3" >
                         <div class="card-body">
-                            <h5 class="card-title">Self-Defined Test Sets</h5>
+                            <h5 class="card-title">Self-Defined Bias Specifications</h5>
                             <hr class="bg-white">
-                            <p>Enter an explicit self-defined bias specification test set consisting out of two target and two attribute sets here.</p>
+                            <p>Enter an explicit self-defined bias specification consisting out of two target sets, two attribute sets and optionally two augmentation sets.</p>
                             <br>
                             <a class="btn btn-primary btn-lg text-light" role="button" id="selfDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Self-Defined Sets</a>
                             <br>
@@ -141,7 +146,7 @@
         <!-- Pre-definden Specification-->
         <div class="container text-dark py-3" id="preDefinedContainer" hidden>
             <div class="jumbotron bg-dark text-white">  
-                <h4 class="mt-4">Step 3: Select one predefined test set</h4>
+                <h4 class="mt-4">Step 3: Select a Pre-Defined Bias Specification</h4>
                 <div id="tables"> 
                 </div>
                 <div class="card text-white mb-2" id="card1" style="background-color: black;" hidden>
@@ -161,21 +166,42 @@
                 </div>
                 <p>Choose method(s):</p>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
-                    <label class="btn btn-secondary btn-lg active" id="all">
+                    <label class="btn btn-secondary btn-lg active" id="all" data-toggle="tooltip" data-placement="top" title="Executes all implemented evaluation scores">
                         <input type="radio" name="options" autocomplete="off" checked> All
                     </label>
-                    <label class="btn btn-secondary btn-lg" id="ect">
+                    <label class="btn btn-secondary btn-lg" id="ect" data-toggle="tooltip" data-placement="top" title="Embedding Coherence Test by Dev and Phillips
+                    2019. Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
+                    Next, it computes the (cosine) similarities of the target set mean vectors with all vectors of the elements a ∈ A. The two resultant vectors of similarity scores, 
+                    are then ordered by rank through the Spearman’s rank correlation - the higher the correlation, the lower the bias.
+                    ">
                         <input type="radio" name="options" autocomplete="off"> ECT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="bat">
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. 2019. Analogy based bias test - 
+                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
+                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
+                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
+                    ">
                         <input type="radio" name="options" autocomplete="off"> BAT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="weat">
+                    <label class="btn btn-secondary btn-lg"  id="weat" data-toggle="tooltip" data-placement="top" title="Word Embedding Association Test by Caliskan et al. 2017. 
+                    WEAT tests the embedding space for the presence of an explicit bias. It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
+                    "> 
                         <input type="radio" name="options" autocomplete="off"> WEAT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="kmeans">
+                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering - by Arthur and Vassilvitskii 2007.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.                  
+                    ">
                         <input type="radio" name="options" autocomplete="off"> K-Means++
-                    </label>  
+                    </label>
                 </div>
                 <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
                 <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
@@ -185,14 +211,15 @@
                 </div>
                 <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="continueDebiasing" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Continue with Debiasing</a>
             </div>
+            
         </div>
 
         <!-- Self-Defined Specification -->
         <div class="container py-3" id="selfDefinedContainer" hidden>  
             <div class="jumbotron bg-dark text-white px-md-5">
-                <h4 class="my-2">Step 3: Evaluate self-defined bias specifications</h4>
+                <h4 class="my-2">Step 3: Evaluate Self-Defined Bias Specifications</h4>
                 <p>Please enter the words seperated by whitespaces</p>
-                <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input lists.</p>
+                <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input sets.</p>
                 <div class="custom-control custom-switch float-right mb-2">
                     <input type="checkbox" class="custom-control-input" id="lowerSwitch2">
                     <label class="custom-control-label text-light" for="lowerSwitch2">Lower</label>
@@ -302,7 +329,7 @@
 
         <div class="container text-dark py-2" id="dEvaluateContainer" hidden>
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mb-4">Step 5: Bias Evaluation on debiased space</h4>
+                <h4 class="mb-4">Step 5: Bias Evaluation on Debiased Space</h4>
                 
                 <div class="card bg-secondary text-light mt-2" id="evalCard2" hidden>
                     <div class="card-body" id ="evalCardBody2">
@@ -361,22 +388,20 @@
     </footer>
 
 
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+    </script>
     
-    <!--
-    <script src="js/preDefinedSpecs.js"></script>
-    <script src="js/upload.js"></script>
-    <script src="js/biasEvaluation.js"></script>
-    <script src="js/debiasing.js"></script>
-    <script src="js/main.js"></script>
-        -->
     <script src="js/app.js"></script>
-
+    <!--
     <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-
+    -->
 
 </body>
 
