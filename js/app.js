@@ -807,6 +807,7 @@ async function performEvaluation(target){
         addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
     }
     continueDebiasing.removeAttribute('hidden');
+    sContinueDebiasing.removeAttribute('hidden');
     evalResponse = data;
 }
 
@@ -926,6 +927,7 @@ async function performDebiasing(target){
     addDebiasingOutput(target, output).then( await drawPCAChart());
     counter += 1;
     document.getElementById('debiasDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, results)});
+    dEvaluationButton.removeAttribute('hidden');
 }
 
 // --- DEBIASING CHARTS ---
@@ -1211,6 +1213,7 @@ selfdefinedButton.addEventListener("click", function() {
 evaluationButton.addEventListener("click", function() {
     predefined = true;
     evalCard.removeAttribute('hidden');
+    evalCardBody.innerHTML = '';
     performEvaluation(evalCardBody);
 });
 
@@ -1218,8 +1221,8 @@ evaluationButton.addEventListener("click", function() {
 sEvaluationButton.addEventListener("click", function() {
     predefined = false;
     sEvalCard.removeAttribute("hidden");
+    sEvalCardBody.innerHTML = '';
     performEvaluation(sEvalCardBody);
-    sContinueDebiasing.removeAttribute('hidden');
 });
 
 //Continue with debiasing after pre-defined evaluation
@@ -1235,8 +1238,8 @@ sContinueDebiasing.addEventListener("click", function() {
 //Start debiasing using selected model
 debiasingButton.addEventListener("click", function() {
     debiasingCard.removeAttribute('hidden');
-    performDebiasing(debiasingCardBody);
-    dEvaluationButton.removeAttribute('hidden');
+    debiasingCardBody.innerHTML += '';
+    performDebiasing(debiasingCardBody);  
 });
 
 //Start a second evaluation of the debiased results
@@ -1244,6 +1247,7 @@ dEvaluationButton.addEventListener("click", function() {
     debiased = 'true';
     dEvaluateContainer.removeAttribute('hidden');
     evalCard2.removeAttribute('hidden');
+    evalCardBody2.innerHTML = '';
     performEvaluation(evalCardBody2);
     thankYou.removeAttribute('hidden');
 });

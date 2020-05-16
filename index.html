@@ -18,7 +18,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="15%"></a>  
+            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="14%"></a>  
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -78,7 +78,7 @@
                         <input type="radio" name="options" autocomplete="off">CBOW
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="upload" data-toggle="tooltip" data-placement="top" title="Upload your own embedding space into DEBIE">
-                        <input type="radio" name="options" autocomplete="off">Upload Embeddings    
+                        <input type="radio" name="options" autocomplete="off">Upload Embedding Space    
                     </label>  
                 </div>
                 <a class="btn btn-primary btn-lg ml-auto text-light" role="button" id="selectSpaceButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Confirm</a>
@@ -95,6 +95,7 @@
                 For further details and examples of accepted upload data see the about page.
                 ">Upload an Embedding Space here</h4>
                 <p>The uploaded files will be deleted automatically after this session is closed in the browser or in case of errors after two days.</p>
+                <p><a href="about.html#uploadFormatsContainer" target="_blank">Click here</a> to get more details about the accepted file formats.</p>
                 <div class="custom-control custom-switch float-right mb-2">
                     <input type="checkbox" class="custom-control-input" id="binarySwitch">
                     <label class="custom-control-label" for="binarySwitch" >Separated Vocab and Vec File</label>
@@ -124,8 +125,8 @@
                         <div class="card-body">
                             <h5 class="card-title">Pre-Defined Bias Specifications</h5>
                             <hr class="bg-white">
-                            <p>Evaluate bias specification test sets from WEAT by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al.</a> These specifications are explicit bias specifications containing two target and two attribute sets. </p>
-                            <a class="btn btn-primary btn-lg text-light" role="button" id="preDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
+                            <p>Evaluate bias specification test sets from WEAT by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al. 2017</a>. These specifications are explicit bias specifications containing two target and two attribute sets. </p>
+                            <a class="btn btn-primary btn-lg text-light mt-4" role="button" id="preDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
                             <br>
                         </div>
                     </div>
@@ -202,17 +203,20 @@
                     ">
                         <input type="radio" name="options" autocomplete="off"> K-Means++
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier">
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier &#8210; Support Vector Machine Classifier">
                         <input type="radio" name="options" autocomplete="off"> SVM Classifier
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999">
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999 &#8210; (Hill, Reichart, and Korhonen 2015) 
+                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> SimLex-999
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353">
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353 &#8210; (Finkelstein et al. 2002) 
+                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> WordSim-353
                     </label>
                 </div>
                 <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Evaluate</a>
+                <p>For more information about the offered evaluation methods <a href="about.html#biasEvalScoresContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
                 <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
                     <div class="card-body" id ="evaluationCardBody">
                         
@@ -227,7 +231,8 @@
         <div class="container py-3" id="selfDefinedContainer" hidden>  
             <div class="jumbotron bg-dark text-white px-md-5">
                 <h4 class="my-2">Step 3: Evaluate Self-Defined Bias Specifications</h4>
-                <p>Please enter the words seperated by whitespaces</p>
+                <br>
+                <p>Please enter the words seperated by whitespaces.</p>
                 <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input sets.</p>
                 <div class="custom-control custom-switch float-right mb-2">
                     <input type="checkbox" class="custom-control-input" id="lowerSwitch2">
@@ -281,13 +286,13 @@
                         <input type="radio" name="options" autocomplete="off" checked> All
                     </label>
                     <label class="btn btn-secondary btn-lg" id="ect" data-toggle="tooltip" data-placement="top" title="Embedding Coherence Test by Dev and Phillips
-                    2019. Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
+                    (2019). Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
                     Next, it computes the (cosine) similarities of the target set mean vectors with all vectors of the elements a ∈ A. The two resultant vectors of similarity scores, 
-                    are then ordered by rank through the Spearman’s rank correlation - the higher the correlation, the lower the bias.
+                    are then ordered by rank through the Spearman’s rank correlation &#8210; the higher the correlation, the lower the bias.
                     ">
                         <input type="radio" name="options" autocomplete="off"> ECT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. 2019. Analogy based bias test - 
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. (2019). This is an analogy based bias test &#8210; 
                     We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
                     We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
                     We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
@@ -305,7 +310,7 @@
                     "> 
                         <input type="radio" name="options" autocomplete="off"> WEAT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering - by Arthur and Vassilvitskii 2007.
+                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering &#8210; by Arthur and Vassilvitskii 2007.
                     K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
                     First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
                     Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
@@ -313,17 +318,20 @@
                     ">
                         <input type="radio" name="options" autocomplete="off"> K-Means++
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier">
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier &#8210; Support Vector Machine Classifier">
                         <input type="radio" name="options" autocomplete="off"> SVM Classifier
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999">
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999 &#8210; (Hill, Reichart, and Korhonen 2015) 
+                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> SimLex-999
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353">
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353 &#8210; (Finkelstein et al. 2002) 
+                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> WordSim-353
                     </label>  
                 </div>
                 <a class="btn btn-primary btn-lg text-light" role="button" id="sEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Evaluate</a>
+                <p>For more information about the offered evaluation methods <a href="about.html#biasEvalScoresContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
                 <div class="card bg-secondary text-light mt-2" id="sEvaluationCard" hidden>
                     <div class="card-body" id ="sEvaluationCardBody">
                         
@@ -338,25 +346,50 @@
             <div class="jumbotron bg-dark text-white">
                 <h4 class="mb-4">Step 4: Debiasing</h4>
                 <div class="custom-control custom-switch float-right">
-                    <input type="checkbox" class="custom-control-input" id="pcaoffSwitch">
+                    <input type="checkbox" class="custom-control-input" id="pcaoffSwitch" data-toggle="tooltip" data-placement="top" title="Computes a Principal Component Analysis of the biased 
+                    and the debiased embedding spaces and plots diagrams">
                     <label class="custom-control-label text-light" for="pcaoffSwitch">PCA off</label>
                 </div>
                 <p>Select a debiasing model</p>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="debiasModel">
-                    <label class="btn btn-secondary btn-lg active" id="bam">
+                    <label class="btn btn-secondary btn-lg active" id="bam" data-toggle="tooltip" data-placement="top" title="Bias&#8210;Alignment Model by Lauscher et al. (2019): 
+                    BAM uses pairs (ti1, tj2) to learn the debiasing projection of X with respect to itself. Let XT1 and XT2 be the matrices obtained by stacking (biased) vectors of left and right words
+                    of pairs (ti1, tj2), respectively. We then learn the orthogonal map Wx = UVT, where UΣVT is the singular value decomposition of XT2XT1T. Since Wx is orthogonal, the projection 
+                    X' = XWx is isomorphic to the original space X, and thus equally biased. However, the transformation (specified by Wx) defines the angle and direction of debiasing. 
+                    We obtain the debiased space by averaging the original space X and the projected space X': BAM(X) = 1/2 * (X + XWx).
+                    ">
                         <input type="radio" name="options" autocomplete="off" checked> BAM
                     </label>
-                    <label class="btn btn-secondary btn-lg" id="gbdd">
+                    <label class="btn btn-secondary btn-lg" id="gbdd" data-toggle="tooltip" data-placement="top" title="Generalized Bias&#8210;Direction Debiasing by Dev and Philips (2019), adapted by 
+                    Lauscher et al. (2019): This model focuses on BI as a generalization of the linear projection model proposed by Dev and Phillips (2019), itself, in turn, an extension
+                    of the hard-debiasing model of Bolukbasi et al. (2016). The model of Dev and Phillips (2019) requires a stricter bias specification than our BI: it requires T1 and T2 to be ordered 
+                    lists of equal length L, so that the so-called equivalence pairs {(tl1, tl2)}L l=1 can be created. For instance, T1 ={man, father, boy} and T2 ={woman, mother, girl} give rise to the
+                    following equivalence pairs: (man, woman), (father, mother), and (boy, girl). For each equivalence pair (tl1, tl2) they compute the bias direction vector bl by subtracting the vector of
+                    term tl2 from the vector of term tl1. We find this bias specification overly restrictive: it requires an additional effort to create true equivalence pairs from T1 and T2 and it produces
+                    only L partial bias direction vectors. In contrast, we propose to create one bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2. 
+                    If T1 and T2 truly specify categories that are opposite in some regard (e.g., gender-wise), then any pair (ti1, tj2) should induce a meaningful partial bias direction vector. 
+                    This way we also obtain a much larger number of partial bias direction vectors (e.g., L^2 if T1 and T2 are of the same length L): this should result in a more reliable general
+                    bias direction vector, computed as follows. We stack all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 to form a bias direction matrix B.
+                    We then obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
+                    the `2-normalized d-dimensional vector from a biased input vector space. Its debiased version is then computed as: GBDD(x) = x − (x, b)b where (,) denotes a dot product. 
+                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x). 
+                    Vectors orthogonal to the bias direction b remain unchanged (zero dot-product with the bias vector b).
+                    ">
                         <input type="radio" name="options" autocomplete="gbdd"> GBDD
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="bamxgbdd">
+                    <label class="btn btn-secondary btn-lg"  id="bamxgbdd" data-toggle="tooltip" data-placement="top" title="Composing of the BAM and the GBDD model. First BAM is executed
+                    on the embedding space, then the by BAM debiased embedding space is used as an input for GBDD. The output is a twice debiased embedding space. 
+                    ">
                         <input type="radio" name="options" autocomplete="bamxgbdd"> BAM <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> GBDD
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="gbddxbam">
+                    <label class="btn btn-secondary btn-lg"  id="gbddxbam" data-toggle="tooltip" data-placement="top" title="Composing of the GBDD and the BAM model. First GBDD is executed
+                    on the embedding space, then the by GBDD debiased embedding space is used as an input for BAM. The output is a twice debiased embedding space. 
+                    ">
                         <input type="radio" name="options" autocomplete="gbddxbam"> GBDD <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> BAM
                     </label> 
                 </div>
                 <a class="btn btn-primary btn-lg text-light" role="button" id="debiasingButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" >Debiasing</a>
+                <p>For more information about the offered debiasing models <a href="about.html#debiasingModelsContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
                 <div class="card bg-secondary text-light mt-2" id="debiasingCard" hidden>
                     <div class="card-body" id ="debiasingCardBody">
                         

@@ -18,7 +18,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="15%"></a>  
+            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="14%"></a>  
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -70,12 +70,13 @@
             </div>
         </div>
 
-        <div class="container-fluid text-dark" id="biasEvalScoresContainer">
+        <div class="container-fluid" id="biasEvalScoresContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Bias Evaluation Scores</h4>
                 <br>
                 <p class="lead">ECT &#8210; Embedding Coherence Test</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
+                <p> It quantifies the amount of explicit bias BE={T1, T2, A} <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">
+                    (Dev and Phillips 2019)</a>. Unlike WEAT, it compares vectors of target sets T1
                     and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
                     target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
                     Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
@@ -84,81 +85,97 @@
                 </p>
                 <br>
                 <p class="lead">BAT &#8210; Bias Alignement Test</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> Bias Analogy Test by <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Lauscher et al. 2019</a>. Analogy based bias test - 
+                    Based on the observation of <a href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf" target="_blanc" style="color:darkturquoise;">Bolukbasi et al. 2016</a> 
+                    that in a biased vector space "programmer − homemaker ≈ man − woman", <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Dev and Phillips (2019)</a> 
+                    proposed an analogy-based bias test: Embedding Quality Test (EQT). However, EQT depends on WordNet to extend the bias definition with synonyms and 
+                    plurals of bias specification terms. In contrast, we propose an alternative Bias Analogy Test (BAT) that relies only on the specification BE = (T1, T2, A1, A2).
+                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
+                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
+                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
                 </p>
                 <br>
                 <p class="lead">WEAT &#8210; Word Embedding Association Test</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> Word Embedding Association Test by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al. 2017</a>. 
+                    WEAT tests the embedding space for the presence of an explicit bias defined as BE=(T1, T2, A1, A2).
+                    It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
                 </p>
                 <br>
                 <p class="lead">KMeans++ &#8210; Implicit Bias Test</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> K-Means++ Clustering - by <a href="https://dl.acm.org/doi/pdf/10.5555/1283383.1283494" style="color:darkturquoise;" target="_blank">Arthur and Vassilvitskii 2007</a>.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.  
                 </p>
                 <br>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <p class="lead">SVM-Classifier &#8210; Implicit Bias Test</p>
+                <p> Approach by <a href="https://arxiv.org/pdf/1903.03862.pdf" style="color:darkturquoise;" target="_blank">Gonen and Goldberg 2019</a>. Test the debiased spaces for the presence of implicit bias by classifying 
+                    terms from T1 and T2 using an SVM (Support Vector Machine) with the RBF kernel. It is trained on the vectors of terms from the augmentations of the target sets.
+                </p>
+                <br>
+                <p class="lead">SimLex-999 & WordSim-353 &#8210; Semantic Quality Test</p>
+                <p> Debiasing procedures change the topology of the input vector space; we thus have to verify that debiasing does not occur at the expense of the encoded semantic
+                    information. We test the debiased embedding spaces on two
+                    standard word similarity/relatedness benchmarks: SimLex999 <a href="https://arxiv.org/pdf/1408.3456.pdf" style="color:darkturquoise;" target="_blank">(Hill, Reichart, and Korhonen 2015)</a> 
+                    and WordSim-353 <a href="http://gabrilovich.com/papers/context_search.pdf" style="color:darkturquoise;" target="_blank">(Finkelstein et al. 2002)</a>
+                </p>
+                <br>
+                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
-        <div class="container-fluid text-dark" id="debiasingModelsContainer">
+        <div class="container-fluid" id="debiasingModelsContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Debiasing Models</h4>
                 <br>
                 <p class="lead">BAM &#8210; Bias Alignment Model</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> BAM uses pairs (ti1, tj2) to learn the debiasing projection of X with respect to itself. Let XT1 and XT2 be the matrices obtained by stacking (biased) vectors of left and right words
+                    of pairs (ti1, tj2), respectively. We then learn the orthogonal map Wx = UVT, where UΣVT is the singular value decomposition of XT2XT1T. Since Wx is orthogonal, the projection 
+                    X' = XWx is isomorphic to the original space X, and thus equally biased. However, the transformation (specified by Wx) defines the angle and direction of debiasing. 
+                    We obtain the debiased space by averaging the original space X and the projected space X': BAM(X) = 1/2 * (X + XWx).
                 </p>
                 <br>
                 <p class="lead">GBDD &#8210; General Bias Debiasing Model</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> This model focuses on BI as a generalization of the linear projection model proposed by 
+                    <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Dev and Phillips 2019</a>, itself, in turn, an extension
+                    of the hard-debiasing model of 
+                    <a href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf" target="_blanc" style="color:darkturquoise;">Bolukbasi et al. 2016</a>. 
+                    The model of Dev and Phillips (2019) requires a stricter bias specification than our BI: it requires T1 and T2 to be ordered 
+                    lists of equal length L, so that the so-called equivalence pairs {(tl1, tl2)}L l=1 can be created. For instance, T1 ={man, father, boy} and T2 ={woman, mother, girl} give rise to the
+                    following equivalence pairs: (man, woman), (father, mother), and (boy, girl). For each equivalence pair (tl1, tl2) they compute the bias direction vector bl by subtracting the vector of
+                    term tl2 from the vector of term tl1. We find this bias specification overly restrictive: it requires an additional effort to create true equivalence pairs from T1 and T2 and it produces
+                    only L partial bias direction vectors. In contrast, we propose to create one bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2. 
+                    If T1 and T2 truly specify categories that are opposite in some regard (e.g., gender-wise), then any pair (ti1, tj2) should induce a meaningful partial bias direction vector. 
+                    This way we also obtain a much larger number of partial bias direction vectors (e.g., L^2 if T1 and T2 are of the same length L): this should result in a more reliable general
+                    bias direction vector, computed as follows. We stack all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 to form a bias direction matrix B.
+                    We then obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
+                    the `2-normalized d-dimensional vector from a biased input vector space. Its debiased version is then computed as: GBDD(x) = x − (x, b)b where (,) denotes a dot product. 
+                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x). 
+                    Vectors orthogonal to the bias direction b remain unchanged (zero dot-product with the bias vector b).
                 </p>
                 <br>
                 <p class="lead">BAM &#5867; GBDD</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> Composing of the BAM and the GBDD model. First BAM is executed
+                    on the embedding space, then the by BAM debiased embedding space is used as an input for GBDD. The output is a twice debiased embedding space.
                 </p>
                 <br>
                 <p class="lead">GBDD &#5867; BAM</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> Composing of the GBDD and the BAM model. First GBDD is executed
+                    on the embedding space, then the by GBDD debiased embedding space is used as an input for BAM. The output is a twice debiased embedding space. 
                 </p>
                 <br>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
-        <div class="container-fluid text-dark" id="embeddingSpacesContainer">
+        <div class="container-fluid" id="embeddingSpacesContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Embedding Spaces</h4>
                 <br>
@@ -190,40 +207,63 @@
                     s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
                     and s2 &#8210; the higher the correlation, the lower the bias.
                 </p>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
-        <div class="container-fluid text-dark" id="uploadFormatsContainer">
+        <div class="container-fluid" id="uploadFormatsContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Upload Formats</h4>
                 <p class="lead">DEBIE accepts two different formats of embedding spaces</p>
                 <br>
-                <p class="lead">Format 1: Clear text vector files</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
-                </p>
-                <br>
-                <p class="lead">Format 2: Splitted vocabulary and vector files</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
-                </p>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <div class="row ml-1">
+                    <div class="col">
+                        <p class="lead">Format 1: Clear text vector files</p>
+                        <p>Accepted format for embedding space uploads:</p>
+                        <p><pre><code style="color:white;">
+word1 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word2 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word3 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word4 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word5 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word6 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word7 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word8 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+...
+                        </code></pre></p>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Format 2: Splitted vocabulary and vector files</p>
+                        <p>Alternatively binary embedding spaces can be uploaded to DEBIE. Prerequisite is that the vocabulary and the vectors are splitted into two files.
+                            The contents need to be ndarrays, which can be unpacked to an dictionary for the vocabulary and to a list for the vectors by using pickle.
+                        </p>
+                    </div>
+                </div>
+                <p>DEBIE accepts .txt, .vec, .vector, .vectors and .vocab files as input. The uploaded files will be deleted immediately after closing the window in which DEBIE is opened.</p>
             </div>
         </div>
 
         <div class="container-fluid text-dark" id="apiAccessContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">API Access & Formats</h4>
+                <br>
                 <p class="lead">DEBIE offers a RESTful API for direct requests</p>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="githubContainer">
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mt-4">GitHub Repositories</h4>
+                <br>
+                <p class="lead">Used word vector spaces</p>
+                <a> The complete source code of this application is published on GitHub. Therefore, three repositories are created:</a>
+                <ul>
+                    <li><a> The source code of the application's back-end accessible here: <a href="https://github.com/nfriedri/debie-backend" target="_blanc" style="color:darkturquoise;">DEBIE Back-End Repository</a></a></li>
+                    <li><a> The design files and the source code of the application's front-end is accessible here: <a href="https://github.com/nfriedri/debie-frontend" target="_blanc" style="color:darkturquoise;">DEBIE Front-End Repository</a></a></li>
+                    <li><a> The used pre-trained embedding spaces can be downloaded here as vector-files or as database backup files: <a href="https://drive.google.com/open?id=1j0BOPUmIeJNNCmolP5U2taE5-v2-n_d4" target="_blanc" style="color:darkturquoise;">Google Drive</a></a></li>
+                </ul> 
+                
+                
             </div>
         </div>
 
