@@ -202,8 +202,17 @@
                     ">
                         <input type="radio" name="options" autocomplete="off"> K-Means++
                     </label>
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier">
+                        <input type="radio" name="options" autocomplete="off"> SVM Classifier
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999">
+                        <input type="radio" name="options" autocomplete="off"> SimLex-999
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353">
+                        <input type="radio" name="options" autocomplete="off"> WordSim-353
+                    </label>
                 </div>
-                <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Start Bias Evaluation</a>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Evaluate</a>
                 <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
                     <div class="card-body" id ="evaluationCardBody">
                         
@@ -268,23 +277,53 @@
                 </div>
                 <p class="mt-3">Choose method(s):</p>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
-                    <label class="btn btn-secondary btn-lg active" id="all">
+                    <label class="btn btn-secondary btn-lg active" id="all" data-toggle="tooltip" data-placement="top" title="Executes all implemented evaluation scores">
                         <input type="radio" name="options" autocomplete="off" checked> All
                     </label>
-                    <label class="btn btn-secondary btn-lg" id="ect">
+                    <label class="btn btn-secondary btn-lg" id="ect" data-toggle="tooltip" data-placement="top" title="Embedding Coherence Test by Dev and Phillips
+                    2019. Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
+                    Next, it computes the (cosine) similarities of the target set mean vectors with all vectors of the elements a ∈ A. The two resultant vectors of similarity scores, 
+                    are then ordered by rank through the Spearman’s rank correlation - the higher the correlation, the lower the bias.
+                    ">
                         <input type="radio" name="options" autocomplete="off"> ECT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="bat">
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. 2019. Analogy based bias test - 
+                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
+                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
+                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
+                    ">
                         <input type="radio" name="options" autocomplete="off"> BAT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="weat">
+                    <label class="btn btn-secondary btn-lg"  id="weat" data-toggle="tooltip" data-placement="top" title="Word Embedding Association Test by Caliskan et al. 2017. 
+                    WEAT tests the embedding space for the presence of an explicit bias. It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
+                    "> 
                         <input type="radio" name="options" autocomplete="off"> WEAT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="kmeans">
+                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering - by Arthur and Vassilvitskii 2007.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.                  
+                    ">
                         <input type="radio" name="options" autocomplete="off"> K-Means++
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier">
+                        <input type="radio" name="options" autocomplete="off"> SVM Classifier
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999">
+                        <input type="radio" name="options" autocomplete="off"> SimLex-999
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353">
+                        <input type="radio" name="options" autocomplete="off"> WordSim-353
                     </label>  
                 </div>
-                <a class="btn btn-primary btn-lg text-light mb-2" role="button" id="sEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Start Bias Evaluation</a>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="sEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Evaluate</a>
                 <div class="card bg-secondary text-light mt-2" id="sEvaluationCard" hidden>
                     <div class="card-body" id ="sEvaluationCardBody">
                         
@@ -369,7 +408,7 @@
             <div class="col-6 col-md">
                 <h5 style="color: #222E58;">Related Work</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">General Framework</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">Lauscher et al. 2019</a></li>
                     <li><a class="text-muted" target="_blank" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
                     <li><a class="text-muted" target="_blank" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>

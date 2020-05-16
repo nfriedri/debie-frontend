@@ -612,8 +612,12 @@ async function formatEvaluationScores(data) {
                         <td>${format(data.Scores.WEAT_P_Value)}</td>
                         </tr>
                         <tr>
-                        <th scope="row">K-Means result: </th>
+                        <th scope="row">K-Means++ result: </th>
                         <td>${format(data.Scores.K_Means)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">SVM-Classifier result: </th>
+                        <td>${format(data.Scores.SVM)}</td>
                         </tr>
                         <tr>
                         <th scope="<th scope="row">Randomly deleted words: </th>
@@ -700,11 +704,11 @@ async function formatEvaluationScores(data) {
             break;
         case 'kmeans':
             output += `
-                    <h5 class="card-title">KMeans Results</h5>
+                    <h5 class="card-title">KMeans++ Results</h5>
                     <table class="table table-borderless table-dark">
                         <tbody>
                         <tr>
-                        <th scope="row">K-Means result: </th>
+                        <th scope="row">K-Means++ result: </th>
                         <td>${format(data.Scores.K_Means)}</td>
                         </tr>
                         <tr>
@@ -714,6 +718,61 @@ async function formatEvaluationScores(data) {
                         <tr>
                         <th scope="<th scope="row">Not found words: </th>
                         <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    `;
+            break;
+        case 'svm':
+            output += `
+                    <h5 class="card-title">SVM-Classifier Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">SVM-Classifier result: </th>
+                        <td>${format(data.Scores.K_Means)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Randomly deleted words: </th>
+                        <td>${data.BiasSpecification.Deleted}</td>
+                        </tr>
+                        <tr>
+                        <th scope="<th scope="row">Not found words: </th>
+                        <td>${data.BiasSpecification.NotFound}</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    `;
+            break;
+        case 'simlex':
+            output += `
+                    <h5 class="card-title">SimLex-999 Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">Pearson score </th>
+                        <td>${format(data.Scores.SimLexPearson)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Spearman score </th>
+                        <td>${format(data.Scores.SimLexSpearman)}</td>
+                        </tr>
+                        </tbody>
+                    </table> 
+                    `;
+            break;
+        case 'wordsim':
+            output += `
+                    <h5 class="card-title">SimLex-999 Results</h5>
+                    <table class="table table-borderless table-dark">
+                        <tbody>
+                        <tr>
+                        <th scope="row">Pearson score </th>
+                        <td>${format(data.Scores.WordSimPearson)}</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Spearman score </th>
+                        <td>${format(data.Scores.WordSimSpearman)}</td>
                         </tr>
                         </tbody>
                     </table> 
