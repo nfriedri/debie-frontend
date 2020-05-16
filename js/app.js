@@ -730,7 +730,7 @@ async function formatEvaluationScores(data) {
                         <tbody>
                         <tr>
                         <th scope="row">SVM-Classifier result: </th>
-                        <td>${format(data.Scores.K_Means)}</td>
+                        <td>${format(data.Scores.SVM)}</td>
                         </tr>
                         <tr>
                         <th scope="<th scope="row">Randomly deleted words: </th>
