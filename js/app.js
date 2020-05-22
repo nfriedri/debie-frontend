@@ -162,7 +162,13 @@ async function getSelections() {
 //Returns selections required for creating evaluation API call
 async function getSelectionEvaluation() {
     await getSelections();
-    evalMethod = document.getElementById('evalMethods').getElementsByClassName('active')[0].id;
+    if (predefined){
+        evalMethod = document.getElementById('evalMethods').getElementsByClassName('active')[0].id;
+    }
+    else{
+        evalMethod = document.getElementById('sEvalMethods').getElementsByClassName('active')[0].id;
+    }
+    
     //TODO: ADD JSON QUESTION...
 }
 
@@ -182,7 +188,7 @@ async function getSelectionDebiasing() {
 function getContent() {
     content = {};
     if (debiased == 'true') {
-        console.log('here');
+        //console.log('Debiased Content -- Sending JSON file');
         return debiasResponse;
     }
     if (document.getElementById('preDefinedContainer').getAttribute('hidden') == null) {
@@ -883,14 +889,14 @@ async function formatDebiasing() {
         output += `
             <div class="row">
                 <div class="col">
-                    <p class="ml-5"> Biased Embedding Space: </p>
-                    <div class="container" style="background-color: #ffffff; max-height:600px; max-width:400px; display:float;">
+                    <p> Biased Embedding Space: </p>
+                    <div class="container" style="background-color: #ffffff; max-height:800px; max-width:600px; display:float;">
                         <canvas id="biasedChart"></canvas>        
                     </div>
                 </div>
                 <div class="col">
-                    <p class="ml-5"> Debiased Embedding Space: </p>
-                    <div class="container" style="background-color: #ffffff; max-height:600px; max-width:400px; display:float;">
+                    <p> Debiased Embedding Space: </p>
+                    <div class="container" style="background-color: #ffffff; max-height:800px; max-width:600px; display:float;">
                         <canvas id="debiasedChart"></canvas>
                     </div>    
                 </div>
@@ -926,7 +932,7 @@ async function performDebiasing(target){
     let output = await formatDebiasing();
     addDebiasingOutput(target, output).then( await drawPCAChart());
     counter += 1;
-    document.getElementById('debiasDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, results)});
+    document.getElementById('debiasDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, debiasResponse)});
     dEvaluationButton.removeAttribute('hidden');
 }
 
@@ -1054,29 +1060,32 @@ function drawChartData(data, target){
     var a1Labels = Object.keys(data.A1);
     var a2Labels = Object.keys(data.A2);
     dataLabels = dataLabels.concat(t1Labels, t2labels, a1Labels, a2Labels);
-    var points = [];
+    var pointsT1 = [];
+    var pointsT2 = [];
+    var pointsA1 = [];
+    var pointsA2 = [];
     for (let ele in data.T1){
         if (data.T1[ele] != null){
             point = getVector(data.T1[ele]);
-            points.push(point);
+            pointsT1.push(point);
         }
     }
     for (let ele in data.T2){
-        if (data.T1[ele] != null){
-            point = getVector(data.T1[ele]);
-            points.push(point);
+        if (data.T2[ele] != null){
+            point = getVector(data.T2[ele]);
+            pointsT2.push(point);
         }
     }
     for (let ele in data.A1){
         if (data.A1[ele] != null){
             point = getVector(data.A1[ele]);
-            points.push(point);
+            pointsA1.push(point);
         }
     }
     for (let ele in data.A2){
         if (data.A2[ele] != null){
             point = getVector(data.A2[ele]);
-            points.push(point);
+            pointsA2.push(point);
         }
     }
 
@@ -1085,32 +1094,33 @@ function drawChartData(data, target){
     type: 'scatter',
       data: {
       labels: dataLabels,
-          datasets: [{
-            label: 'T1',
-            data: points,
-            backgroundColor: '#009dff',
-            pointsBackgroundColor: '#009dff',
-            labels: t1Labels
-          },
+          datasets: [
         {
-          label: 'T2',
-          data: points,
-          backgroundColor: '#ffc300',
-          pointsBackgroundColor: '#ffc300',
-          labels: t2labels
+            label: 'T1',
+            data: pointsT1,
+            pointBackgroundColor: '#009dff',
+            backgroundColor: '#009dff',
+            labels: t1Labels
+        },
+        {
+            label: 'T2',
+            data: pointsT2,
+            pointBackgroundColor: '#ffc300',
+            backgroundColor: '#ffc300',
+            labels: t2labels
         },
         {
             label: 'A1',
-            data: points,
+            data: pointsA1,
+            pointBackgroundColor: '#2efe64',
             backgroundColor: '#2efe64',
-            pointsBackgroundColor: '#2efe64',
             labels: a1Labels
         },
         {
             label: 'A2',
-            data: points,
-            backgroundColor: '#0174df',
-            pointsBackgroundColor: '#0174df',
+            data: pointsA2,
+            pointBackgroundColor: '#B40404',
+            backgroundColor: '#B40404',
             labels: a2Labels
           }
     

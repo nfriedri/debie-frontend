@@ -177,13 +177,12 @@
                     ">
                         <input type="radio" name="options" autocomplete="off"> ECT
                     </label>
-                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. 2019. Analogy based bias test - 
-                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
-                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
-                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. (2019). This is an analogy based bias test &#8210; 
+                    First all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2 are created. Then two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2) are created. 
+                    The vectors in the vector space X are ranked according to the euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
                     ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
                     (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
-                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2.
                     ">
                         <input type="radio" name="options" autocomplete="off"> BAT
                     </label>
@@ -281,7 +280,7 @@
                     </div>
                 </div>
                 <p class="mt-3">Choose method(s):</p>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="sEvalMethods">
                     <label class="btn btn-secondary btn-lg active" id="all" data-toggle="tooltip" data-placement="top" title="Executes all implemented evaluation scores">
                         <input type="radio" name="options" autocomplete="off" checked> All
                     </label>
@@ -293,9 +292,8 @@
                         <input type="radio" name="options" autocomplete="off"> ECT
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. (2019). This is an analogy based bias test &#8210; 
-                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
-                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
-                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    First all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2 are created. Then two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2) are created. 
+                    The vectors in the vector space X are ranked according to the euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
                     ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
                     (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
                     (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
@@ -361,19 +359,11 @@
                         <input type="radio" name="options" autocomplete="off" checked> BAM
                     </label>
                     <label class="btn btn-secondary btn-lg" id="gbdd" data-toggle="tooltip" data-placement="top" title="Generalized Bias&#8210;Direction Debiasing by Dev and Philips (2019), adapted by 
-                    Lauscher et al. (2019): This model focuses on BI as a generalization of the linear projection model proposed by Dev and Phillips (2019), itself, in turn, an extension
-                    of the hard-debiasing model of Bolukbasi et al. (2016). The model of Dev and Phillips (2019) requires a stricter bias specification than our BI: it requires T1 and T2 to be ordered 
-                    lists of equal length L, so that the so-called equivalence pairs {(tl1, tl2)}L l=1 can be created. For instance, T1 ={man, father, boy} and T2 ={woman, mother, girl} give rise to the
-                    following equivalence pairs: (man, woman), (father, mother), and (boy, girl). For each equivalence pair (tl1, tl2) they compute the bias direction vector bl by subtracting the vector of
-                    term tl2 from the vector of term tl1. We find this bias specification overly restrictive: it requires an additional effort to create true equivalence pairs from T1 and T2 and it produces
-                    only L partial bias direction vectors. In contrast, we propose to create one bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2. 
-                    If T1 and T2 truly specify categories that are opposite in some regard (e.g., gender-wise), then any pair (ti1, tj2) should induce a meaningful partial bias direction vector. 
-                    This way we also obtain a much larger number of partial bias direction vectors (e.g., L^2 if T1 and T2 are of the same length L): this should result in a more reliable general
-                    bias direction vector, computed as follows. We stack all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 to form a bias direction matrix B.
-                    We then obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
+                    Lauscher et al. (2019): This model focuses on BI as a generalization of the linear projection model proposed by Dev and Phillips (2019). One bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 of terms is computed.  
+                    Then all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 are stacked to form a bias direction matrix B.
+                    We obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
                     the `2-normalized d-dimensional vector from a biased input vector space. Its debiased version is then computed as: GBDD(x) = x − (x, b)b where (,) denotes a dot product. 
-                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x). 
-                    Vectors orthogonal to the bias direction b remain unchanged (zero dot-product with the bias vector b).
+                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x).
                     ">
                         <input type="radio" name="options" autocomplete="gbdd"> GBDD
                     </label>

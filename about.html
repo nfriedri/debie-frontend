@@ -56,16 +56,18 @@
 
     <!--Content-->
     <div class="container-fluid" id="infoContainer">
-        <div class="container-fluid text-dark mt-4" id="contentContainer">
+
+        <div class="container-fluid mt-4" id="contentContainer">
             <div class="jumbotron bg-dark text-white">  
                 <h4 class="mt-4">Contents</h4>
                 <br>
                 <ul>
-                    <li><a class="lead">Bias Evaluation Scores</a></li>
-                    <li><a class="lead">Debiasing Models</a></li>
-                    <li><a class="lead">Provided Embedding Spaces</a></li>
-                    <li><a class="lead">Upload Formats</a></li>
-                    <li><a class="lead">API Access & Formats</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('biasEvalScoresContainer').scrollIntoView({behavior: 'smooth'})">Bias Evaluation Scores</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('debiasingModelsContainer').scrollIntoView({behavior: 'smooth'})">Debiasing Models</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('embeddingSpacesContainer').scrollIntoView({behavior: 'smooth'})">Provided Embedding Spaces</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('uploadFormatsContainer').scrollIntoView({behavior: 'smooth'})">Upload Formats</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('apiAccessContainer').scrollIntoView({behavior: 'smooth'})">API Access & Formats</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('githubContainer').scrollIntoView({behavior: 'smooth'})">GitHub Repositories</a></li>
                 </ul>
             </div>
         </div>
@@ -124,10 +126,10 @@
                 <p> Debiasing procedures change the topology of the input vector space; we thus have to verify that debiasing does not occur at the expense of the encoded semantic
                     information. We test the debiased embedding spaces on two
                     standard word similarity/relatedness benchmarks: SimLex999 <a href="https://arxiv.org/pdf/1408.3456.pdf" style="color:darkturquoise;" target="_blank">(Hill, Reichart, and Korhonen 2015)</a> 
-                    and WordSim-353 <a href="http://gabrilovich.com/papers/context_search.pdf" style="color:darkturquoise;" target="_blank">(Finkelstein et al. 2002)</a>
+                    and WordSim-353 <a href="http://gabrilovich.com/papers/context_search.pdf" style="color:darkturquoise;" target="_blank">(Finkelstein et al. 2002)</a>.
                 </p>
                 <br>
-                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
@@ -180,32 +182,32 @@
                 <h4 class="mt-4">Embedding Spaces</h4>
                 <br>
                 <p class="lead">FastText</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p> The fastText model is a Word2vec model for creating word embeddings invented by <a href="https://arxiv.org/pdf/1607.04606.pdf" style="color:darkturquoise;" target="_blank">Bojanowski et al. 2017</a>.
+                    It is derived from the continuous Skip-Gram model by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>. As enhancement to Skip-Gram, subword-information is taken into account by computing the 
+                    dense vectors, because Skip-Gram does not consider the internal structure of words. The architecture of the model is similar to the Skip-Gram architecture, 
+                    only the scoring function used in the output layer differs. The in context of this model used scoring function allows the fastText model to share representations across words. 
+                    This leads the model to have a longer run-time than the standard Skip-Gram model, but delivers more precise results.
                 </p>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
                 <br>
-                <p class="lead">GloVe &#5867; Global Vectors</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p class="lead">GloVe &#8210; Global Vectors</p>
+                <p> The model has been invented by <a href="https://nlp.stanford.edu/pubs/glove.pdf" style="color:darkturquoise;" target="_blank">Pennington et al 2014</a>. The GloVe model aims to combine the advantages of local context window methods like the Skip-Gram model by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>
+                    with the benefits of global matrix factorization methods like latent semantic analysis (LSA). The model itself is an specific weighted least squares model that is trained on global 
+                    word-word occurence counts and although makes efficient usage of statistics. Relationships between words are extracted from the ratio of their co-occurence probabilities. 
+                    The co-occurences are stored in a matrix, called X and need to be computed before starting the GloVe model.  
                 </p>
-                <p><a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
                 <br>
-                <p class="lead">CBOW &#5867; Continous Bag of Words</p>
-                <p>It quantifies the amount of explicit bias BE={T1, T2, A}. Unlike WEAT, it compares vectors of target sets T1
-                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
-                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
-                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
-                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
-                    and s2 &#8210; the higher the correlation, the lower the bias.
+                <p class="lead">CBOW &#8210; Continous Bag-of-Words</p>
+                <p> CBOW is an acronym standing for "Continous Bag-of-Words". The CBOW model has been invented by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>. 
+                    It is part of the Word2vec models, being a prediction based model 
+                    computing dense vectors for words across a large corpus of text as input. The CBOW model is a feedforward neural net language model (NNLM), consisting out of an input, a projection 
+                    and an output layer. The input layer encodes N previous words using one-hot encoding. In the projection layer, which is shared for all words, the input is projected into the same 
+                    position by averaging their vectors. This happens with a  shared projection matrix of the dimensions N x D. 
+                    In the output layer, a log-linear classifier containing the training criterion is used to correctly classify the current middle word. In other words, CBOW computes a vector for a 
+                    middle word by taking the words written before the middle word (history) and the words written after the middle word (future), averaging them in the projection layer and then running 
+                    a log-linear classifier on them. Mikolov et al. 2013 states, that the best acceptable trade-off between performance and semantic quality of the word embeddings can be achieved by 
+                    using four history words and four future words as input.
+                    The order of words in the history does not influence the projection, as well as the order of words in the future. The model is named continuous, because it uses continuous distributed 
+                    representations of the context in contrary to the standard bag-of-words model. 
                 </p>
             </div>
         </div>
@@ -248,6 +250,169 @@ word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
                 <h4 class="mt-4">API Access & Formats</h4>
                 <br>
                 <p class="lead">DEBIE offers a RESTful API for direct requests</p>
+                
+                <p>The API is accessible via the URL: http://wifo5-29.informatik.uni-mannheim.de/REST</p>
+                <br>
+                <hr style="background-color: white;">
+                <div class="row"> 
+                    <div class="col">
+                        <p class="lead">Bias Evaluation</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /bias-evaluation/&lt;method&gt;</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>Accepted values for variable method: all, ect, bat, weat, kmeans, svm, simlex, wordsim</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>json: Has to be set to "true" in case that the uploaded json file contains the word vector representations that should be used. Can be left out otherwise</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>JSON-Schemas: 
+                                <p><pre><code style="color:white;">
+{
+    "BiasSpecification": [
+        "T1": "word1 word2 word3 ... wordN",
+        "T2": "word1 word2 word3 ... wordN",
+        "A1": "word1 word2 word3 ... wordN",
+        "A2": "word1 word2 word3 ... wordN"
+        ]
+}
+or
+{
+    "T1": "word1 word2 word3 ... wordN",
+    "T2": "word1 word2 word3 ... wordN",
+    "A1": "word1 word2 word3 ... wordN",
+    "A2": "word1 word2 word3 ... wordN"
+}
+                                </code></pre></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Debiasing</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /debiasing/&lt;model&gt;</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>Accepted values for variable model: bam, gbdd, bamxgbdd, gbddxbam</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>json: Has to be set to "true" in case that the uploaded json file contains the word vector representations that should be used. Can be left out otherwise</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>JSON-Schemas: 
+                                <p><pre><code style="color:white;">
+{
+    "BiasSpecification": [
+        "T1": "word1 word2 word3 ... wordN",
+        "T2": "word1 word2 word3 ... wordN",
+        "A1": "word1 word2 word3 ... wordN",
+        "A2": "word1 word2 word3 ... wordN",
+        *"Augmentations1": "word1 word2 word3 ... wordN",
+        *"Augmentations2": "word1 word2 word3 ... wordN"
+        ]
+}
+or
+{
+    "T1": "word1 word2 word3 ... wordN",
+    "T2": "word1 word2 word3 ... wordN",
+    "A1": "word1 word2 word3 ... wordN",
+    "A2": "word1 word2 word3 ... wordN",
+    *"Augmentations1": "word1 word2 word3 ... wordN",
+    *"Augmentations2": "word1 word2 word3 ... wordN"
+}
+                                </code></pre></p>
+                                With * marked attributes are optional.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="background-color: white;">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">Vector Representation Retrival</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /vectors/&lt;type&gt;</li>
+                            <li>HTTP-Method: GET for single, POST for multiple</li>
+                            <li>Accepted values for variable type: single, multiple</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>Only for "single": "word", specifying the word for which the vector representation is required.</li>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>For multiple: Append a JSON-file containing the word-list as follows: "Words": "word1 word2 word3 ... wordN"</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Augmentations Retrival</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /augmentations&lt;type&gt;</li>
+                            <li>HTTP-Method: GET for single, POST for multiple</li>
+                            <li>Accepted values for variable type: single, multiple</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>Only for "single": "word", specifying the word for which the augmentations are required.</li>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>For multiple: Append a JSON-file containing the word-list as follows: "Words": "word1 word2 word3 ... wordN"</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="background-color: white;">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">File Upload</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/embedding-spaces</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>JSON-Content: File containing the embedding space</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">File Initialization</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/initialize</li>
+                            <li>HTTP-Method: GET</li>
+                            <li>Returns OK if the uploaded file(s) have been initialized successfully.</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>file: Contains the name of the uploaded file. Only if just a vector file has been uploaded.</li>
+                                    <li>vocab: Contains the name of the uploaded vocab file. Only if a vocab and a vector file has been uploaded.</li>
+                                    <li>vecs: Contains the name of the uploaded vector file. Only if a vocab and a vector file has been uploaded.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">File Deletion</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/delete</li>
+                            <li>HTTP-Method: DELETE</li>
+                            <li>Returns OK if the uploaded file(s) have been deleted successfully.</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>file: Contains the name of the to be deleted file.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -309,14 +474,12 @@ word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
         </div>
     </footer>
 
-
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
           })
     </script>
     
-    <script src="js/app.js"></script>
     <!--
     <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
