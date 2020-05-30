@@ -61,7 +61,7 @@ var counter = 0;
 
 //URL - Replace depending on usage
 var mainURL = 'http://127.0.0.1:5000/REST/';
-// var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de/';
+// var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/';
 
 //Gloabal variables required for URL's
 var model = '';
