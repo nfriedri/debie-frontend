@@ -206,11 +206,11 @@
                         <input type="radio" name="options" autocomplete="off"> SVM Classifier
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999 &#8210; (Hill, Reichart, and Korhonen 2015) 
-                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
+                    Please Note: This similarity benchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> SimLex-999
                     </label>
                     <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353 &#8210; (Finkelstein et al. 2002) 
-                    Please Note: This similarity becnchmark can currently only be executed on the biased spaces">
+                    Please Note: This similarity benchmark can currently only be executed on the biased spaces">
                         <input type="radio" name="options" autocomplete="off"> WordSim-353
                     </label>
                 </div>
@@ -235,46 +235,46 @@
                 <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input sets.</p>
                 <div class="custom-control custom-switch float-right mb-2">
                     <input type="checkbox" class="custom-control-input" id="lowerSwitch2">
-                    <label class="custom-control-label text-light" for="lowerSwitch2">Lower</label>
+                    <label class="custom-control-label text-light" for="lowerSwitch2" data-toggle="tooltip" data-placement="top" title="Lower case all input words">Lower</label>
                 </div>
                 <div class="custom-control custom-switch float-right mb-2 mr-2">
                     <input type="checkbox" class="custom-control-input" id="augmentSwitch">
-                    <label class="custom-control-label" for="augmentSwitch">Augmentations</label>
+                    <label class="custom-control-label" for="augmentSwitch" data-toggle="tooltip" data-placement="top" title="Enter self-defined augmentations">Augmentations</label>
                 </div>
                 <div class="input-group mt-4">       
                     <div class="input-group-prepend">
-                        <span class="input-group-text">T1:</span>
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your first target set">T1:</span>
                     </div>
-                    <textarea class="form-control" id="target1" aria-label="With textarea" style="height: 110px">science technology physics chemistry Einstein NASA experiment astronomy</textarea>
+                    <textarea class="form-control" id="target1" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div class="input-group mt-2"> 
                     <div class="input-group-prepend">
-                        <span class="input-group-text">T2:</span>
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your second target set">T2:</span>
                     </div>
-                    <textarea class="form-control" id="target2" aria-label="With textarea" style="height: 110px">poetry art Shakespeare dance literature novel symphony drama</textarea>
+                    <textarea class="form-control" id="target2" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div class="input-group mt-2"> 
                     <div class="input-group-prepend">
-                        <span class="input-group-text">A1:</span>
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your first attribute set">A1:</span>
                     </div>
-                    <textarea class="form-control" id="attribute1" aria-label="With textarea" style="height: 110px">brother father uncle grandfather son he his him</textarea>
+                    <textarea class="form-control" id="attribute1" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div class="input-group mt-2"> 
                     <div class="input-group-prepend">
-                        <span class="input-group-text">A2:</span>
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your second attribute set">A2:</span>
                     </div>
-                    <textarea class="form-control" id="attribute2" aria-label="With textarea" style="height: 110px">sister mother aunt grandmother daughter she hers her</textarea>
+                    <textarea class="form-control" id="attribute2" aria-label="With textarea" style="height: 110px"></textarea>
                 </div>
                 <div id="augmentationsInput" hidden>
                     <div class="input-group mt-2">     
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Augmentations 1:</span>
+                            <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your augmentations for the first attribute set">Augmentations 1:</span>
                         </div>
                         <textarea class="form-control" id="augmentations1" aria-label="With textarea" style="height: 110px"></textarea>
                     </div>
                     <div class="input-group mt-2"> 
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Augmentations 2:</span>
+                            <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your augmentations for the second attribute set">Augmentations 2:</span>
                         </div>
                         <textarea class="form-control" id="augmentations2" aria-label="With textarea" style="height: 110px"></textarea>
                     </div>
@@ -403,7 +403,7 @@
 
         <div class="container text-dark py-2" id="thankYouContainer" hidden>
             <div class="jumbotron bg-dark text-white">
-                <h1 class="display-1 mb-4">Thank you very much for using DEBIE</h1>
+                <h4 class="display-4 mb-4">Thank you very much for using DEBIE</h4>
 
             </div>
         </div>
@@ -425,7 +425,6 @@
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/pdf/1301.3781.pdf">SkipGram & CBOW</a></li>
                     <li><a class="text-muted" target="_blank" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
-                    <li><a class="text-muted" href="/">Vector sources</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">

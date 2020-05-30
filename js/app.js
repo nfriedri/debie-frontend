@@ -487,6 +487,9 @@ function selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) {
                                     </tr>
                                 </tbody> 
                             </table>`;
+    evalCardBody.innerHTML = "";
+    evalCard.setAttribute('hidden', 'true');
+    continueDebiasing.setAttribute('hidden', 'true');
     selectionContainer.scrollIntoView({ behavior: 'smooth' });
     startButton.removeAttribute('disabled');
 }
