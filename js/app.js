@@ -839,6 +839,13 @@ async function createDebiasingURL(){
     if (pca != ''){
         url += '&pca=' + pca;
     }
+    if (evalMethod == 'wordsim'){
+        url += '&lex=wordsim';
+    }
+    if (evalMethod == 'simlex'){
+        url += '&lex=simlex';
+    }
+
     return url;
 }
 
@@ -860,7 +867,7 @@ async function debiasing(){
             return res.json();
         })
         .then((data) => {
-            console.log(data);
+            //console.log(data);
             result = data;
             debiasResponse = data;
         });
