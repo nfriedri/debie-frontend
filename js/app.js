@@ -213,13 +213,8 @@ function getContent() {
 //Returns content for debiasing API call
 function getContentDebiasing() {
     content = {};
-    if (evalResponse != null) {
-        content = evalResponse;
-    }
-    else {
-
-        if (document.getElementById('preDefinedContainer').getAttribute('hidden') == null) {
-            predefined = true;
+    
+        if (predefined == true) {
             content['Name'] = document.getElementById('valuesName').innerText;
             content['T1'] = document.getElementById('valuesT1').innerText;
             content['T2'] = document.getElementById('valuesT2').innerText;
@@ -227,17 +222,19 @@ function getContentDebiasing() {
             content['A2'] = document.getElementById('valuesA2').innerText;
         }
         else {
-            predefined = false;
             content['T1'] = document.getElementById('target1').value;
             content['T2'] = document.getElementById('target2').value;
             content['A1'] = document.getElementById('attribute1').value;
             content['A2'] = document.getElementById('attribute2').value;
-            if (augmentSwitch.checked == true) {
+            if (augmentSwitch.checked) {
+                console.log('TRUE I am here');
                 content['Augmentations1'] = document.getElementById('augmentations1').value;
                 content['Augmentations2'] = document.getElementById('augmentations2').value;
             }
         }
-    }
+    
+    console.log(augmentSwitch.checked)
+    console.log(content)
     return content;
 }
 
@@ -515,7 +512,7 @@ function showTable(content, button, icon) {
 
 //Add event Listener to one table element
 async function addEvents(tableContent, tableButton, tableIcon, tableName, tableT1, tableT2, tableA1, tableA2) {
-    document.getElementById(tableName).addEventListener("click", function () { showTable(tableContent, tableButton, tableIcon); console.log(tableContent); });
+    document.getElementById(tableName).addEventListener("click", function () { showTable(tableContent, tableButton, tableIcon) });
     document.getElementById(tableIcon).addEventListener("click", function () { showTable(tableContent, tableButton, tableIcon) });
     document.getElementById(tableButton).addEventListener("click", function () { selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) });
 }
@@ -576,7 +573,7 @@ async function biasEvaluation() {
             return res.json();
         })
         .then((data) => {
-            console.log(data);
+            //console.log(data);
             result = data;
         })
     } catch (error) {
@@ -854,7 +851,7 @@ async function debiasing(){
     var url = await createDebiasingURL();
     var content = await getContentDebiasing();
     var result = null;
-    console.log(JSON.stringify(content));
+    //console.log(JSON.stringify(content));
     try{
         result = await fetch(url, {
             method: 'POST',
@@ -911,7 +908,6 @@ async function formatDebiasing() {
                     </div>    
                 </div>
             </div>
-
         `;
     }
     output += `
@@ -952,7 +948,7 @@ async function performDebiasing(target){
 //Return vector data as point floats
 function getVector(vector){
     vector = JSON.stringify(vector);
-    console.log(vector);
+    //console.log(vector);
     var endOfX = vector.indexOf(",");
     var endOfY = vector.length -1
     var xAsString = vector.substring(1,endOfX);
@@ -970,12 +966,12 @@ function drawChart(){
     var debiasLabels = [];
     biasLabels = biasLables.concat(Object.keys(data.BiasedSpacePCA.T1), Object.keys(data.BiasedSpacePCA.T2), Object.keys(data.BiasedSpacePCA.A1), Object.keys(data.BiasedSpacePCA.A2));
     debiasLabels = debiasLabels.concat(Object.keys(data.DebiasedSpacePCA.T1), Object.keys(data.DebiasedSpacePCA.T2), Object.keys(data.DebiasedSpacePCA.A1), Object.keys(data.DebiasedSpacePCA.A2));
-    console.log(biasLables);
+    //console.log(biasLables);
     console.log(Object.keys(data.BiasedSpacePCA.T1));
     var debiasPoints = [];
     var biasPoints = [];
     for (let ele in data.DebiasedSpacePCA.T1){
-        console.log(data.DebiasedSpacePCA.T1[ele]);
+        //console.log(data.DebiasedSpacePCA.T1[ele]);
         if (data.DebiasedSpacePCA.T1[ele] != null){
             point = getVector(data.DebiasedSpacePCA.T1[ele]);
             debiasPoints.push(point);
@@ -1265,7 +1261,7 @@ debiasingButton.addEventListener("click", function() {
 //Start a second evaluation of the debiased results
 dEvaluationButton.addEventListener("click", function() {
     debiased = 'true';
-    dEvaluateContainer.removeAttribute('hidden');
+    expandContainer('dEvaluateContainer') //.removeAttribute('hidden');
     evalCard2.removeAttribute('hidden');
     evalCardBody2.innerHTML = '';
     performEvaluation(evalCardBody2);
