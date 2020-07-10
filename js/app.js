@@ -75,8 +75,8 @@ var debiased = '';
 
 //Format Numbers
 const format = (num, decimals) => num.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
 });
 
 // --- GENERAL FUNCTIONS ---
@@ -198,6 +198,10 @@ function getContent() {
         content['T2'] = document.getElementById('valuesT2').innerText;
         content['A1'] = document.getElementById('valuesA1').innerText;
         content['A2'] = document.getElementById('valuesA2').innerText;
+        if (document.getElementById('valuesAug1').innerText != ''){
+            content['Augmentations1'] = document.getElementById('valuesAug1').innerText;
+            content['Augmentations2'] = document.getElementById('valuesAug2').innerText;
+        }
     }
     else {
         predefined = false;
@@ -220,6 +224,10 @@ function getContentDebiasing() {
             content['T2'] = document.getElementById('valuesT2').innerText;
             content['A1'] = document.getElementById('valuesA1').innerText;
             content['A2'] = document.getElementById('valuesA2').innerText;
+            if (document.getElementById('valuesAug1').innerText != ''){
+                content['Augmentations1'] = document.getElementById('valuesAug1').innerText;
+                content['Augmentations2'] = document.getElementById('valuesAug2').innerText;
+            }
         }
         else {
             content['T1'] = document.getElementById('target1').value;
@@ -233,8 +241,8 @@ function getContentDebiasing() {
             }
         }
     
-    console.log(augmentSwitch.checked)
-    console.log(content)
+    //console.log(augmentSwitch.checked)
+    //console.log(content)
     return content;
 }
 
@@ -405,6 +413,8 @@ async function loadTestData() {
         var tableT2 = 'tableT2' + i;
         var tableA1 = 'tableA1' + i;
         var tableA2 = 'tableA2' + i;
+        var tableAug1 = 'tableAug1' + i;
+        var tableAug2 = 'tableAug2' + i;
         await fetch(filePath)
             .then(response => response.json())
             .then((data) => {
@@ -435,6 +445,14 @@ async function loadTestData() {
                             <th scope="row">A2</th>
                             <td id="${tableA2}">${data.A2}</td> 
                         </tr>
+                        <tr hidden>
+                            <th scope="row">Augmentation 1</th>
+                            <td id="${tableAug1}">${data.Augmentations1}</td> 
+                        </tr>
+                        <tr hidden>
+                            <th scope="row">Augmentations 2</th>
+                            <td id="${tableAug2}">${data.Augmentations2}</td> 
+                        </tr>
                     </tbody> 
                 </table>
                 <div class="container my-0" id="${tableButton}" style="background-color: #212429;" hidden>
@@ -449,7 +467,7 @@ async function loadTestData() {
 }
 
 //Copy WEAT Test to extra container for evaluation
-function selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) {
+function selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2, tableAug1, tableAug2) {
     selectionContainer = document.getElementById('selectionJumbo')
     selectionContainer.removeAttribute('hidden');
     var targetTable = document.getElementById('selectedSpec');
@@ -458,6 +476,8 @@ function selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) {
     t2 = document.getElementById(tableT2).innerText;
     a1 = document.getElementById(tableA1).innerText;
     a2 = document.getElementById(tableA2).innerText;
+    aug1 = document.getElementById(tableAug1).innerText;
+    aug2 = document.getElementById(tableAug2).innerText;
     targetTable.innerHTML = `<table class="table table-borderless table-dark my-0">
                                 <thead>
                                     <tr>
@@ -481,6 +501,14 @@ function selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) {
                                     <tr>
                                         <th scope="row">A2</th>
                                         <td id="valuesA2">${a2}</td> 
+                                    </tr>
+                                    <tr hidden>
+                                        <th scope="row">Augmentations of T1</th>
+                                        <td id="valuesAug1">${aug1}</td>
+                                    </tr>
+                                    <tr hidden>
+                                        <th scope="row">Augmentations of T1</th>
+                                        <td id="valuesAug2">${aug2}</td>
                                     </tr>
                                 </tbody> 
                             </table>`;
@@ -511,10 +539,10 @@ function showTable(content, button, icon) {
 }
 
 //Add event Listener to one table element
-async function addEvents(tableContent, tableButton, tableIcon, tableName, tableT1, tableT2, tableA1, tableA2) {
+async function addEvents(tableContent, tableButton, tableIcon, tableName, tableT1, tableT2, tableA1, tableA2, tableAug1, tableAug2) {
     document.getElementById(tableName).addEventListener("click", function () { showTable(tableContent, tableButton, tableIcon) });
     document.getElementById(tableIcon).addEventListener("click", function () { showTable(tableContent, tableButton, tableIcon) });
-    document.getElementById(tableButton).addEventListener("click", function () { selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2) });
+    document.getElementById(tableButton).addEventListener("click", function () { selectSpecification(tableName, tableT1, tableT2, tableA1, tableA2, tableAug1, tableAug2) });
 }
 
 //Add event Listeneres to Weat table elements
@@ -528,7 +556,9 @@ async function setTableEventListeners() {
         var tableT2 = 'tableT2' + i;
         var tableA1 = 'tableA1' + i;
         var tableA2 = 'tableA2' + i;
-        await addEvents(tableContent, tableButton, tableIcon, tableName, tableT1, tableT2, tableA1, tableA2);
+        var tableAug1 = 'tableAug1' + i;
+        var tableAug2 = 'tableAug2' + i;
+        await addEvents(tableContent, tableButton, tableIcon, tableName, tableT1, tableT2, tableA1, tableA2, tableAug1, tableAug2);
     }
 }
 
@@ -578,6 +608,10 @@ async function biasEvaluation() {
         })
     } catch (error) {
         console.error(error);
+        evalCardBody.innerHTML = '';
+        evalCardBody2.innerHTML = '';
+        showDangerAlert(evalCardBody, "Sorry an unexpected error occurred. Please try again.");
+        showDangerAlert(evalCardBody2, "Sorry an unexpected error occurred. Please try again.");
     }
     return result;
 }
@@ -769,7 +803,7 @@ async function formatEvaluationScores(data) {
             break;
         case 'wordsim':
             output += `
-                    <h5 class="card-title">SimLex-999 Results</h5>
+                    <h5 class="card-title">WordSim-353 Results</h5>
                     <table class="table table-borderless table-dark">
                         <tbody>
                         <tr>
@@ -871,6 +905,8 @@ async function debiasing(){
     }
     catch (error){
         console.error(error);
+        debiasingCardBody.innerHTML = '';
+        showDangerAlert(debiasingCardBody, "Sorry an unexpected error occurred. Please try again.");
     }
     return result;  
 }
@@ -967,7 +1003,7 @@ function drawChart(){
     biasLabels = biasLables.concat(Object.keys(data.BiasedSpacePCA.T1), Object.keys(data.BiasedSpacePCA.T2), Object.keys(data.BiasedSpacePCA.A1), Object.keys(data.BiasedSpacePCA.A2));
     debiasLabels = debiasLabels.concat(Object.keys(data.DebiasedSpacePCA.T1), Object.keys(data.DebiasedSpacePCA.T2), Object.keys(data.DebiasedSpacePCA.A1), Object.keys(data.DebiasedSpacePCA.A2));
     //console.log(biasLables);
-    console.log(Object.keys(data.BiasedSpacePCA.T1));
+    //console.log(Object.keys(data.BiasedSpacePCA.T1));
     var debiasPoints = [];
     var biasPoints = [];
     for (let ele in data.DebiasedSpacePCA.T1){
@@ -1059,7 +1095,7 @@ function drawChart(){
 
 //Draw two scatter charts for debiasing results
 function drawChartData(data, target){
-    console.log('start');
+    //console.log('start');
     var dataLabels = [];
     var t1Labels = Object.keys(data.T1);
     var t2labels = Object.keys(data.T2);
@@ -1187,7 +1223,7 @@ binarySwitcher.onchange = function () {
 
 //Switch button, displays or hides input fields for augmentations
 augmentSwitch.onchange = function() {
-    console.log('augmentswitch');
+    //console.log('augmentswitch');
     div = document.getElementById('augmentationsInput');
     if (div.getAttribute('hidden') == null){
         div.setAttribute('hidden', 'true');

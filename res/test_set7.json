@@ -3,5 +3,7 @@
 	"T1": "math algebra geometry calculus equations computation numbers addition",
 	"T2": "poetry art dance literature novel symphony drama sculpture",
 	"A1": "male man boy brother he him his son",
-	"A2": "female woman girl sister she her hers daughter"
+	"A2": "female woman girl sister she her hers daughter",
+	"Augmentations1": "maths mathematics algebra arithmetic algebraic mathematics algebras calculus algebraic euclidean trigonometry geometrically algebra mathematics algebraic trigonometry equational equation integrals electrodynamics calculation computations computing figuring numbering number numeration enumeration augmentation addendum supplement extension",
+	"Augmentations2": "poem poesy poems verse artistry craft craftsmanship skill dancing hop waltz dances dissertation treatise literatures monograph new untried groundbreaking newfound orchestra philharmonic sinfonietta concerto dramatics dramaturgy dramatization theatre sculpt carving sculpting carve"
 }
