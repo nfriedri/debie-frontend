@@ -1264,6 +1264,7 @@ selfdefinedButton.addEventListener("click", function() {
 //Start evaluation of pre-defined bias spec
 evaluationButton.addEventListener("click", function() {
     predefined = true;
+    debiased = 'false';
     evalCard.removeAttribute('hidden');
     evalCardBody.innerHTML = '';
     performEvaluation(evalCardBody);
@@ -1272,6 +1273,7 @@ evaluationButton.addEventListener("click", function() {
 //Start evaluation of self-defined bias spec
 sEvaluationButton.addEventListener("click", function() {
     predefined = false;
+    debiased = 'false';
     sEvalCard.removeAttribute("hidden");
     sEvalCardBody.innerHTML = '';
     performEvaluation(sEvalCardBody);
@@ -1290,14 +1292,18 @@ sContinueDebiasing.addEventListener("click", function() {
 //Start debiasing using selected model
 debiasingButton.addEventListener("click", function() {
     debiasingCard.removeAttribute('hidden');
-    debiasingCardBody.innerHTML += '';
+    debiasingCardBody.innerHTML = '';
     performDebiasing(debiasingCardBody);  
 });
 
 //Start a second evaluation of the debiased results
 dEvaluationButton.addEventListener("click", function() {
     debiased = 'true';
-    expandContainer('dEvaluateContainer') //.removeAttribute('hidden');
+    container = document.getElementById('dEvaluateContainer');
+    if (container.getAttribute('hidden') != null) {
+        container.removeAttribute('hidden');
+        container.scrollIntoView({behavior: 'smooth'});
+    }
     evalCard2.removeAttribute('hidden');
     evalCardBody2.innerHTML = '';
     performEvaluation(evalCardBody2);
