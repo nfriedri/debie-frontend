@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DEBIE - Webapp</title>
+    <link rel="icon" href="img/debie-logo.png">
+    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+</head>
+<body class="bg-light" id="body">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index_blanc.html"><img src="img/debie-logo.png" width="40%"></a>  
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index_blanc.html">Home</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="about_blanc.html">About</a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="bias-evaluation.html" style=" white-space:nowrap;">Bias Evaluation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="debiasing.html">Debiasing</a>
+                    </li>
+                    -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--DEBIE-->
+    <div class="jumbotron mb-0" style="background-color: #D8D8D8; ">
+        <div class="container">
+            <h1 class="display-1 mb-3" style="color: #222E58;" ><b>DEBIE</b></h1>
+            <p class="lead text-dark ml-2"><b>DEBiasing embeddings Implicitly and Explicitly </b></p>
+            <hr class="my-4" style="border: 1px solid black;">
+            <p class="text-dark ml-2">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
+            <p class="lead"></p>
+            <p class="text-light"><a class="btn btn-primary btn-lg" role="button" id="startButton" style="background-color: #222E58; border-color: #FFFFFF;">Start DEBIE &raquo;</a></p>
+        </div>
+    </div>
+
+    <!--Content-->
+    <div class="container-fluid" id="mainContainer" hidden>
+
+        <!--Select Space-->
+        <div class="container pb-2 pt-4" id="spaceContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+            
+                <h4 class="mb-4">Step 1: Select the Embedding Space on which you would like to operate:</h5>
+                <br>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="spaceToggleGroup">
+                    <label class="btn btn-secondary btn-lg active" id="fasttext" data-toggle="tooltip" data-placement="top" title="fastText - Bojanoswki et al. (2016) - vectors retrieved on wikipedia corpus, 
+                    vectors with a dimensionality of 300.">
+                        <input type="radio" name="options" autocomplete="off" checked>Fasttext
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="glove" data-toggle="tooltip" data-placement="top" title="GloVe - Global Vectors Pennington et al. (2014) - vectors retreived on wikipedia corpus,
+                    vectors with a dimensionality of 300.">
+                        <input type="radio" name="options" autocomplete="off">GloVe
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="cbow" data-toggle="tooltip" data-placement="top" title="CBOW - Continuous Bag of Words, Word2Vec by Mikolov et al. (2013)">
+                        <input type="radio" name="options" autocomplete="off">CBOW
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="upload" data-toggle="tooltip" data-placement="top" title="Upload your own embedding space into DEBIE">
+                        <input type="radio" name="options" autocomplete="off">Upload Embedding Space    
+                    </label>  
+                </div>
+                <a class="btn btn-primary btn-lg ml-auto text-light" role="button" id="selectSpaceButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Confirm</a>
+                <br>
+            </div>
+        </div>
+
+        <!--Upload embeddings space-->
+        <div class="container py-2 " id="uploadContainer" hidden>
+            <div class="jumbotron bg-dark text-white" id="uploadJumbo">
+                <h4 class="mb-4" data-toggle="tooltip" data-placement="top" title="Only vector-file: word 0.0001 0.0002 ... 0.0009 \n
+                Vector and Vocab file: must contain a list of vocab and a dict ordered after vocab which can be readable by python pickle. 
+                Accepted file endings: .vec, .vector, .vocab, .txt - 
+                For further details and examples of accepted upload data see the about page.
+                ">Upload an Embedding Space here</h4>
+                <p>The uploaded files will be deleted automatically after this session is closed in the browser or in case of errors after two days.</p>
+                <p><a href="about_blanc.html#uploadFormatsContainer" target="_blank">Click here</a> to get more details about the accepted file formats.</p>
+                <div class="custom-control custom-switch float-right mb-2">
+                    <input type="checkbox" class="custom-control-input" id="binarySwitch">
+                    <label class="custom-control-label" for="binarySwitch" >Separated Vocab and Vec File</label>
+                </div>
+                <div class="custom-file mb-2" id="uploadVocab" hidden>
+                    <input type="file" class="custom-file-input" id="inputVocab">
+                    <label class="custom-file-label" for="inputVocab" id="inputVocabLabel">Choose vocab file</label>
+                </div>
+                <div class="custom-file mb-2" id=uploadVecs>
+                    <input type="file" class="custom-file-input" id="inputVecs">
+                    <label class="custom-file-label" for="inputVecs" id="inputVecsLabel" >Choose vector file</label>
+                </div>
+
+                <button class="btn btn-primary mt-2 mb-4" id='uploadButton' style="background-color: #222E58; border-color: #FFFFFF;" disabled>Upload space</button>
+                <div class="progress" style="height: 40px;" id="progressContainer" hidden>
+                    <div class="progress-bar lg" role="progressbar" id="progressBar" style="width: 0%; background-color: #222E58; color: black;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>              
+            </div>
+        </div>
+
+         <!--Select Pre-Defined or Self-Defined Specifications-->
+         <div class="container text-dark py-2" id="specificationContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mb-4">Step 2: Select a Pre-Defined Bias Specification or define one by your Self?</h5>
+                <div class="card-deck">
+                    <div class="card bg-secondary text-white mx-3" >
+                        <div class="card-body">
+                            <h5 class="card-title">Pre-Defined Bias Specifications</h5>
+                            <hr class="bg-white">
+                            <p>Evaluate bias specification test sets from WEAT by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al. 2017</a>. These specifications are explicit bias specifications containing two target and two attribute sets. </p>
+                            <a class="btn btn-primary btn-lg text-light mt-4" role="button" id="preDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Pre-Defined Sets</a>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="card bg-secondary text-white mx-3" >
+                        <div class="card-body">
+                            <h5 class="card-title">Self-Defined Bias Specifications</h5>
+                            <hr class="bg-white">
+                            <p>Enter an explicit self-defined bias specification consisting out of two target sets, two attribute sets and optionally two augmentation sets.</p>
+                            <br>
+                            <a class="btn btn-primary btn-lg text-light" role="button" id="selfDefinedButton" style="background-color: #222E58; border-color: #FFFFFF;">Self-Defined Sets</a>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pre-definden Specification-->
+        <div class="container text-dark py-3" id="preDefinedContainer" hidden>
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Step 3: Select a Pre-Defined Bias Specification</h4>
+                <div id="tables"> 
+                </div>
+                <div class="card text-white mb-2" id="card1" style="background-color: black;" hidden>
+                    <div class="card-body" id="card_words_response"> 
+                    </div> 
+                    <input type="image" src="img/download.png" height="10%" width="10%" id="download1"></input>
+                </div>
+            </div>
+            
+            <div class="jumbotron bg-dark text-white mt-3" id="selectionJumbo" hidden>
+                <h4 class="my-2">Step 3.1 Selected Bias Specification</h4>
+                <div class="custom-control custom-switch float-right">
+                    <input type="checkbox" class="custom-control-input" id="lowerSwitch">
+                    <label class="custom-control-label text-light" for="lowerSwitch">Lower</label>
+                </div>
+                <div class="mb-4" id="selectedSpec"> 
+                </div>
+                <p>Choose method(s):</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="evalMethods">
+                    <label class="btn btn-secondary btn-lg active" id="all" data-toggle="tooltip" data-placement="top" title="Executes all implemented evaluation scores">
+                        <input type="radio" name="options" autocomplete="off" checked> All
+                    </label>
+                    <label class="btn btn-secondary btn-lg" id="ect" data-toggle="tooltip" data-placement="top" title="Embedding Coherence Test by Dev and Phillips
+                    2019. Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
+                    Next, it computes the (cosine) similarities of the target set mean vectors with all vectors of the elements a ∈ A. The two resultant vectors of similarity scores, 
+                    are then ordered by rank through the Spearman’s rank correlation - the higher the correlation, the lower the bias.
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> ECT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. (2019). This is an analogy based bias test &#8210; 
+                    First all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2 are created. Then two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2) are created. 
+                    The vectors in the vector space X are ranked according to the euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2.
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> BAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="weat" data-toggle="tooltip" data-placement="top" title="Word Embedding Association Test by Caliskan et al. 2017. 
+                    WEAT tests the embedding space for the presence of an explicit bias. It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
+                    "> 
+                        <input type="radio" name="options" autocomplete="off"> WEAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering - by Arthur and Vassilvitskii 2007.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.                  
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> K-Means++
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier &#8210; Support Vector Machine Classifier">
+                        <input type="radio" name="options" autocomplete="off"> SVM Classifier
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999 &#8210; (Hill, Reichart, and Korhonen 2015) 
+                    Standard similarity / relatedness benchmark.">
+                        <input type="radio" name="options" autocomplete="off"> SimLex-999
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353 &#8210; (Finkelstein et al. 2002) 
+                    Standard similarity / relatedness benchmark.">
+                        <input type="radio" name="options" autocomplete="off"> WordSim-353
+                    </label>
+                </div>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="evaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" disabled>Evaluate</a>
+                <p>For more information about the offered evaluation methods <a href="about_blanc.html#biasEvalScoresContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
+                <div class="card bg-secondary text-light mt-2" id="evaluationCard" hidden>
+                    <div class="card-body" id ="evaluationCardBody">
+                        
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="continueDebiasing" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Continue with Debiasing</a>
+            </div>
+            
+        </div>
+
+        <!-- Self-Defined Specification -->
+        <div class="container py-3" id="selfDefinedContainer" hidden>  
+            <div class="jumbotron bg-dark text-white px-md-5">
+                <h4 class="my-2">Step 3: Evaluate Self-Defined Bias Specifications</h4>
+                <br>
+                <p>Please enter the words seperated by whitespaces.</p>
+                <p>Please be aware that your input sets need to have the same length, otherwise words will be randomly choosen and deleted from the input sets.</p>
+                <div class="custom-control custom-switch float-right mb-2">
+                    <input type="checkbox" class="custom-control-input" id="lowerSwitch2">
+                    <label class="custom-control-label text-light" for="lowerSwitch2" data-toggle="tooltip" data-placement="top" title="Lower case all input words">Lower</label>
+                </div>
+                <div class="custom-control custom-switch float-right mb-2 mr-2">
+                    <input type="checkbox" class="custom-control-input" id="augmentSwitch">
+                    <label class="custom-control-label" for="augmentSwitch" data-toggle="tooltip" data-placement="top" title="Enter self-defined augmentations">Augmentations</label>
+                </div>
+                <div class="input-group mt-4">       
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your first target set">T1:</span>
+                    </div>
+                    <textarea class="form-control" id="target1" aria-label="With textarea" style="height: 110px">science technology physics chemistry Einstein NASA experiment astronomy</textarea>
+                </div>
+                <div class="input-group mt-2"> 
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your second target set">T2:</span>
+                    </div>
+                    <textarea class="form-control" id="target2" aria-label="With textarea" style="height: 110px">poetry art Shakespeare dance literature novel symphony drama</textarea>
+                </div>
+                <div class="input-group mt-2"> 
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your first attribute set">A1:</span>
+                    </div>
+                    <textarea class="form-control" id="attribute1" aria-label="With textarea" style="height: 110px">brother father uncle grandfather son he his him</textarea>
+                </div>
+                <div class="input-group mt-2"> 
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your second attribute set">A2:</span>
+                    </div>
+                    <textarea class="form-control" id="attribute2" aria-label="With textarea" style="height: 110px">sister mother aunt grandmother daughter she hers her</textarea>
+                </div>
+                <div id="augmentationsInput" hidden>
+                    <div class="input-group mt-2">     
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your augmentations for the first attribute set">Augmentations 1:</span>
+                        </div>
+                        <textarea class="form-control" id="augmentations1" aria-label="With textarea" style="height: 110px">physicists test electrochemistry automation engineering biophysics education learning chromodynamics technologies radiochemistry examination biology technological astronomer astrophysics experimentation biochemistry research lore electrodynamics astrobiology astrometry erudition</textarea>
+                    </div>
+                    <div class="input-group mt-2"> 
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter here your augmentations for the second attribute set">Augmentations 2:</span>
+                        </div>
+                        <textarea class="form-control" id="augmentations2" aria-label="With textarea" style="height: 110px">dramaturgy monograph untried dances poesy dissertation craftsmanship orchestra treatise skill waltz poem literatures dramatization poems theatre dancing newfound hop artistry new verse craft philharmonic concerto groundbreaking dramatics sinfonietta</textarea>
+                    </div>
+                </div>
+                <p class="mt-3">Choose method(s):</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="sEvalMethods">
+                    <label class="btn btn-secondary btn-lg active" id="all" data-toggle="tooltip" data-placement="top" title="Executes all implemented evaluation scores">
+                        <input type="radio" name="options" autocomplete="off" checked> All
+                    </label>
+                    <label class="btn btn-secondary btn-lg" id="ect" data-toggle="tooltip" data-placement="top" title="Embedding Coherence Test by Dev and Phillips
+                    (2019). Compares vectors of target sets T1 and T2 with vectors from a single attribute set A. ECT first computes the mean vectors for the target sets T1 and T2. 
+                    Next, it computes the (cosine) similarities of the target set mean vectors with all vectors of the elements a ∈ A. The two resultant vectors of similarity scores, 
+                    are then ordered by rank through the Spearman’s rank correlation &#8210; the higher the correlation, the lower the bias.
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> ECT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="bat" data-toggle="tooltip" data-placement="top" title="Bias Analogy Test by Lauscher et al. (2019). This is an analogy based bias test &#8210; 
+                    First all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2 are created. Then two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2) are created. 
+                    The vectors in the vector space X are ranked according to the euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> BAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="weat" data-toggle="tooltip" data-placement="top" title="Word Embedding Association Test by Caliskan et al. 2017. 
+                    WEAT tests the embedding space for the presence of an explicit bias. It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
+                    "> 
+                        <input type="radio" name="options" autocomplete="off"> WEAT
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="kmeans" data-toggle="tooltip" data-placement="top" title="K-Means++ Clustering &#8210; by Arthur and Vassilvitskii 2007.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.                  
+                    ">
+                        <input type="radio" name="options" autocomplete="off"> K-Means++
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="svm" data-toggle="tooltip" data-placement="top" title="SVM Classifier &#8210; Support Vector Machine Classifier">
+                        <input type="radio" name="options" autocomplete="off"> SVM Classifier
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="simlex" data-toggle="tooltip" data-placement="top" title="SimLex-999 &#8210; (Hill, Reichart, and Korhonen 2015) 
+                    Standard similarity / relatedness benchmark.">
+                        <input type="radio" name="options" autocomplete="off"> SimLex-999
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="wordsim" data-toggle="tooltip" data-placement="top" title="WordSim-353 &#8210; (Finkelstein et al. 2002) 
+                    Standard similarity / relatedness benchmark.">
+                        <input type="radio" name="options" autocomplete="off"> WordSim-353
+                    </label>  
+                </div>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="sEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;">Evaluate</a>
+                <p>For more information about the offered evaluation methods <a href="about_blanc.html#biasEvalScoresContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
+                <div class="card bg-secondary text-light mt-2" id="sEvaluationCard" hidden>
+                    <div class="card-body" id ="sEvaluationCardBody">
+                        
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="sContinueDebiasing" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Continue with Debiasing</a>
+            </div>
+        </div>
+
+        <!--Debiasing-->
+        <div class="container text-dark py-2" id="debiasingContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mb-4">Step 4: Debiasing</h4>
+                <div class="custom-control custom-switch float-right">
+                    <input type="checkbox" class="custom-control-input" id="pcaoffSwitch" data-toggle="tooltip" data-placement="top" title="Computes a Principal Component Analysis of the biased 
+                    and the debiased embedding spaces and plots diagrams">
+                    <label class="custom-control-label text-light" for="pcaoffSwitch">PCA off</label>
+                </div>
+                <p>Select a debiasing model</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="debiasModel">
+                    <label class="btn btn-secondary btn-lg active" id="bam" data-toggle="tooltip" data-placement="top" title="Bias&#8210;Alignment Model by Lauscher et al. (2019): 
+                    BAM uses pairs (ti1, tj2) to learn the debiasing projection of X with respect to itself. Let XT1 and XT2 be the matrices obtained by stacking (biased) vectors of left and right words
+                    of pairs (ti1, tj2), respectively. We then learn the orthogonal map Wx = UVT, where UΣVT is the singular value decomposition of XT2XT1T. Since Wx is orthogonal, the projection 
+                    X' = XWx is isomorphic to the original space X, and thus equally biased. However, the transformation (specified by Wx) defines the angle and direction of debiasing. 
+                    We obtain the debiased space by averaging the original space X and the projected space X': BAM(X) = 1/2 * (X + XWx).
+                    ">
+                        <input type="radio" name="options" autocomplete="off" checked> BAM
+                    </label>
+                    <label class="btn btn-secondary btn-lg" id="gbdd" data-toggle="tooltip" data-placement="top" title="Generalized Bias&#8210;Direction Debiasing by Dev and Philips (2019), adapted by 
+                    Lauscher et al. (2019): This model focuses on BI as a generalization of the linear projection model proposed by Dev and Phillips (2019). One bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 of terms is computed.  
+                    Then all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 are stacked to form a bias direction matrix B.
+                    We obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
+                    the `2-normalized d-dimensional vector from a biased input vector space. Its debiased version is then computed as: GBDD(x) = x − (x, b)b where (,) denotes a dot product. 
+                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x).
+                    ">
+                        <input type="radio" name="options" autocomplete="gbdd"> GBDD
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="bamxgbdd" data-toggle="tooltip" data-placement="top" title="Composing of the BAM and the GBDD model. First BAM is executed
+                    on the embedding space, then the by BAM debiased embedding space is used as an input for GBDD. The output is a twice debiased embedding space. 
+                    ">
+                        <input type="radio" name="options" autocomplete="bamxgbdd"> BAM <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> GBDD
+                    </label>
+                    <label class="btn btn-secondary btn-lg"  id="gbddxbam" data-toggle="tooltip" data-placement="top" title="Composing of the GBDD and the BAM model. First GBDD is executed
+                    on the embedding space, then the by GBDD debiased embedding space is used as an input for BAM. The output is a twice debiased embedding space. 
+                    ">
+                        <input type="radio" name="options" autocomplete="gbddxbam"> GBDD <i style="font-size: 0.5rem; vertical-align: middle;" class="far fa-circle fa-xs"></i> BAM
+                    </label> 
+                </div>
+                <a class="btn btn-primary btn-lg text-light" role="button" id="debiasingButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" >Debiasing</a>
+                <p>For more information about the offered debiasing models <a href="about_blanc.html#debiasingModelsContainer" target="_blank" style="color:darkturquoise;">click here</a>.</p>
+                <div class="card bg-secondary text-light mt-2" id="debiasingCard" hidden>
+                    <div class="card-body" id ="debiasingCardBody">
+                        
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-lg text-light mt-2" role="button" id="dEvaluationButton" style="background-color: #222E58; border-color: #FFFFFF; float: right;" hidden>Evaluate debiased space</a>
+            </div>
+        </div>
+
+        <div class="container text-dark py-2" id="dEvaluateContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mb-4">Step 5: Bias Evaluation on Debiased Space</h4>
+                
+                <div class="card bg-secondary text-light mt-2" id="evalCard2" hidden>
+                    <div class="card-body" id ="evalCardBody2">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-dark py-2" id="thankYouContainer" hidden>
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="display-4 mb-4">Thank you very much for using DEBIE</h4>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!--Footer-->
+    <footer class="container-fluid bg-light">
+        <hr class="mb-5" style="border-color: #222E58;">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img src="img/debie-logo.png" width="30%">
+                <li class="list-unstyled text-small"><a class="text-muted ml-4" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                <small class="d-block mb-3 ml-4 text-muted">&copy; 2020</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/pdf/1301.3781.pdf">SkipGram & CBOW</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Related Work</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">Lauscher et al. 2019</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
+                    <li><a class="text-muted" target="_blank" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Impressum</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted">Based on <a class="text-muted" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;" target="_blank">A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces</a></a> </li>
+                    <li><a class="text-muted">Created by Anne Lauscher and Niklas Friedrich</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de/dws/">Data and Web Science Group</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+    </script>
+    
+    <script src="js/app.js"></script>
+    <!--
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    -->
+
+</body>
+
+</html>

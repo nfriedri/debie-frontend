@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DEBIE - Webapp</title>
+    <link rel="icon" href="img/favicon.png">
+    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+</head>
+<body class="bg-light" id="body">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index_blanc.html"><img src="img/debie-logo.png" width="40%"></a>  
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index_blanc.html">Home</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="about_blanc.html">About</a>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link" href="bias-evaluation.html" style=" white-space:nowrap;">Bias Evaluation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="debiasing.html">Debiasing</a>
+                    </li>
+                    -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--DEBIE-->
+    <div class="jumbotron mb-0" style="background-color: #D8D8D8; ">
+        <div class="container">
+            <h1 class="display-1 mb-3" style="color: #222E58;" ><b>DEBIE</b></h1>
+            <p class="lead text-dark ml-2"><b>DEBiasing embeddings Implicitly and Explicitly </b></p>
+            <hr class="my-4" style="border: 1px solid black;">
+            <p class="text-dark ml-2">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
+        </div>
+    </div>
+
+    <!--Content-->
+    <div class="container-fluid" id="infoContainer">
+
+        <div class="container-fluid mt-4" id="contentContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Contents</h4>
+                <br>
+                <ul>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('biasEvalScoresContainer').scrollIntoView({behavior: 'smooth'})">Bias Evaluation Scores</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('debiasingModelsContainer').scrollIntoView({behavior: 'smooth'})">Debiasing Models</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('embeddingSpacesContainer').scrollIntoView({behavior: 'smooth'})">Provided Embedding Spaces</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('uploadFormatsContainer').scrollIntoView({behavior: 'smooth'})">Upload Formats</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('apiAccessContainer').scrollIntoView({behavior: 'smooth'})">API Access & Formats</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('githubContainer').scrollIntoView({behavior: 'smooth'})">GitHub Repositories</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="biasEvalScoresContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Bias Evaluation Scores</h4>
+                <br>
+                <p class="lead">ECT &#8210; Embedding Coherence Test</p>
+                <p> It quantifies the amount of explicit bias BE={T1, T2, A} <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">
+                    (Dev and Phillips 2019)</a>. Unlike WEAT, it compares vectors of target sets T1
+                    and T2 (averaged over the constituent terms) with vectors from a single attribute set A. ECT first computes the mean vectors for the 
+                    target sets T1 and T2: µ1 = 1/|T1| * &Sigma; t1∈T1 t1 and µ2 = 1/|T2| * &Sigma; t2∈T2 t2. 
+                    Next, for both µ1 and µ2 it computes the (cosine) similarities with vectors of all a ∈ A. The two resultant vectors of similarity scores, 
+                    s1 (for T1) and s2 (for T2) are used to obtain the final ECT score. It is the Spearman’s rank correlation between the rank orders of s1
+                    and s2 &#8210; the higher the correlation, the lower the bias.
+                </p>
+                <br>
+                <p class="lead">BAT &#8210; Bias Alignement Test</p>
+                <p> Bias Analogy Test by <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Lauscher et al. 2019</a>. Analogy based bias test - 
+                    Based on the observation of <a href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf" target="_blanc" style="color:darkturquoise;">Bolukbasi et al. 2016</a> 
+                    that in a biased vector space "programmer − homemaker ≈ man − woman", <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Dev and Phillips (2019)</a> 
+                    proposed an analogy-based bias test: Embedding Quality Test (EQT). However, EQT depends on WordNet to extend the bias definition with synonyms and 
+                    plurals of bias specification terms. In contrast, we propose an alternative Bias Analogy Test (BAT) that relies only on the specification BE = (T1, T2, A1, A2).
+                    We first create all possible biased analogies t1−t2 ≈ a1−a2 for (t1, t2, a1, a2) ∈ T1 × T2 × A1 × A2. 
+                    We then create two query vectors from each analogy: q1 = t1 − t2 + a2 and q2 = a1 − t1 + t2 for each 4-tuple (t1, t2, a1, a2). 
+                    We then rank the vectors in the vector space X according to the Euclidean distance with each of the query vectors. In a biased space, we expect the vector a1 to be 
+                    ranked higher for the query q1 than the vectors of terms from the opposing attribute set A2. The BAT score is the percentage of cases where: 
+                    (1) a1 is ranked higher than a term a2 ∈ A2 \ {a2} for q1 and 
+                    (2) a2 is ranked higher than a term a1 ∈ A1 \ {a1} for q2. 
+                </p>
+                <br>
+                <p class="lead">WEAT &#8210; Word Embedding Association Test</p>
+                <p> Word Embedding Association Test by <a href="https://arxiv.org/abs/1608.07187" style="color:darkturquoise;" target="_blank">Caliskan et al. 2017</a>. 
+                    WEAT tests the embedding space for the presence of an explicit bias defined as BE=(T1, T2, A1, A2).
+                    It computes the differential association between T1 and T2 based on their mean similarity 
+                    with terms from the attribute sets A1 and A2. The significance of the statistic is computed by comparing s(BE) with the scores s(B∗E) obtained with all permutations 
+                    B∗E = (T∗1, T∗2, A1, A2), where T∗1 and T∗2 are equally sized partitions of T1 ∪T2. The p-value of the test is the probability of s(B∗E) > s(BE). 
+                    The “amount” of bias, the so-called effect size, is then a normalized measure of separation between association distributions. 
+                </p>
+                <br>
+                <p class="lead">KMeans++ &#8210; Implicit Bias Test</p>
+                <p> K-Means++ Clustering - by <a href="https://dl.acm.org/doi/pdf/10.5555/1283383.1283494" style="color:darkturquoise;" target="_blank">Arthur and Vassilvitskii 2007</a>.
+                    K-Means++ is an enhancement of the standard K-means algorithm which is an unsupervised clustering method.
+                    First, K initial cluster centroids are randomly selected as points in the space. Then each element out of the specification is assigned to its nearest centroid. 
+                    Therefore, the distance between the points and the centroids are computed by Euclidean distance. After assigning each point to one of the k centroids, the position of the 
+                    centroids are recomputed. This approach is repeated until a certain stopping criteria is met, e.g. 100 runs.  
+                </p>
+                <br>
+                <p class="lead">SVM-Classifier &#8210; Implicit Bias Test</p>
+                <p> Approach by <a href="https://arxiv.org/pdf/1903.03862.pdf" style="color:darkturquoise;" target="_blank">Gonen and Goldberg 2019</a>. Test the debiased spaces for the presence of implicit bias by classifying 
+                    terms from T1 and T2 using an SVM (Support Vector Machine) with the RBF kernel. It is trained on the vectors of terms from the augmentations of the target sets.
+                </p>
+                <br>
+                <p class="lead">SimLex-999 & WordSim-353 &#8210; Semantic Quality Test</p>
+                <p> Debiasing procedures change the topology of the input vector space; we thus have to verify that debiasing does not occur at the expense of the encoded semantic
+                    information. We test the debiased embedding spaces on two
+                    standard word similarity/relatedness benchmarks: SimLex999 <a href="https://arxiv.org/pdf/1408.3456.pdf" style="color:darkturquoise;" target="_blank">(Hill, Reichart, and Korhonen 2015)</a> 
+                    and WordSim-353 <a href="http://gabrilovich.com/papers/context_search.pdf" style="color:darkturquoise;" target="_blank">(Finkelstein et al. 2002)</a>.
+                </p>
+                <br>
+                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="debiasingModelsContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Debiasing Models</h4>
+                <br>
+                <p class="lead">BAM &#8210; Bias Alignment Model</p>
+                <p> BAM uses pairs (ti1, tj2) to learn the debiasing projection of X with respect to itself. Let XT1 and XT2 be the matrices obtained by stacking (biased) vectors of left and right words
+                    of pairs (ti1, tj2), respectively. We then learn the orthogonal map Wx = UVT, where UΣVT is the singular value decomposition of XT2XT1T. Since Wx is orthogonal, the projection 
+                    X' = XWx is isomorphic to the original space X, and thus equally biased. However, the transformation (specified by Wx) defines the angle and direction of debiasing. 
+                    We obtain the debiased space by averaging the original space X and the projected space X': BAM(X) = 1/2 * (X + XWx).
+                </p>
+                <br>
+                <p class="lead">GBDD &#8210; General Bias Debiasing Model</p>
+                <p> This model focuses on BI as a generalization of the linear projection model proposed by 
+                    <a href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf" target="_blanc" style="color:darkturquoise;">Dev and Phillips 2019</a>, itself, in turn, an extension
+                    of the hard-debiasing model of 
+                    <a href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf" target="_blanc" style="color:darkturquoise;">Bolukbasi et al. 2016</a>. 
+                    The model of Dev and Phillips (2019) requires a stricter bias specification than our BI: it requires T1 and T2 to be ordered 
+                    lists of equal length L, so that the so-called equivalence pairs {(tl1, tl2)}L l=1 can be created. For instance, T1 ={man, father, boy} and T2 ={woman, mother, girl} give rise to the
+                    following equivalence pairs: (man, woman), (father, mother), and (boy, girl). For each equivalence pair (tl1, tl2) they compute the bias direction vector bl by subtracting the vector of
+                    term tl2 from the vector of term tl1. We find this bias specification overly restrictive: it requires an additional effort to create true equivalence pairs from T1 and T2 and it produces
+                    only L partial bias direction vectors. In contrast, we propose to create one bias direction vector bij for each pair (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2. 
+                    If T1 and T2 truly specify categories that are opposite in some regard (e.g., gender-wise), then any pair (ti1, tj2) should induce a meaningful partial bias direction vector. 
+                    This way we also obtain a much larger number of partial bias direction vectors (e.g., L^2 if T1 and T2 are of the same length L): this should result in a more reliable general
+                    bias direction vector, computed as follows. We stack all of the obtained bias direction vectors bij corresponding to pairs (ti1, tj2), ti1 ∈ T1, tj2 ∈ T2 to form a bias direction matrix B.
+                    We then obtain the global bias direction vector b as the top singular vector of B, i.e., as the first row of matrix V , where UΣVT is the singular value decomposition of B. Let x be
+                    the `2-normalized d-dimensional vector from a biased input vector space. Its debiased version is then computed as: GBDD(x) = x − (x, b)b where (,) denotes a dot product. 
+                    In other words, the closer the vector x is to the global bias direction b, the more it is bias-corrected (i.e., the larger portion of b is subtracted from x). 
+                    Vectors orthogonal to the bias direction b remain unchanged (zero dot-product with the bias vector b).
+                </p>
+                <br>
+                <p class="lead">BAM &#5867; GBDD</p>
+                <p> Composing of the BAM and the GBDD model. First BAM is executed
+                    on the embedding space, then the by BAM debiased embedding space is used as an input for GBDD. The output is a twice debiased embedding space.
+                </p>
+                <br>
+                <p class="lead">GBDD &#5867; BAM</p>
+                <p> Composing of the GBDD and the BAM model. First GBDD is executed
+                    on the embedding space, then the by GBDD debiased embedding space is used as an input for BAM. The output is a twice debiased embedding space. 
+                </p>
+                <br>
+                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="embeddingSpacesContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Embedding Spaces</h4>
+                <br>
+                <p class="lead">FastText</p>
+                <p> The fastText model is a Word2vec model for creating word embeddings invented by <a href="https://arxiv.org/pdf/1607.04606.pdf" style="color:darkturquoise;" target="_blank">Bojanowski et al. 2017</a>.
+                    It is derived from the continuous Skip-Gram model by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>. As enhancement to Skip-Gram, subword-information is taken into account by computing the 
+                    dense vectors, because Skip-Gram does not consider the internal structure of words. The architecture of the model is similar to the Skip-Gram architecture, 
+                    only the scoring function used in the output layer differs. The in context of this model used scoring function allows the fastText model to share representations across words. 
+                    This leads the model to have a longer run-time than the standard Skip-Gram model, but delivers more precise results.
+                </p>
+                <br>
+                <p class="lead">GloVe &#8210; Global Vectors</p>
+                <p> The model has been invented by <a href="https://nlp.stanford.edu/pubs/glove.pdf" style="color:darkturquoise;" target="_blank">Pennington et al 2014</a>. The GloVe model aims to combine the advantages of local context window methods like the Skip-Gram model by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>
+                    with the benefits of global matrix factorization methods like latent semantic analysis (LSA). The model itself is an specific weighted least squares model that is trained on global 
+                    word-word occurence counts and although makes efficient usage of statistics. Relationships between words are extracted from the ratio of their co-occurence probabilities. 
+                    The co-occurences are stored in a matrix, called X and need to be computed before starting the GloVe model.  
+                </p>
+                <br>
+                <p class="lead">CBOW &#8210; Continous Bag-of-Words</p>
+                <p> CBOW is an acronym standing for "Continous Bag-of-Words". The CBOW model has been invented by <a href="https://arxiv.org/pdf/1301.3781.pdf" style="color:darkturquoise;" target="_blank">Mikolov et al. 2013</a>. 
+                    It is part of the Word2vec models, being a prediction based model 
+                    computing dense vectors for words across a large corpus of text as input. The CBOW model is a feedforward neural net language model (NNLM), consisting out of an input, a projection 
+                    and an output layer. The input layer encodes N previous words using one-hot encoding. In the projection layer, which is shared for all words, the input is projected into the same 
+                    position by averaging their vectors. This happens with a  shared projection matrix of the dimensions N x D. 
+                    In the output layer, a log-linear classifier containing the training criterion is used to correctly classify the current middle word. In other words, CBOW computes a vector for a 
+                    middle word by taking the words written before the middle word (history) and the words written after the middle word (future), averaging them in the projection layer and then running 
+                    a log-linear classifier on them. Mikolov et al. 2013 states, that the best acceptable trade-off between performance and semantic quality of the word embeddings can be achieved by 
+                    using four history words and four future words as input.
+                    The order of words in the history does not influence the projection, as well as the order of words in the future. The model is named continuous, because it uses continuous distributed 
+                    representations of the context in contrary to the standard bag-of-words model. 
+                </p>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="uploadFormatsContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">Upload Formats</h4>
+                <p class="lead">DEBIE accepts two different formats of embedding spaces</p>
+                <br>
+                <div class="row ml-1">
+                    <div class="col">
+                        <p class="lead">Format 1: Clear text vector files</p>
+                        <p>Accepted format for embedding space uploads:</p>
+                        <p><pre><code style="color:white;">
+word1 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word2 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word3 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word4 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word5 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word6 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word7 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word8 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
+...
+                        </code></pre></p>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Format 2: Splitted vocabulary and vector files</p>
+                        <p>Alternatively binary embedding spaces can be uploaded to DEBIE. Prerequisite is that the vocabulary and the vectors are splitted into two files.
+                            The contents need to be ndarrays, which can be unpacked to an dictionary for the vocabulary and to a list for the vectors by using pickle.
+                        </p>
+                    </div>
+                </div>
+                <p>DEBIE accepts .txt, .vec, .vector, .vectors and .vocab files as input. The uploaded files will be deleted immediately after closing the window in which DEBIE is opened.</p>
+            </div>
+        </div>
+
+        <div class="container-fluid text-dark" id="apiAccessContainer">
+            <div class="jumbotron bg-dark text-white">  
+                <h4 class="mt-4">API Access & Formats</h4>
+                <br>
+                <p class="lead">DEBIE offers a RESTful API for direct requests</p>
+                
+                <p>The API is accessible via the URL: http://wifo5-29.informatik.uni-mannheim.de/REST</p>
+                <br>
+                <hr style="background-color: white;">
+                <div class="row"> 
+                    <div class="col">
+                        <p class="lead">Bias Evaluation</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /bias-evaluation/&lt;method&gt;</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>Accepted values for variable method: all, ect, bat, weat, kmeans, svm, simlex, wordsim</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>json: Has to be set to "true" in case that the uploaded json file contains the word vector representations that should be used. Can be left out otherwise</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>JSON-Schemas: 
+                                <p><pre><code style="color:white;">
+{
+    "BiasSpecification": [
+        "T1": "word1 word2 word3 ... wordN",
+        "T2": "word1 word2 word3 ... wordN",
+        "A1": "word1 word2 word3 ... wordN",
+        "A2": "word1 word2 word3 ... wordN"
+        ]
+}
+or
+{
+    "T1": "word1 word2 word3 ... wordN",
+    "T2": "word1 word2 word3 ... wordN",
+    "A1": "word1 word2 word3 ... wordN",
+    "A2": "word1 word2 word3 ... wordN"
+}
+                                </code></pre></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Debiasing</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /debiasing/&lt;model&gt;</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>Accepted values for variable model: bam, gbdd, bamxgbdd, gbddxbam</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>json: Has to be set to "true" in case that the uploaded json file contains the word vector representations that should be used. Can be left out otherwise</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>JSON-Schemas: 
+                                <p><pre><code style="color:white;">
+{
+    "BiasSpecification": [
+        "T1": "word1 word2 word3 ... wordN",
+        "T2": "word1 word2 word3 ... wordN",
+        "A1": "word1 word2 word3 ... wordN",
+        "A2": "word1 word2 word3 ... wordN",
+        *"Augmentations1": "word1 word2 word3 ... wordN",
+        *"Augmentations2": "word1 word2 word3 ... wordN"
+        ]
+}
+or
+{
+    "T1": "word1 word2 word3 ... wordN",
+    "T2": "word1 word2 word3 ... wordN",
+    "A1": "word1 word2 word3 ... wordN",
+    "A2": "word1 word2 word3 ... wordN",
+    *"Augmentations1": "word1 word2 word3 ... wordN",
+    *"Augmentations2": "word1 word2 word3 ... wordN"
+}
+                                </code></pre></p>
+                                With * marked attributes are optional.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="background-color: white;">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">Vector Representation Retrival</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /vectors/&lt;type&gt;</li>
+                            <li>HTTP-Method: GET for single, POST for multiple</li>
+                            <li>Accepted values for variable type: single, multiple</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>Only for "single": "word", specifying the word for which the vector representation is required.</li>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>For multiple: Append a JSON-file containing the word-list as follows: "Words": "word1 word2 word3 ... wordN"</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">Augmentations Retrival</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /augmentations&lt;type&gt;</li>
+                            <li>HTTP-Method: GET for single, POST for multiple</li>
+                            <li>Accepted values for variable type: single, multiple</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>Only for "single": "word", specifying the word for which the augmentations are required.</li>
+                                    <li>space: Representing the selected embedding space. Accepted values are: fasttext, glove, cbow or the filename of an uploaded file.</li>
+                                    <li>upload: Has to be set to "true" if prior a file has been uploaded. The variable space then needs to contain the vector file's name. 
+                                        If no file has been uploaded, it can be left out.</li>
+                                    <li>lower: Transforms all letters inside bias specifications to lower case. If required, needs to be set to "true", otherwise can be left out.</li>
+                                </ul>
+                            </li>
+                            <li>For multiple: Append a JSON-file containing the word-list as follows: "Words": "word1 word2 word3 ... wordN"</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="background-color: white;">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">File Upload</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/embedding-spaces</li>
+                            <li>HTTP-Method: POST</li>
+                            <li>JSON-Content: File containing the embedding space</li>
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <p class="lead">File Initialization</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/initialize</li>
+                            <li>HTTP-Method: GET</li>
+                            <li>Returns OK if the uploaded file(s) have been initialized successfully.</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>file: Contains the name of the uploaded file. Only if just a vector file has been uploaded.</li>
+                                    <li>vocab: Contains the name of the uploaded vocab file. Only if a vocab and a vector file has been uploaded.</li>
+                                    <li>vecs: Contains the name of the uploaded vector file. Only if a vocab and a vector file has been uploaded.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">File Deletion</p>
+                        <ul class="list-unstyled">
+                            <li>Link: /uploads/delete</li>
+                            <li>HTTP-Method: DELETE</li>
+                            <li>Returns OK if the uploaded file(s) have been deleted successfully.</li>
+                            <li>Additional specifiers: 
+                                <ul>
+                                    <li>file: Contains the name of the to be deleted file.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="githubContainer">
+            <div class="jumbotron bg-dark text-white">
+                <h4 class="mt-4">GitHub Repositories</h4>
+                <br>
+                <p class="lead">Used word vector spaces</p>
+                <a> The complete source code of this application is published on GitHub. Therefore, three repositories are created:</a>
+                <ul>
+                    <li><a> The source code of the application's back-end accessible here: <a href="https://github.com/nfriedri/debie-backend" target="_blanc" style="color:darkturquoise;">DEBIE Back-End Repository</a></a></li>
+                    <li><a> The design files and the source code of the application's front-end is accessible here: <a href="https://github.com/nfriedri/debie-frontend" target="_blanc" style="color:darkturquoise;">DEBIE Front-End Repository</a></a></li>
+                    <li><a> A desktop version of this application can be found here: <a href="https://drive.google.com/drive/folders/1RDBFwOyPMPWBNL_GC5qplZ0NHDjfqOdc?usp=sharing" target="_blanc" style="color:darkturquoise;">Google Drive</a></a></li>
+                </ul> 
+                
+                
+            </div>
+        </div>
+
+    </div>
+    
+
+    <!--Footer-->
+    <footer class="container-fluid bg-light">
+        <hr class="mb-5" style="border-color: #222E58;">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img src="img/debie-logo.png" width="30%">
+                <li class="list-unstyled text-small"><a class="text-muted ml-4" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                <small class="d-block mb-3 ml-4 text-muted">&copy; 2020</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/pdf/1301.3781.pdf">SkipGram & CBOW</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Related Work</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">General Framework</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
+                    <li><a class="text-muted" target="_blank" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 style="color: #222E58;">Impressum</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted">Based on <a class="text-muted" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;" target="_blank">A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces</a></a> </li>
+                    <li><a class="text-muted">Created by Anne Lauscher and Niklas Friedrich</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de/dws/">Data and Web Science Group</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+    </script>
+    
+    <!--
+    <script src="https://kit.fontawesome.com/1269d23fc6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    -->
+
+</body>
+
+</html>
