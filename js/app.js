@@ -59,6 +59,9 @@ var predefined = null;
 var initSuccess = '';
 var counter = 0;
 
+//Remaining Time Computation
+var timeField = document.getElementById('remaining-time');
+
 //URL - Replace depending on usage
 var mainURL = 'http://127.0.0.1:5000/REST/';
 // var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/';
@@ -82,8 +85,8 @@ const format = (num, decimals) => num.toLocaleString('en-US', {
 // --- GENERAL FUNCTIONS ---
 
 //Displays the main container of the application
-function expandAppSelection(){
-    if (mainContainer.getAttribute('hidden') == null){
+function expandAppSelection() {
+    if (mainContainer.getAttribute('hidden') == null) {
         mainContainer.setAttribute('hidden', 'true');
     }
     else {
@@ -92,19 +95,19 @@ function expandAppSelection(){
 }
 
 //Expands a container
-function expandContainer(containerID){
+function expandContainer(containerID) {
     container = document.getElementById(containerID);
-    if (container.getAttribute('hidden') == null){
+    if (container.getAttribute('hidden') == null) {
         container.setAttribute('hidden', 'true');
     }
     else {
         container.removeAttribute('hidden');
-        container.scrollIntoView({behavior: 'smooth'});
+        container.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
 //Hides a container
-function hideContainer(containerID){
+function hideContainer(containerID) {
     document.getElementById(containerID).setAttribute('hidden', 'true');
 }
 
@@ -141,7 +144,7 @@ async function getSelections() {
             return;
         }
     }
-    if (predefined){
+    if (predefined) {
         if (lowerSwitch.checked == true) {
             lower = 'true';
         }
@@ -149,7 +152,7 @@ async function getSelections() {
             lower = 'false';
         }
     }
-    else{
+    else {
         if (lowerSwitch2.checked == true) {
             lower = 'true';
         }
@@ -162,13 +165,13 @@ async function getSelections() {
 //Returns selections required for creating evaluation API call
 async function getSelectionEvaluation() {
     await getSelections();
-    if (predefined){
+    if (predefined) {
         evalMethod = document.getElementById('evalMethods').getElementsByClassName('active')[0].id;
     }
-    else{
+    else {
         evalMethod = document.getElementById('sEvalMethods').getElementsByClassName('active')[0].id;
     }
-    
+
     //TODO: ADD JSON QUESTION...
 }
 
@@ -198,7 +201,7 @@ function getContent() {
         content['T2'] = document.getElementById('valuesT2').innerText;
         content['A1'] = document.getElementById('valuesA1').innerText;
         content['A2'] = document.getElementById('valuesA2').innerText;
-        if (document.getElementById('valuesAug1').innerText != ''){
+        if (document.getElementById('valuesAug1').innerText != '') {
             content['Augmentations1'] = document.getElementById('valuesAug1').innerText;
             content['Augmentations2'] = document.getElementById('valuesAug2').innerText;
         }
@@ -210,44 +213,44 @@ function getContent() {
         content['A1'] = document.getElementById('attribute1').value;
         content['A2'] = document.getElementById('attribute2').value;
     }
-    
+
     return content;
 }
 
 //Returns content for debiasing API call
 function getContentDebiasing() {
     content = {};
-    
-        if (predefined == true) {
-            content['Name'] = document.getElementById('valuesName').innerText;
-            content['T1'] = document.getElementById('valuesT1').innerText;
-            content['T2'] = document.getElementById('valuesT2').innerText;
-            content['A1'] = document.getElementById('valuesA1').innerText;
-            content['A2'] = document.getElementById('valuesA2').innerText;
-            if (document.getElementById('valuesAug1').innerText != ''){
-                content['Augmentations1'] = document.getElementById('valuesAug1').innerText;
-                content['Augmentations2'] = document.getElementById('valuesAug2').innerText;
-            }
+
+    if (predefined == true) {
+        content['Name'] = document.getElementById('valuesName').innerText;
+        content['T1'] = document.getElementById('valuesT1').innerText;
+        content['T2'] = document.getElementById('valuesT2').innerText;
+        content['A1'] = document.getElementById('valuesA1').innerText;
+        content['A2'] = document.getElementById('valuesA2').innerText;
+        if (document.getElementById('valuesAug1').innerText != '') {
+            content['Augmentations1'] = document.getElementById('valuesAug1').innerText;
+            content['Augmentations2'] = document.getElementById('valuesAug2').innerText;
         }
-        else {
-            content['T1'] = document.getElementById('target1').value;
-            content['T2'] = document.getElementById('target2').value;
-            content['A1'] = document.getElementById('attribute1').value;
-            content['A2'] = document.getElementById('attribute2').value;
-            if (augmentSwitch.checked) {
-                console.log('TRUE I am here');
-                content['Augmentations1'] = document.getElementById('augmentations1').value;
-                content['Augmentations2'] = document.getElementById('augmentations2').value;
-            }
+    }
+    else {
+        content['T1'] = document.getElementById('target1').value;
+        content['T2'] = document.getElementById('target2').value;
+        content['A1'] = document.getElementById('attribute1').value;
+        content['A2'] = document.getElementById('attribute2').value;
+        if (augmentSwitch.checked) {
+            console.log('TRUE I am here');
+            content['Augmentations1'] = document.getElementById('augmentations1').value;
+            content['Augmentations2'] = document.getElementById('augmentations2').value;
         }
-    
+    }
+
     //console.log(augmentSwitch.checked)
     //console.log(content)
     return content;
 }
 
 //Create Download File
-function download(filename, content){
+function download(filename, content) {
     var element = document.createElement('a');
     element.style.display = 'none';
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(content)));
@@ -376,9 +379,9 @@ function initializeUpload() {
 }
 
 //API call for deleting uploaded file
-async function deleteUpload(fileName){
+async function deleteUpload(fileName) {
     var url = mainURL + 'uploads/delete?';
-    url += 'file=' + fileName ;
+    url += 'file=' + fileName;
 
     fetch(url, { method: 'DELETE' })
         .then((res) => {
@@ -389,7 +392,7 @@ async function deleteUpload(fileName){
 }
 
 //Handle API Call for deleting the uploaded file
-function handleFileDelete(){
+function handleFileDelete() {
     var vecFileName = inputVecs.files[0].name;
     deleteUpload(vecFileName);
     if (binarySwitcher.checked == true) {
@@ -588,8 +591,10 @@ async function createEvaluationURL() {
 //API-Call for bias evaluation
 async function biasEvaluation() {
     var url = await createEvaluationURL();
-    var content = getContent();
+    var content = await getContent();
+    computeRemainingTime(content);
     content = JSON.stringify(content);
+
     var result = null;
     try {
         await fetch(url, {
@@ -599,13 +604,13 @@ async function biasEvaluation() {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => {
-            //console.log(data);
-            result = data;
-        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                //console.log(data);
+                result = data;
+            })
     } catch (error) {
         console.error(error);
         evalCardBody.innerHTML = '';
@@ -820,31 +825,31 @@ async function formatEvaluationScores(data) {
             break;
     }
     output += `<h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>`;
-    if (debiased == 'true'){
+    if (debiased == 'true') {
         output += `<a class="btn" role="button" id="debDownloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>`;
     }
-    else{
+    else {
         output += `<a class="btn" role="button" id="downloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>`;
     }
     return output;
 }
 
 //Adds content to an as target specified object
-async function addOutputToTarget(target, output){
+async function addOutputToTarget(target, output) {
     target.innerHTML = output;
 }
 
 //Perform an API-Call, format results, create download functionality
-async function performEvaluation(target){
+async function performEvaluation(target) {
     startSpinner(target);
     var data = await biasEvaluation();
     let output = await formatEvaluationScores(data);
     counter += 1;
-    if (debiased == 'true'){
-        addOutputToTarget(target, output).then(document.getElementById('debDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
+    if (debiased == 'true') {
+        addOutputToTarget(target, output).then(document.getElementById('debDownloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, data) }))
     }
-    else{
-        addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, data)}))
+    else {
+        addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, data) }))
     }
     continueDebiasing.removeAttribute('hidden');
     sContinueDebiasing.removeAttribute('hidden');
@@ -854,26 +859,26 @@ async function performEvaluation(target){
 // --- DEBIASING ---
 
 //Create URL for debiasing call
-async function createDebiasingURL(){
+async function createDebiasingURL() {
     await getSelectionDebiasing();
     var url = mainURL + 'debiasing';
     url += '/' + model;
-    if (space != ''){
+    if (space != '') {
         url += '?space=' + space;
     }
-    if (uploaded != ''){
+    if (uploaded != '') {
         url += '&uploaded=' + uploaded;
-    }    
-    if (lower != 'false'){
+    }
+    if (lower != 'false') {
         url += '&lower=true'
     }
-    if (pca != ''){
+    if (pca != '') {
         url += '&pca=' + pca;
     }
-    if (evalMethod == 'wordsim'){
+    if (evalMethod == 'wordsim') {
         url += '&lex=wordsim';
     }
-    if (evalMethod == 'simlex'){
+    if (evalMethod == 'simlex') {
         url += '&lex=simlex';
     }
 
@@ -881,12 +886,12 @@ async function createDebiasingURL(){
 }
 
 //API-Call for debiasing
-async function debiasing(){
+async function debiasing() {
     var url = await createDebiasingURL();
     var content = await getContentDebiasing();
     var result = null;
     //console.log(JSON.stringify(content));
-    try{
+    try {
         result = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(content),
@@ -894,21 +899,21 @@ async function debiasing(){
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => {
-            //console.log(data);
-            result = data;
-            debiasResponse = data;
-        });
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                //console.log(data);
+                result = data;
+                debiasResponse = data;
+            });
     }
-    catch (error){
+    catch (error) {
         console.error(error);
         debiasingCardBody.innerHTML = '';
         showDangerAlert(debiasingCardBody, "Sorry an unexpected error occurred. Please try again.");
     }
-    return result;  
+    return result;
 }
 
 //Format json content to html
@@ -928,7 +933,7 @@ async function formatDebiasing() {
             output += `<h5 class="card-title">BAM°GBDD Debiasing Results: </h5><br>`;
             break;
     }
-    if (pca == 'true'){
+    if (pca == 'true') {
         output += `
             <div class="row">
                 <div class="col">
@@ -954,13 +959,13 @@ async function formatDebiasing() {
 }
 
 //Adds content to an as target specified object
-async function addDebiasingOutput(target, output){
+async function addDebiasingOutput(target, output) {
     target.innerHTML = output;
 }
 
 //Steers the drawing of the debiasing visualizations
-async function drawPCAChart(){
-    if (pca == 'true'){
+async function drawPCAChart() {
+    if (pca == 'true') {
         //drawChart();
         drawChartData(debiasResponse.BiasedSpacePCA, 'biasedChart');
         drawChartData(debiasResponse.DebiasedSpacePCA, 'debiasedChart');
@@ -968,13 +973,13 @@ async function drawPCAChart(){
 }
 
 //Controlls the whole debiasing process
-async function performDebiasing(target){
+async function performDebiasing(target) {
     startSpinner(target);
     await debiasing();
     let output = await formatDebiasing();
-    addDebiasingOutput(target, output).then( await drawPCAChart());
+    addDebiasingOutput(target, output).then(await drawPCAChart());
     counter += 1;
-    document.getElementById('debiasDownloadButton').addEventListener("click", function() {download('bias-evaluation-scores-' + counter, debiasResponse)});
+    document.getElementById('debiasDownloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, debiasResponse) });
     dEvaluationButton.removeAttribute('hidden');
 }
 
@@ -982,21 +987,21 @@ async function performDebiasing(target){
 
 
 //Return vector data as point floats
-function getVector(vector){
+function getVector(vector) {
     vector = JSON.stringify(vector);
     //console.log(vector);
     var endOfX = vector.indexOf(",");
-    var endOfY = vector.length -1
-    var xAsString = vector.substring(1,endOfX);
-    var yAsString = vector.substring(endOfX+1, endOfY);
+    var endOfY = vector.length - 1
+    var xAsString = vector.substring(1, endOfX);
+    var yAsString = vector.substring(endOfX + 1, endOfY);
     var current_x = parseFloat(xAsString);
     var current_y = parseFloat(yAsString);
-    var point = {x: current_x, y:current_y};
+    var point = { x: current_x, y: current_y };
     return point;
 }
 
 //Draw a scatter chart for result comparing
-function drawChart(){
+function drawChart() {
     var data = debiasResponse;
     var biasLables = [];
     var debiasLabels = [];
@@ -1006,95 +1011,95 @@ function drawChart(){
     //console.log(Object.keys(data.BiasedSpacePCA.T1));
     var debiasPoints = [];
     var biasPoints = [];
-    for (let ele in data.DebiasedSpacePCA.T1){
+    for (let ele in data.DebiasedSpacePCA.T1) {
         //console.log(data.DebiasedSpacePCA.T1[ele]);
-        if (data.DebiasedSpacePCA.T1[ele] != null){
+        if (data.DebiasedSpacePCA.T1[ele] != null) {
             point = getVector(data.DebiasedSpacePCA.T1[ele]);
             debiasPoints.push(point);
         }
     }
-    for (let ele in data.DebiasedSpacePCA.T2){
-        if (data.DebiasedSpacePCA.T2[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.T2[ele]);
-        debiasPoints.push(point);
+    for (let ele in data.DebiasedSpacePCA.T2) {
+        if (data.DebiasedSpacePCA.T2[ele] != null) {
+            point = getVector(data.DebiasedSpacePCA.T2[ele]);
+            debiasPoints.push(point);
         }
     }
-    for (let ele in data.DebiasedSpacePCA.A1){
-        if (data.DebiasedSpacePCA.A1[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.A1[ele]);
-        debiasPoints.push(point);
+    for (let ele in data.DebiasedSpacePCA.A1) {
+        if (data.DebiasedSpacePCA.A1[ele] != null) {
+            point = getVector(data.DebiasedSpacePCA.A1[ele]);
+            debiasPoints.push(point);
         }
     }
-    for (let ele in data.DebiasedSpacePCA.A2){
-        if (data.DebiasedSpacePCA.A2[ele] != null){
-        point = getVector(data.DebiasedSpacePCA.A2[ele]);
-        debiasPoints.push(point);
+    for (let ele in data.DebiasedSpacePCA.A2) {
+        if (data.DebiasedSpacePCA.A2[ele] != null) {
+            point = getVector(data.DebiasedSpacePCA.A2[ele]);
+            debiasPoints.push(point);
         }
     }
 
-    for (let ele in data.BiasedSpacePCA.T1){
-        if (data.DebiasedSpacePCA.T1[ele] != null){
-        point = getVector(data.BiasedSpacePCA.T1[ele]);
-        biasPoints.push(point);
+    for (let ele in data.BiasedSpacePCA.T1) {
+        if (data.DebiasedSpacePCA.T1[ele] != null) {
+            point = getVector(data.BiasedSpacePCA.T1[ele]);
+            biasPoints.push(point);
         }
     }
-    for (let ele in data.BiasedSpacePCA.T2){
-        if (data.DebiasedSpacePCA.T2[ele] != null){
-        point = getVector(data.BiasedSpacePCA.T2[ele]);
-        biasPoints.push(point);
+    for (let ele in data.BiasedSpacePCA.T2) {
+        if (data.DebiasedSpacePCA.T2[ele] != null) {
+            point = getVector(data.BiasedSpacePCA.T2[ele]);
+            biasPoints.push(point);
         }
     }
-    for (let ele in data.BiasedSpacePCA.A1){
-        if (data.DebiasedSpacePCA.A1[ele] != null){
-        point = getVector(data.BiasedSpacePCA.A1[ele]);
-        biasPoints.push(point);
+    for (let ele in data.BiasedSpacePCA.A1) {
+        if (data.DebiasedSpacePCA.A1[ele] != null) {
+            point = getVector(data.BiasedSpacePCA.A1[ele]);
+            biasPoints.push(point);
         }
     }
-    for (let ele in data.BiasedSpacePCA.A2){
-        if (data.DebiasedSpacePCA.A2[ele] != null){
-        point = getVector(data.BiasedSpacePCA.A2[ele]);
-        biasPoints.push(point);
+    for (let ele in data.BiasedSpacePCA.A2) {
+        if (data.DebiasedSpacePCA.A2[ele] != null) {
+            point = getVector(data.BiasedSpacePCA.A2[ele]);
+            biasPoints.push(point);
         }
     }
     var ctx = document.getElementById("debiasingChart").getContext('2d'); //Replace myChart with targetID
     var scatterChart = new Chart(ctx, {
-    type: 'scatter',
-      data: {
-      labels: debiasLabels.concat(biasLables),
-          datasets: [{
-            label: 'Debiased',
-            data: debiasPoints,
-            backgroundColor: '#009dff',
-            labels: debiasLabels
-          },
-        {
-          label: 'Biased',
-          data: biasPoints,
-          backgroundColor: '#ffc300',
-          labels: biasLables
-        }]
+        type: 'scatter',
+        data: {
+            labels: debiasLabels.concat(biasLables),
+            datasets: [{
+                label: 'Debiased',
+                data: debiasPoints,
+                backgroundColor: '#009dff',
+                labels: debiasLabels
+            },
+            {
+                label: 'Biased',
+                data: biasPoints,
+                backgroundColor: '#ffc300',
+                labels: biasLables
+            }]
         },
         options: {
-          scales: {
-            xAxes: [{
-              type: 'linear',
-              position: 'bottom'
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItem, data) {
-              var label = data.labels[tooltipItem.index];
-              return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    position: 'bottom'
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var label = data.labels[tooltipItem.index];
+                        return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+                    }
+                }
             }
-          }
         }
-      }
     });
 }
 
 //Draw two scatter charts for debiasing results
-function drawChartData(data, target){
+function drawChartData(data, target) {
     //console.log('start');
     var dataLabels = [];
     var t1Labels = Object.keys(data.T1);
@@ -1106,26 +1111,26 @@ function drawChartData(data, target){
     var pointsT2 = [];
     var pointsA1 = [];
     var pointsA2 = [];
-    for (let ele in data.T1){
-        if (data.T1[ele] != null){
+    for (let ele in data.T1) {
+        if (data.T1[ele] != null) {
             point = getVector(data.T1[ele]);
             pointsT1.push(point);
         }
     }
-    for (let ele in data.T2){
-        if (data.T2[ele] != null){
+    for (let ele in data.T2) {
+        if (data.T2[ele] != null) {
             point = getVector(data.T2[ele]);
             pointsT2.push(point);
         }
     }
-    for (let ele in data.A1){
-        if (data.A1[ele] != null){
+    for (let ele in data.A1) {
+        if (data.A1[ele] != null) {
             point = getVector(data.A1[ele]);
             pointsA1.push(point);
         }
     }
-    for (let ele in data.A2){
-        if (data.A2[ele] != null){
+    for (let ele in data.A2) {
+        if (data.A2[ele] != null) {
             point = getVector(data.A2[ele]);
             pointsA2.push(point);
         }
@@ -1133,58 +1138,79 @@ function drawChartData(data, target){
 
     var ctx1 = document.getElementById(target).getContext('2d'); //Replace myChart with targetID
     var scatterChart1 = new Chart(ctx1, {
-    type: 'scatter',
-      data: {
-      labels: dataLabels,
-          datasets: [
-        {
-            label: 'T1',
-            data: pointsT1,
-            pointBackgroundColor: '#009dff',
-            backgroundColor: '#009dff',
-            labels: t1Labels
-        },
-        {
-            label: 'T2',
-            data: pointsT2,
-            pointBackgroundColor: '#ffc300',
-            backgroundColor: '#ffc300',
-            labels: t2labels
-        },
-        {
-            label: 'A1',
-            data: pointsA1,
-            pointBackgroundColor: '#2efe64',
-            backgroundColor: '#2efe64',
-            labels: a1Labels
-        },
-        {
-            label: 'A2',
-            data: pointsA2,
-            pointBackgroundColor: '#B40404',
-            backgroundColor: '#B40404',
-            labels: a2Labels
-          }
-    
-    ]
+        type: 'scatter',
+        data: {
+            labels: dataLabels,
+            datasets: [
+                {
+                    label: 'T1',
+                    data: pointsT1,
+                    pointBackgroundColor: '#009dff',
+                    backgroundColor: '#009dff',
+                    labels: t1Labels
+                },
+                {
+                    label: 'T2',
+                    data: pointsT2,
+                    pointBackgroundColor: '#ffc300',
+                    backgroundColor: '#ffc300',
+                    labels: t2labels
+                },
+                {
+                    label: 'A1',
+                    data: pointsA1,
+                    pointBackgroundColor: '#2efe64',
+                    backgroundColor: '#2efe64',
+                    labels: a1Labels
+                },
+                {
+                    label: 'A2',
+                    data: pointsA2,
+                    pointBackgroundColor: '#B40404',
+                    backgroundColor: '#B40404',
+                    labels: a2Labels
+                }
+
+            ]
         },
         options: {
-          scales: {
-            xAxes: [{
-              type: 'linear',
-              position: 'bottom'
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItem, data) {
-              var label = data.labels[tooltipItem.index];
-              return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    position: 'bottom'
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var label = data.labels[tooltipItem.index];
+                        return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+                    }
+                }
             }
-          }
         }
-      }
     });
+}
+
+
+// --- REMAINING TIME COMPUTATION ---
+
+function computeRemainingTime(content) {
+    if (method == 'all' || method == 'bat') {
+        const timeFor1000 = 0.59;
+        console.log(content);
+        console.log(content['T1'])
+        var contentLength = content['T1'].split(' ').length;
+        var expectedLength = (contentLength * contentLength * contentLength * contentLength * timeFor1000) / 1000;
+        var x = setInterval(function () {
+            timeField.innerHTML = `Expected Time: ${Math.floor(expectedLength)} seconds`;
+            expectedLength -= 1;
+            if (expectedLength < 0) {
+                clearInterval(x);
+                timeField.innerHTML = '';
+            }
+        }, 1000);
+    }
 }
 
 // --- EVENT LISTENERS ---
@@ -1222,10 +1248,10 @@ binarySwitcher.onchange = function () {
 };
 
 //Switch button, displays or hides input fields for augmentations
-augmentSwitch.onchange = function() {
+augmentSwitch.onchange = function () {
     //console.log('augmentswitch');
     div = document.getElementById('augmentationsInput');
-    if (div.getAttribute('hidden') == null){
+    if (div.getAttribute('hidden') == null) {
         div.setAttribute('hidden', 'true');
     }
     else {
@@ -1234,35 +1260,35 @@ augmentSwitch.onchange = function() {
 };
 
 //Starts Application by displaying first container
-startButton.addEventListener("click", function() {expandAppSelection(); expandContainer('spaceContainer')});
+startButton.addEventListener("click", function () { expandAppSelection(); expandContainer('spaceContainer') });
 
 //Confirm to operate on the selected embedding space
-confirmButton.addEventListener("click", function() {
-    if (document.getElementById('spaceToggleGroup').getElementsByClassName('active')[0].id == 'upload'){
+confirmButton.addEventListener("click", function () {
+    if (document.getElementById('spaceToggleGroup').getElementsByClassName('active')[0].id == 'upload') {
         hideContainer('specificationContainer');
         expandContainer('uploadContainer');
     }
-    else{
+    else {
         hideContainer('uploadContainer');
         expandContainer('specificationContainer');
     }
 });
 
 //Proceed with pre-defined bias specs
-predefinedButton.addEventListener("click", function() {
+predefinedButton.addEventListener("click", function () {
     expandContainer('preDefinedContainer');
     hideContainer('selfDefinedContainer');
     loadTestData().then(function () { setTableEventListeners() });
 });
 
 //Proceed with self-defined bias specs
-selfdefinedButton.addEventListener("click", function() {
+selfdefinedButton.addEventListener("click", function () {
     expandContainer('selfDefinedContainer');
     hideContainer('preDefinedContainer');
 });
 
 //Start evaluation of pre-defined bias spec
-evaluationButton.addEventListener("click", function() {
+evaluationButton.addEventListener("click", function () {
     predefined = true;
     debiased = 'false';
     evalCard.removeAttribute('hidden');
@@ -1271,7 +1297,7 @@ evaluationButton.addEventListener("click", function() {
 });
 
 //Start evaluation of self-defined bias spec
-sEvaluationButton.addEventListener("click", function() {
+sEvaluationButton.addEventListener("click", function () {
     predefined = false;
     debiased = 'false';
     sEvalCard.removeAttribute("hidden");
@@ -1280,29 +1306,29 @@ sEvaluationButton.addEventListener("click", function() {
 });
 
 //Continue with debiasing after pre-defined evaluation
-continueDebiasing.addEventListener("click", function() {
+continueDebiasing.addEventListener("click", function () {
     expandContainer('debiasingContainer');
 });
 
 //Continue with debiasing after self-defined evaluation
-sContinueDebiasing.addEventListener("click", function() {
+sContinueDebiasing.addEventListener("click", function () {
     expandContainer('debiasingContainer');
 });
 
 //Start debiasing using selected model
-debiasingButton.addEventListener("click", function() {
+debiasingButton.addEventListener("click", function () {
     debiasingCard.removeAttribute('hidden');
     debiasingCardBody.innerHTML = '';
-    performDebiasing(debiasingCardBody);  
+    performDebiasing(debiasingCardBody);
 });
 
 //Start a second evaluation of the debiased results
-dEvaluationButton.addEventListener("click", function() {
+dEvaluationButton.addEventListener("click", function () {
     debiased = 'true';
     container = document.getElementById('dEvaluateContainer');
     if (container.getAttribute('hidden') != null) {
         container.removeAttribute('hidden');
-        container.scrollIntoView({behavior: 'smooth'});
+        container.scrollIntoView({ behavior: 'smooth' });
     }
     evalCard2.removeAttribute('hidden');
     evalCardBody2.innerHTML = '';
@@ -1311,6 +1337,6 @@ dEvaluationButton.addEventListener("click", function() {
 });
 
 //Delete uploaded file by closing the window
-window.addEventListener("beforeunload", function() {
+window.addEventListener("beforeunload", function () {
     handleFileDelete();
 })
