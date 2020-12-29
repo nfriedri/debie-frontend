@@ -592,7 +592,8 @@ async function createEvaluationURL() {
 async function biasEvaluation() {
     var url = await createEvaluationURL();
     var content = await getContent();
-    computeRemainingTime(content);
+    console.log(content)
+    //computeRemainingTime(content);
     content = JSON.stringify(content);
 
     var result = null;
@@ -1196,7 +1197,8 @@ function drawChartData(data, target) {
 // --- REMAINING TIME COMPUTATION ---
 
 function computeRemainingTime(content) {
-    if (method == 'all' || method == 'bat') {
+    // console.log(evalMethod);
+    if (evalMethod == 'all' | evalMethod == 'bat') {
         const timeFor1000 = 0.59;
         console.log(content);
         console.log(content['T1'])
