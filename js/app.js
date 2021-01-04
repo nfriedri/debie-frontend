@@ -1137,6 +1137,8 @@ function drawChartData(data, target) {
         }
     }
 
+    console.log(dataLabels)
+
     var ctx1 = document.getElementById(target).getContext('2d'); //Replace myChart with targetID
     var scatterChart1 = new Chart(ctx1, {
         type: 'scatter',
@@ -1184,7 +1186,8 @@ function drawChartData(data, target) {
             tooltips: {
                 callbacks: {
                     label: function (tooltipItem, data) {
-                        var label = data.labels[tooltipItem.index];
+                        var datasets = data.datasets
+                        var label = datasets[tooltipItem.datasetIndex].labels[tooltipItem.index]
                         return label + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
                     }
                 }
