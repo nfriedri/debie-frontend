@@ -58,13 +58,16 @@ var debiasResponse = null;
 var predefined = null;
 var initSuccess = '';
 var counter = 0;
+var numberOfTerms = 0;
 
 //Remaining Time Computation
-var timeField = document.getElementById('remaining-time');
+var timeField1 = document.getElementById('remaining-time1');
+var timeField2 = document.getElementById('remaining-time2');
+var timeField3 = document.getElementById('remaining-time3');
 
 //URL - Replace depending on usage
-var mainURL = 'http://127.0.0.1:5000/REST/';
-// var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/';
+//var mainURL = 'http://127.0.0.1:5000/REST/';
+var mainURL = 'http://wifo5-29.informatik.uni-mannheim.de:8000/REST/';
 
 //Gloabal variables required for URL's
 var model = '';
@@ -593,7 +596,7 @@ async function biasEvaluation() {
     var url = await createEvaluationURL();
     var content = await getContent();
     console.log(content)
-    //computeRemainingTime(content);
+    computeRemainingTime(content);
     content = JSON.stringify(content);
 
     var result = null;
@@ -847,7 +850,8 @@ async function performEvaluation(target) {
     let output = await formatEvaluationScores(data);
     counter += 1;
     if (debiased == 'true') {
-        addOutputToTarget(target, output).then(document.getElementById('debDownloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, data) }))
+        addOutputToTarget(target, output).then(document.getElementById('debDownloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, data) }));
+        thankYou.removeAttribute('hidden');
     }
     else {
         addOutputToTarget(target, output).then(document.getElementById('downloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, data) }))
@@ -1200,21 +1204,52 @@ function drawChartData(data, target) {
 // --- REMAINING TIME COMPUTATION ---
 
 function computeRemainingTime(content) {
-    // console.log(evalMethod);
-    if (evalMethod == 'all' | evalMethod == 'bat') {
-        const timeFor1000 = 0.59;
-        console.log(content);
-        console.log(content['T1'])
-        var contentLength = content['T1'].split(' ').length;
-        var expectedLength = (contentLength * contentLength * contentLength * contentLength * timeFor1000) / 1000;
-        var x = setInterval(function () {
-            timeField.innerHTML = `Expected Time: ${Math.floor(expectedLength)} seconds`;
-            expectedLength -= 1;
-            if (expectedLength < 0) {
-                clearInterval(x);
-                timeField.innerHTML = '';
+    console.log(debiased);
+    if (evalMethod == 'all' || evalMethod == 'bat') {
+        var contentLength = undefined
+        if (content['T1'] != undefined) {
+            contentLength = content['T1'].split(' ').length;
+            numberOfTerms = contentLength;
+        }
+        else {
+            contentLength = numberOfTerms;
+        }
+        var expectedLength = Math.round( -0.0755 * Math.pow(contentLength, 3) + 4.0124 * Math.pow(contentLength, 2) - 50.614 * contentLength + 191.76 )
+        expectedLength -= 1;
+        console.log(expectedLength)
+        if (debiased == '' || debiased == 'false') {
+            if (predefined) {
+                var x = setInterval(function () {
+                    timeField1.innerHTML = `Expected Time: ${expectedLength} seconds`;
+                    expectedLength -= 1;
+                    if (expectedLength <= 0) {
+                        clearInterval(x);
+                        timeField1.innerHTML = '';
+                    }
+                }, 1000);
             }
-        }, 1000);
+            else {
+                var x = setInterval(function () {
+                    timeField3.innerHTML = `Expected Time: ${expectedLength} seconds`;
+                    expectedLength -= 1;
+                    if (expectedLength <= 0) {
+                        clearInterval(x);
+                        timeField3.innerHTML = '';
+                    }
+                }, 1000);
+            }
+            
+        }
+        else {
+            var x = setInterval(function () {
+                timeField2.innerHTML = `Expected Time: ${expectedLength} seconds`;
+                expectedLength -= 1;
+                if (expectedLength <= 0) {
+                    clearInterval(x);
+                    timeField2.innerHTML = '';
+                }
+            }, 1000);
+        }
     }
 }
 
@@ -1338,7 +1373,7 @@ dEvaluationButton.addEventListener("click", function () {
     evalCard2.removeAttribute('hidden');
     evalCardBody2.innerHTML = '';
     performEvaluation(evalCardBody2);
-    thankYou.removeAttribute('hidden');
+    //thankYou.removeAttribute('hidden');
 });
 
 //Delete uploaded file by closing the window
