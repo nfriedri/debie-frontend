@@ -44,7 +44,7 @@ var inputVocabLabel = document.getElementById('inputVocabLabel');
 var uploadVocab = document.getElementById('uploadVocab');
 
 //Global variables
-const element = document.getElementById('tables');
+const tableElement = document.getElementById('tables');
 const numberOfResources = 10;
 const resourcePath = '/res/test_set';
 const resourceType = '.json';
@@ -241,7 +241,6 @@ function getContentDebiasing() {
         content['A1'] = document.getElementById('attribute1').value;
         content['A2'] = document.getElementById('attribute2').value;
         if (augmentSwitch.checked) {
-            console.log('TRUE I am here');
             content['Augmentations1'] = document.getElementById('augmentations1').value;
             content['Augmentations2'] = document.getElementById('augmentations2').value;
         }
@@ -409,6 +408,7 @@ function handleFileDelete() {
 
 //Load WEAT Test Bias Specifications
 async function loadTestData() {
+    var tableHTML = "";
     for (i = 1; i <= numberOfResources; i++) {
         var filePath = resourcePath + i + resourceType;
         var tableName = 'table' + i;
@@ -466,10 +466,11 @@ async function loadTestData() {
                 </div>
             </div>
             `;
-                element.innerHTML += output;
-
+            
+            tableHTML += output;
             })
     }
+    tableElement.innerHTML = tableHTML;
 }
 
 //Copy WEAT Test to extra container for evaluation
