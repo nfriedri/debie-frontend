@@ -12,6 +12,6 @@ The "\_blank" files offer an second design for the application. Content-wise, th
 
 For using other vector representations, the possibility is offered to upload embedding spaces or to provide the exact vectors together with the bias specification in the request.
 
-The backend is published here: https://github.com/nfriedri/debie-frontend
+The backend is published here: https://github.com/nfriedri/debie-backend
 
 An running instance of the application is accessible under: http://debie.informatik.uni-mannheim.de
