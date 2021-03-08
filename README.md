@@ -8,6 +8,8 @@ For debiasing, the General Bias-Direction Debiasing (GBDD) and the Bias Analogy 
 
 The used word embeddings are retrieved from databases containing word vector representations pre-trained with different models. There are 4 different databases provided, containing fastText, Skip-Gram, CBOW and GloVe vectors pre-trained on a wikipedia dump.
 
+The "\_blank" files offer an second design for the application. Content-wise, they are equal. 
+
 For using other vector representations, the possibility is offered to upload embedding spaces or to provide the exact vectors together with the bias specification in the request.
 
 The backend is published here: https://github.com/nfriedri/debie-frontend
