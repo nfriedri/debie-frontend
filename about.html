@@ -18,17 +18,17 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html"><img src="img/logo.png" width="14%"></a>  
+            <a class="navbar-brand" href="index.html"><img src="img/debie-logo.png" width="30%"></a>  
             <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="about.html">About</a>
                     </li>
                     <!--
@@ -45,12 +45,12 @@
     </nav>
 
     <!--DEBIE-->
-    <div class="jumbotron mb-0" style="background-image: url(img/background.jpg); background-position:center; ">
+    <div class="jumbotron mb-0" style="background-image: url(img/background_blank.jpg); background-position:center; background-repeat: no-repeat; background-size: cover; ">
         <div class="container">
             <h1 class="display-1 mb-3" style="color: #222E58;" ><b>DEBIE</b></h1>
-            <p class="lead text-dark ml-2"><b>DEBiasing embeddings Implicitly and Explicitly </b></p>
+            <p class="lead ml-2" style="color: black"><b>DEBiasing embeddings Implicitly and Explicitly </b></p>
             <hr class="my-4" style="border: 1px solid black;">
-            <p class="text-dark ml-2">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
+            <p class="ml-2" style="color: black">Web application for debiasing embedding spaces and bias evaluation of explicit and implicit bias specifications</p>
         </div>
     </div>
 
@@ -67,7 +67,7 @@
                     <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('embeddingSpacesContainer').scrollIntoView({behavior: 'smooth'})">Provided Embedding Spaces</a></li>
                     <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('uploadFormatsContainer').scrollIntoView({behavior: 'smooth'})">Upload Formats</a></li>
                     <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('apiAccessContainer').scrollIntoView({behavior: 'smooth'})">API Access & Formats</a></li>
-                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('githubContainer').scrollIntoView({behavior: 'smooth'})">GitHub Repositories</a></li>
+                    <li><a type="button" class="btn btn-lg btn-link" onclick="document.getElementById('githubContainer').scrollIntoView({behavior: 'smooth'})">Downloads</a></li>
                 </ul>
             </div>
         </div>
@@ -129,7 +129,7 @@
                     and WordSim-353 <a href="http://gabrilovich.com/papers/context_search.pdf" style="color:darkturquoise;" target="_blank">(Finkelstein et al. 2002)</a>.
                 </p>
                 <br>
-                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <p>This work is based on: <a target="_blank" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;">Lauscher et al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
@@ -164,16 +164,16 @@
                 </p>
                 <br>
                 <p class="lead">BAM &#5867; GBDD</p>
-                <p> Composing of the BAM and the GBDD model. First BAM is executed
+                <p> Composition of the BAM and the GBDD model. First BAM is executed
                     on the embedding space, then the by BAM debiased embedding space is used as an input for GBDD. The output is a twice debiased embedding space.
                 </p>
                 <br>
                 <p class="lead">GBDD &#5867; BAM</p>
-                <p> Composing of the GBDD and the BAM model. First GBDD is executed
+                <p> Composition of the GBDD and the BAM model. First GBDD is executed
                     on the embedding space, then the by GBDD debiased embedding space is used as an input for BAM. The output is a twice debiased embedding space. 
                 </p>
                 <br>
-                <p>This work is based on: <a class="text-white" href="https://arxiv.org/abs/1909.06092">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
+                <p>This work is based on: <a target="_blank" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;">Lauscher et. al. (2019) - A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces </a></p>
             </div>
         </div>
 
@@ -251,8 +251,8 @@ word9 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 ...
                 <br>
                 <p class="lead">DEBIE offers a RESTful API for direct requests</p>
                 
-                <p>The API is accessible via the URL: http://wifo5-29.informatik.uni-mannheim.de:8000/REST/</p>
-                <p>The swagger documentation of the API is available <a href="http://wifo5-29.informatik.uni-mannheim.de:8000/swagger/" style="color:darkturquoise;" target="_blank">here</a></p>
+                <p>The API is accessible via the URL: http://debie.informatik.uni-mannheim.de:8000/REST/</p>
+                <p>The swagger documentation of the API is available <a href="http://debie.informatik.uni-mannheim.de:8000/swagger/" style="color:darkturquoise;" target="_blank">here</a></p>
                 <br>
                 <hr style="background-color: white;">
                 <div class="row"> 
@@ -416,16 +416,20 @@ or
                     </div>
                 </div>
                 <hr style="background-color: white;">
-                <p class="lead"><a href="http://wifo5-29.informatik.uni-mannheim.de:8000/swagger/" style="color:darkturquoise;" target="_blank">Complete API documentation</a></p>
+                <p class="lead"><a href="http://debie.informatik.uni-mannheim.de:8000/swagger/" style="color:darkturquoise;" target="_blank">&raquo; Complete API documentation</a></p>
             </div>
         </div>
 
         <div class="container-fluid" id="githubContainer">
             <div class="jumbotron bg-dark text-white">
-                <h4 class="mt-4">GitHub Repositories</h4>
+                <h4 class="mt-4">Downloads</h4>
                 <br>
                 <p class="lead">Used word vector spaces</p>
-                <a> The complete source code of this application is published on GitHub. Therefore, three repositories are created:</a>
+                <ul>
+                    <li><a> Files containing the used fastText, GloVe and CBOW word embeddings are accessible here: <a href="https://drive.google.com/drive/folders/1fY_dXkmlKF8jJbGpMLQNBwEPviDtcjB1?usp=sharing" target="_blanc" style="color:darkturquoise;">Google Drive</a></a></li>
+                </ul> 
+                <br>
+                <p class="lead">GitHub Repositories</p>
                 <ul>
                     <li><a> The source code of the application's back-end accessible here: <a href="https://github.com/nfriedri/debie-backend" target="_blanc" style="color:darkturquoise;">DEBIE Back-End Repository</a></a></li>
                     <li><a> The design files and the source code of the application's front-end is accessible here: <a href="https://github.com/nfriedri/debie-frontend" target="_blanc" style="color:darkturquoise;">DEBIE Front-End Repository</a></a></li>
@@ -445,9 +449,10 @@ or
         <hr class="mb-5" style="border-color: #222E58;">
         <div class="row">
             <div class="col-12 col-md">
+                <li class="list-unstyled text-small"><a class="text-muted ml-4">Submitted to <a class="text-muted" target="_blank" href="https://2021.eacl.org/">EACL 2021</a></a></li>
                 <img src="img/logo.png" width="40%">
                 <li class="list-unstyled text-small"><a class="text-muted ml-4" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
-                <small class="d-block mb-3 ml-4 text-muted">&copy; 2020</small>
+                <small class="d-block mb-3 ml-4 text-muted">&copy; 2021</small>
             </div>
             <div class="col-6 col-md">
                 <h5 style="color: #222E58;">About</h5>
@@ -455,12 +460,13 @@ or
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1607.04606">fastText</a></li>
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/pdf/1301.3781.pdf">Word2Vec</a></li>
                     <li><a class="text-muted" target="_blank" href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://drive.google.com/drive/folders/1fY_dXkmlKF8jJbGpMLQNBwEPviDtcjB1?usp=sharing">Used Embedding Spaces</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
                 <h5 style="color: #222E58;">Related Work</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">General Framework</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1909.06092">Lauscher et al. 2019</a></li>
                     <li><a class="text-muted" target="_blank" href="https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf">Bolukbasi et al. 2016</a></li>
                     <li><a class="text-muted" target="_blank" href="https://arxiv.org/abs/1608.07187">Caliskan et al. 2017</a></li>
                     <li><a class="text-muted" target="_blank" href="http://proceedings.mlr.press/v89/dev19a/dev19a.pdf">Dev & Philips 2019</a></li>
@@ -469,8 +475,8 @@ or
             <div class="col-6 col-md">
                 <h5 style="color: #222E58;">Impressum</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted">Based on <a class="text-muted" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;" target="_blank">A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces</a></a> </li>
-                    <li><a class="text-muted">Created by Anne Lauscher and Niklas Friedrich</a></li>
+                    <li><a class="text-muted">Created by Niklas Friedrich and Anne Lauscher</a></li>
+                    <li><a class="text-muted">Based on <a class="text-muted" href="https://arxiv.org/abs/1909.06092" style="color:darkturquoise;" target="_blank">A General Framework for Implicit and Explicit Debiasing of Distributional Word Vector Spaces</a></a> <a class="text-muted">by Lauscher et al.</a></li>
                     <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de/dws/">Data and Web Science Group</a></li>
                     <li><a class="text-muted" target="_blank" href="https://www.uni-mannheim.de">University of Mannheim</a></li>
                 </ul>

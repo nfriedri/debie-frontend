@@ -868,7 +868,7 @@ async function performEvaluation(target) {
 async function createDebiasingURL() {
     await getSelectionDebiasing();
     var url = mainURL + 'debiasing';
-    url += '/' + model;
+    url += '/' + model; 
     if (space != '') {
         url += '?space=' + space;
     }
@@ -896,7 +896,7 @@ async function debiasing() {
     var url = await createDebiasingURL();
     var content = await getContentDebiasing();
     var result = null;
-    //console.log(JSON.stringify(content));
+    console.log(JSON.stringify(content));
     try {
         result = await fetch(url, {
             method: 'POST',
@@ -958,8 +958,28 @@ async function formatDebiasing() {
         `;
     }
     output += `
-        <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
-        <a class="btn" role="button" id="debiasDownloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>
+        <div class="row">
+            <div class="col">
+                <h6 class="card-subtitle mt-3 mb-2">Download results as JSON: </h6>
+                <a class="btn" role="button" id="debiasDownloadButton"> <i class="fas fa-cloud-download-alt fa-5x"></i> </a>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <h6 class="card-subtitle mt-3 mb-2">Download full embedding space: </h6>
+                <a class="btn" role="button" id="downloadVectorsButton"> <i class="fas fa-file-download fa-5x"></i> Vector File</a>
+                <a class="btn" role="button" id="downloadVocabButton"> <i class="fas fa-file-download fa-5x"></i> Vocab File</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <a>The preparation for downloading a vector space can take a few moments.</a>
+            </div>
+        </div>
     `;
     return output;
 }
@@ -986,7 +1006,102 @@ async function performDebiasing(target) {
     addDebiasingOutput(target, output).then(await drawPCAChart());
     counter += 1;
     document.getElementById('debiasDownloadButton').addEventListener("click", function () { download('bias-evaluation-scores-' + counter, debiasResponse) });
+    downloadVectorFile();
+    downloadVocabFile();
     dEvaluationButton.removeAttribute('hidden');
+}
+
+//Sends HTTP request for downloading vector file of complete embedding space
+async function downloadVectorFile() {
+    document.getElementById('downloadVectorsButton').addEventListener('click', function () {
+        var url = mainURL + 'debiasing/full-space';
+        url += '/' + model; 
+        if (space != '') {
+            url += '?space=' + space;
+        }
+        if (uploaded != '') {
+            url += '&uploaded=' + uploaded;
+        }
+        var content = getContentDebiasing();
+        var request = new XMLHttpRequest();
+        request.open('POST', url, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        
+        request.responseType = 'blob';
+    
+        request.onload = function() {
+          // Only handle status code 200
+          try {
+          if(request.status === 200) {
+            var filename = 'debiased_vectors.vecs';
+    
+            // The actual download
+            var blob = new Blob([request.response], { type: 'application/octet-stream' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+    
+            document.body.appendChild(link);
+    
+            link.click();
+    
+            document.body.removeChild(link);
+
+          }
+          }
+          catch (error) {
+            console.error(error);
+            debiasingCardBody.innerHTML = '';
+            showDangerAlert(debiasingCardBody, "Sorry an unexpected error occurred. Please try again.");
+        }
+        };
+        request.send(JSON.stringify(content))
+        
+      });
+}
+
+//Sends HTTP request to download complete vector file of the debiased embedding space
+async function downloadVocabFile() {
+    document.getElementById('downloadVocabButton').addEventListener('click', function () {
+        var url = mainURL + 'debiasing/full-space/vocab';
+        if (space != '') {
+            url += '?space=' + space;
+        }
+        if (uploaded != '') {
+            url += '&uploaded=' + uploaded;
+        }
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true); 
+        request.responseType = 'blob';
+        console.log(url);
+        request.onload = function() {
+          // Only handle status code 200
+          try {
+          if(request.status === 200) {
+            var filename = 'debiased_vocab.vocab';
+    
+            // The actual download
+            var blob = new Blob([request.response], { type: 'application/octet-stream' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = filename;
+    
+            document.body.appendChild(link);
+    
+            link.click();
+    
+            document.body.removeChild(link);
+          }
+          }
+          catch (error) {
+            console.error(error);
+            debiasingCardBody.innerHTML = '';
+            showDangerAlert(debiasingCardBody, "Sorry an unexpected error occurred. Please try again.");
+        }
+        };
+        request.send(null)
+    
+      });
 }
 
 // --- DEBIASING CHARTS ---
